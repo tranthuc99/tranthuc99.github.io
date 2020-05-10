@@ -8,7 +8,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 
 urls:
     - text: About Me
-      url: /about-me
+      url: /about
     #- text: Blog
     #  url: /blog
     #- text: Gallery
