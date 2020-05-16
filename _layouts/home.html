@@ -5,14 +5,31 @@ layout: default
 <script>
   $(document).ready(function() {
     $("#typewriteText").typewrite({
-      actions: [{ type: "{{site.typewrite-text}}" }]
+      continuous: true,
+      actions: [
+        { type: "{{site.typewrite-title[0]}}" },
+        {delay: 2000},
+        {remove: {num: 26, type: 'stepped'}},
+        { type: "{{site.typewrite-title[1]}}" },
+        {delay: 2000},
+        {remove: {num: 9, type: 'stepped'}},
+        { type: "{{site.typewrite-title[2]}}" },
+        {delay: 2000},
+        {remove: {num: 9, type: 'stepped'}},
+        { type: "{{site.typewrite-title[3]}}" },
+        {delay: 2000},
+        {remove: {num: 6, type: 'stepped'}},
+        { type: "{{site.typewrite-title[4]}}" },
+        {delay: 2000},
+        {remove: {num: 8, type: 'stepped'}},
+      ]
     });
   });
 </script>
     <div class="jumbotron" style="text-align: center;">
       <img class="author-profile-img" src="/assets/img/profile.png" />
-      <p class="jumbotron-heading">Hi, I am {{site.author}} !</p>
-      <p class="lead" id="typewriteText"></p>
+      <p class="jumbotron-title"><span>{{site.author_name}}</span>{{site.author_lastname}} !</p>
+      <p class="jumbotron-subtitle"><span class="head">I am a </span><span id="typewriteText"></strong></p>
       {% if site.github_username %} {%- include github_follow_button.html -%} {%
       endif %} {%- include github_star_button.html -%}
     </div>

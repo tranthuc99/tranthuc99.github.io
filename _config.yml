@@ -26,11 +26,20 @@ urls:
 
 author_logo: profile.png
 author: Raquel Peces
+author_name: Raquel
+author_lastname: Peces
 author_bio: Hi, my name is Raquel Peces. I am a Computer Graphics Engineer and a Violinist :D
 author_email: "raquelpm23@gmail.com"
 author_location: Madrid
 author_website_url: "http://raquelfishes.github.com"
 typewrite-text: I am a Computer Graphics Engineer and a Violinist =)
+typewrite-title: 
+  - Computer Graphics Engineer
+  - Violinist
+  - Developer
+  - Sporty
+  - Photographer
+  - Feminist
 
 author_work_experiences:
             - company_name: Next Limit
