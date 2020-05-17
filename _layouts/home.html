@@ -5,7 +5,6 @@ layout: default
 <script>
   $(document).ready(function() {
     $("#typewriteText").typewrite({
-      continuous: true,
       actions: [
         { type: "{{site.typewrite-title[0]}}" },
         {delay: 2000},
@@ -21,7 +20,7 @@ layout: default
         {remove: {num: 6, type: 'stepped'}},
         { type: "{{site.typewrite-title[4]}}" },
         {delay: 2000},
-        {remove: {num: 8, type: 'stepped'}},
+        {remove: {num: 12, type: 'stepped'}},
       ]
     });
   });
