@@ -9,11 +9,11 @@ layout: default
       actions: [
         { type: "{{site.typewrite-title[0]}}" },
         {delay: 2000},
-        {remove: {num: 26, type: 'stepped'}},
+        {remove: {num: 33, type: 'stepped'}},
         { type: "{{site.typewrite-title[1]}}" },
         {delay: 2000},
-        /*{remove: {num: 9, type: 'stepped'}},
-        { type: "{{site.typewrite-title[2]}}" },
+        {remove: {num: 1, type: 'stepped'}},
+        /*{ type: "{{site.typewrite-title[2]}}" },
         {delay: 2000},
         {remove: {num: 9, type: 'stepped'}},
         { type: "{{site.typewrite-title[3]}}" },
@@ -28,18 +28,19 @@ layout: default
   });
 </script>
     <div class="jumbotron" style="text-align: center;">
-      <img class="author-profile-img" src="/assets/img/profile.webp" />
+
+      
+      <img class="author-profile-img" src="/assets/img/profile.webp" title="Cục bông hồng" />
+      <!--<div class="frames" style="text-align: center;"><img class="author-profile-img" src="/assets/img/cmnm.png" /></div>-->
+
       <p class="jumbotron-title"><span>{{site.author_name}}</span>{{site.author_lastname}}</p>
-      <p class="jumbotron-subtitle"><span class="head">I am a </span><span id="typewriteText"></strong></p>
+      <p class="jumbotron-subtitle"><span class="head"> ... </span><span id="typewriteText"></strong></p>
       {% if site.github_username %} {%- include github_follow_button.html -%} {%
       endif %} {%- include github_star_button.html -%}
     </div>
     <div class="col-lg-8 offset-md-2">
       {%- include blockquote.html -%}
     </div>
-
-    <!--<audio src="assets/vid/Tet-Dong-Day.mp3" autoplay></audio>-->
-
 
     <!--
     <div class="col-lg-8 offset-md-2">
