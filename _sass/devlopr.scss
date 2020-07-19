@@ -31,7 +31,7 @@ html[data-theme="light"] {
     --highlight-color: hsl(0, 0%, 80%);
     --light-border-color: rgb(230, 230, 230);
     --light-text-color: rgb(72, 72, 74);
-    --link-color: rgb(0, 112, 201);
+    --link-color: #0070C9;
     --link-color-visited: hsl(250, 100%, 37%);
     --main-background-color: rgb(255, 255, 255);
     --main-text-color: rgb(51, 51, 51);
@@ -291,7 +291,7 @@ header {
 }
 
 .jumbotron-title{
-    color: #F2C335;
+    color: #262629;
     margin: 20px 0 30px 0;
     font-size: 3.3rem;
     font-weight:600;
@@ -300,17 +300,17 @@ header {
 
 .jumbotron-title span{
     padding-right: 15px;
-    opacity: .5;
+    opacity: 1;
 }
 
 .jumbotron-subtitle {
     font-size: 1.30rem !important;
     font-weight: 600;
-    color: #D97E9F   !important;
+    color: #515C63   !important;
 }
 
 .jumbotron-subtitle .head{
-    opacity: .5;
+    opacity: 1;
 }
 
 /*
