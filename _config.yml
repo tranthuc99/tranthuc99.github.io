@@ -1,26 +1,26 @@
 title: Nguyễn Trần Thức
-subtitle: Personal site
+subtitle: Thuc's Blog
 description: >- # this means to ignore newlines until "baseurl:"
-  Personal site of Raquel Peces (a.k.a. raquelFishes)
+  Personal site of Thuc
 
 url: "https://tranthuc99.github.io" # the base hostname & protocol for your site, e.g. https://example.github.io
 baseurl: "" # the subpath of your site, e.g. /blog
 
 urls:
-    - text: Về Tôi
+    - text: About me
       url: /about
-    - text: Blog
-      url: /blog
-    - text: Hình Ảnh
-      url: /gallery
+    #- text: Blog
+    #  url: /blog
+    #- text: Hình Ảnh
+    #  url: /gallery
     #- text: Cửa Hàng
     #  url : /shop
-    - text: Liên Hệ
+    - text: Contact Me
       url : /contact
-    - text: Styleguide
-      url: /styleguide
-    - text: Get Started
-      url: /get-started
+    #- text: Styleguide
+    #  url: /styleguide
+    #- text: Get Started
+    #  url: /get-started
 
 # Edit these details
 
@@ -28,14 +28,17 @@ author_logo: profile.webp
 author: Nguyễn Trần Thức
 author_name: Nguyễn Trần
 author_lastname: Thức
-author_bio: Hi, my name is Thuc. I am a Developer and a Photographer :D
+author_bio: Hi, my name is Thuc
+#. I am a Developer and a Photographer :D
 author_email: "tranthuc1199@gmail.com"
 author_location: Thái Nguyên, Việt Nam
 author_website_url: "http://nguyentranthuc.tk"
 typewrite-text: I am a Developer and a Photographer =))
 typewrite-title:
-  - Welcome to personal site of me !!
-  - I am a Developer and a Photographer =)) 
+  #- Welcome to personal site of me !!
+  #- I am a Developer and a Photographer =))
+  #-Blog đang trong quá trình xây dựng !!!
+  #-!
 
 
 author_work_experiences:
@@ -101,10 +104,10 @@ hyvor_talk_website_id: 476
 wakatime_username: Thức
 
 # mailchimp embedded form url (newsletter):
-mailchimp_form_url: https://sujaykundu.us10.list-manage.com/subscribe/post?u=50bab1c85eae24ecfb0f68361&amp;id=3a2dd721d0
+#mailchimp_form_url: https://sujaykundu.us10.list-manage.com/subscribe/post?u=50bab1c85eae24ecfb0f68361&amp;id=3a2dd721d0
 
 # formspree (contact form)
-formspree_email: xwkrklev
+formspree_email: xknqpdva
 
 # syntax highlighter
 markdown: kramdown
