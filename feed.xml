@@ -1,0 +1,1087 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="https://tranthuc99.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tranthuc99.github.io/" rel="alternate" type="text/html" /><updated>2020-08-08T05:46:35+00:00</updated><id>https://tranthuc99.github.io/feed.xml</id><title type="html">Nguyễn Trần Thức</title><subtitle>Personal site of Thuc</subtitle><author><name>Nguyễn Trần Thức</name></author><entry><title type="html">Genetic Algorithm - Giải thuật di truyền</title><link href="https://tranthuc99.github.io/2020/05/28/genetic-algorithm" rel="alternate" type="text/html" title="Genetic Algorithm - Giải thuật di truyền" /><published>2020-05-27T17:16:20+00:00</published><updated>2020-05-27T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2020/05/28/genetic-algorithm</id><content type="html" xml:base="https://tranthuc99.github.io/2020/05/28/genetic-algorithm">&lt;p&gt;Từ lâu, chúng ta thường được nghe rằng loài người được tiến hóa từ loài vượn cổ. Quan điểm này xuất phát từ thuyết tiến hóa của Charles Darwin. Song song với thuyết tiến hóa của Darwin - quan điểm chọn lọc tự nhiên thì còn 1 thuyết tiến hóa nữa của Jean-Baptiste Lamarck. Tuy nhiên trong bài viết này mình sẽ không đề cập tới lĩnh vực này mà mình muốn giới thiệu tới bạn đọc một thuật toán sử dụng chọn lọc tự nhiên để giải quyết bài toán có không gian tìm kiếm rất lớn - &lt;strong&gt;Genetic Algorithm&lt;/strong&gt; - &lt;em&gt;Giải thuật Di Truyền&lt;/em&gt;.&lt;/p&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#ý-tưởng-chính&quot; id=&quot;markdown-toc-ý-tưởng-chính&quot;&gt;Ý tưởng chính&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#mối-liên-hệ-giữa-các-thành-phần&quot; id=&quot;markdown-toc-mối-liên-hệ-giữa-các-thành-phần&quot;&gt;Mối liên hệ giữa các thành phần&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#thuật-toán-di-truyền&quot; id=&quot;markdown-toc-thuật-toán-di-truyền&quot;&gt;Thuật toán di truyền&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#initial-population--khởi-tạo-quần-thể&quot; id=&quot;markdown-toc-initial-population--khởi-tạo-quần-thể&quot;&gt;Initial Population- Khởi tạo quần thể&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#evaluation-fitness---đánh-giá-năng-lực&quot; id=&quot;markdown-toc-evaluation-fitness---đánh-giá-năng-lực&quot;&gt;Evaluation Fitness - Đánh giá năng lực&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#selection---chọn-lọc&quot; id=&quot;markdown-toc-selection---chọn-lọc&quot;&gt;Selection - Chọn lọc&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#crossover---sinh-sản&quot; id=&quot;markdown-toc-crossover---sinh-sản&quot;&gt;Crossover - Sinh sản&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#mutation---đột-biến&quot; id=&quot;markdown-toc-mutation---đột-biến&quot;&gt;Mutation - Đột biến&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#những-vấn-đề-thường-gặp-khi-sử-dụng-thuật-toán&quot; id=&quot;markdown-toc-những-vấn-đề-thường-gặp-khi-sử-dụng-thuật-toán&quot;&gt;Những vấn đề thường gặp khi sử dụng thuật toán&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#evaluation-fitness&quot; id=&quot;markdown-toc-evaluation-fitness&quot;&gt;Evaluation Fitness&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#chromosome&quot; id=&quot;markdown-toc-chromosome&quot;&gt;Chromosome&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ứng-dụng-thực-tiễn&quot; id=&quot;markdown-toc-ứng-dụng-thực-tiễn&quot;&gt;Ứng dụng thực tiễn&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;ý-tưởng-chính&quot;&gt;Ý tưởng chính&lt;/h3&gt;
+
+&lt;p&gt;Nhằm giải thích sự xuất hiện của Hươu cao cổ, Darwin đưa ra giả thiết rằng: “Trong quần thể Hươu vốn đã tồn tại những con Hươu có cổ cao hơn bình thường nhờ gen di truyền và sự đột biến. Trải qua quá trình sinh sống và phát triển, môi trường thay đổi khiến cho thức ăn càng ngày càng khó kiếm hơn, khiến những con Hươu có chiếc cổ cao sẽ chiếm ưu thế sinh tồn hơn. Lâu dần thì thế hệ Hươu mới sẽ được thay bằng những con Hươu cao cổ có khả năng sinh sản và thích nghi với môi trường lớn hơn”.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Dawwin Evolution Theory&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/darwin_evolution_theory.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nhìn vào thuyết tiến hóa của Hươu cao cổ này, chúng ta thấy được sự xuất hiện của những thành phần sau:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Quần thể&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Đột biến&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Sinh sản&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Chọn lọc tự nhiên&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;đây cũng chính là những thành phần trong giải thuật này.&lt;/p&gt;
+
+&lt;h4 id=&quot;mối-liên-hệ-giữa-các-thành-phần&quot;&gt;Mối liên hệ giữa các thành phần&lt;/h4&gt;
+
+&lt;p&gt;Để nắm rõ ý tưởng chính của thuật toán, biểu đồ dưới đây sẽ mổ tả cụ thể những thành phần và mối liên hệ của chúng.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Element Relationship&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/relationship.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;1. Population - Quần thể&lt;/strong&gt; : Một quần thể ban đầu sẽ có những cá thể nhất định với những đặc tính khác nhau, những đặc tính này sẽ quy định khả năng sinh sản, sinh tồn, khả năng đáp ứng điều kiện môi trường của từng cá thể.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;2. Natural Selection - Chọn lọc tự nhiên&lt;/strong&gt; : Theo thời gian những cá thể yếu hơn, không có khả năng sinh tồn sẽ bị loại bỏ bởi những tác nhân như tranh chấp chuỗi thức ăn, môi trường tác độc, bị loài khác tiêu diệt, … Cuối cùng sẽ còn lại những cá thể có đặc tính ưu việt hơn sẽ được giữ lại - &lt;strong&gt;Adaptive individual&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;3. Mutation - Đột biến&lt;/strong&gt; : Như chúng ta đã biết thì mỗi cá thể con được sinh ra sẽ được kế thừa lại những đặc tính của cả cha và mẹ. Sau một thời gian sinh sống, một quần thể sẽ đặt tới giới hạn của các cặp gen của con được tạo nên từ gen của bố mẹ. Để đạt được tới sự tiến hóa, &lt;strong&gt;Đột Biến&lt;/strong&gt; chính là một trong những nguyên nhân chính, có vai trò đóng góp nguyên liệu cho quá trình &lt;strong&gt;Chọn lọc tự nhiên&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;4. Evolution - Tiến hóa&lt;/strong&gt; : Những cá thể đột biến không phải luôn là những cá thể mạnh mẽ và có đủ khả năng sinh tồn, &lt;strong&gt;Chọn lọc tự nhiên&lt;/strong&gt; sẽ chọn ra những cá thể đột biến nhưng có thể thích nghi với môi trường sống tốt hơn những cá thể khác trong quần thể. Sau một thời gian sinh sản, những gen đột biến sẽ chiếm ưu thế và chiếm đa số trong quần thể.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Butter Fly Population&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/butter_fly_population.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;thuật-toán-di-truyền&quot;&gt;Thuật toán di truyền&lt;/h3&gt;
+
+&lt;p&gt;Có rất nhiều cách giải thích và biểu đồ khác nhau để diễn giải thuật toán, nhưng nhìn chung các thành phần chính của thuật toán sẽ không thay đổi.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Algorithm Graph&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/graph.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Xét bài toán &lt;strong&gt;Tìm mật khẩu&lt;/strong&gt;, yêu cầu của bài toán như sau:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Mật khẩu gồm 8 kí tự ( bao gồm chữ cái, chữ số và khoảng trắng) - Ví dụ: &lt;strong&gt;hoilamgi&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Mỗi lần thử, hệ thống sẽ báo về số lượng kí tự đúng với mật khẩu.&lt;/li&gt;
+  &lt;li&gt;Yêu cầu tìm ra chuỗi mật khẩu cho trước.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thuật toán sẽ dừng lại khi tìm được cá thể đáp ứng được nhu cầu đề ra sau mỗi thế hệ mới. Quá trình sản sinh thế hệ tiếp theo sẽ là một vòng lặp (&lt;strong&gt;Evaluation Fitness&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Selection&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Crossover&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Mutation&lt;/strong&gt;). Chúng ta sẽ cùng xây dựng những thành phần chính trong thuật toán để giải quyết bài toán này.&lt;/p&gt;
+
+&lt;h4 id=&quot;initial-population--khởi-tạo-quần-thể&quot;&gt;Initial Population- Khởi tạo quần thể&lt;/h4&gt;
+
+&lt;p&gt;Nhìn chung thuật toán sẽ mô phỏng lại hầu hết những hiện tượng xảy ra trong quá trình tiến hóa của động vật. Vì vậy để thuật toán có thể vận hành được, thì điều đầu tiên cần có chính là &lt;strong&gt;Quần thể&lt;/strong&gt;. Xét bài toán tìm mật khẩu, quần thể sẽ bao gồm những chuỗi 8 kí tự, được sinh ra ngẫu nhiên.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Initial Population&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/step1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;evaluation-fitness---đánh-giá-năng-lực&quot;&gt;Evaluation Fitness - Đánh giá năng lực&lt;/h4&gt;
+
+&lt;p&gt;Tiếp theo, mỗi chuỗi mật khẩu sẽ được đánh giá sự chính xác so với mật khẩu cho trước, với mỗi kí tự giống với mật khẩu cho trước tại đúng vị trí sẽ được &lt;strong&gt;1 point&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Evaluation Fitness&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/step2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Thành phần &lt;strong&gt;Point&lt;/strong&gt; ở đây sẽ đại diện cho khả năng sinh tồn của cá thể trong quần thể, càng lớn tức cá thể đó càng thích nghi với môi trường tốt.&lt;/p&gt;
+
+&lt;h4 id=&quot;selection---chọn-lọc&quot;&gt;Selection - Chọn lọc&lt;/h4&gt;
+
+&lt;p&gt;Sau khi đã đánh giá được quần thể, các cá thể có khả năng sinh tồn tốt hơn sẽ có cơ hội được sinh sản nhiều hơn các cá thể còn lại. Các chuỗi kí tự mật khẩu sẽ được lựa chọn theo số &lt;strong&gt;Point&lt;/strong&gt; đang có.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Selection&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/step3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;crossover---sinh-sản&quot;&gt;Crossover - Sinh sản&lt;/h4&gt;
+
+&lt;p&gt;Vào giai đoạn sinh sản, các cá thể con sẽ được kế thừa các đặc tính từ cả bố và mẹ. Thông thường, cá thể con sẽ nhận một nửa gen từ mỗi bố, mẹ.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Crossover 1 Point&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/step4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Cá thể con có thể sẽ thích nghi tốt hơn, hoặc kém hơn. Ngoài ra, có những kiểu lai tạo khác nhau như &lt;strong&gt;2 Point&lt;/strong&gt;, &lt;strong&gt;Uniform Selection&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Crossover 2 Point&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/step5.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;*2 Point*&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Crossover Uniform&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/step6.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;*Uniform*&lt;/p&gt;
+
+&lt;h4 id=&quot;mutation---đột-biến&quot;&gt;Mutation - Đột biến&lt;/h4&gt;
+
+&lt;p&gt;Dễ nhận thấy rằng, nếu chỉ bằng việc sinh ngẫu nhiên và lai tạo, sẽ rất khó để tìm được nghiệm. Trừ khi cá thể khởi tạo phù hợp luôn với yêu cầu đề bài, tức là có đáp án luôn từ đầu - Ăn May. Như đã nói từ đầu, &lt;strong&gt;Đột biến&lt;/strong&gt; chính là nguyên liệu của &lt;strong&gt;Chọn lọc tự nhiên&lt;/strong&gt;, bằng việc lựa chọn ngẫu nhiên các vị trí và thay thế bằng một kí tự ngẫu nhiên nào đó, chúng ta có thể mô phỏng lại hiện tượng đột biến - &lt;a href=&quot;https://vi.wikipedia.org/wiki/%C4%90%E1%BB%99t_bi%E1%BA%BFn_%C4%91i%E1%BB%83m&quot;&gt;Đột biến điểm&lt;/a&gt;&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Mutation&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/step7.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Các cá thể đột biến có thể sẽ có khả năng thích nghi tốt hơn (1 -&amp;gt; 2), hoặc cũng có thể ngược lại (4 -&amp;gt; 3). Quá trình này sẽ lặp lại cho đến khi tìm được đáp án phù hợp.&lt;/p&gt;
+
+&lt;h3 id=&quot;những-vấn-đề-thường-gặp-khi-sử-dụng-thuật-toán&quot;&gt;Những vấn đề thường gặp khi sử dụng thuật toán&lt;/h3&gt;
+
+&lt;p&gt;Thông thường, &lt;strong&gt;Thuật toán Di Truyền&lt;/strong&gt; sẽ đạt được lợi thế trong những bài toán có không gian tìm kiếm quá lớn mà những giải thuật vét cạn không thể xử lí được. Tuy nhiên khi sử dụng, chúng ta sẽ cần cân nhắc những vấn đề ảnh hưởng tới việc lựa chọn thuật toán.&lt;/p&gt;
+
+&lt;h4 id=&quot;evaluation-fitness&quot;&gt;Evaluation Fitness&lt;/h4&gt;
+
+&lt;p&gt;Như trong bộ truyện One Punch Man, các anh hùng sẽ được đánh giá và xếp hạnh theo &lt;strong&gt;Rank&lt;/strong&gt;. &lt;strong&gt;Rank&lt;/strong&gt; sẽ nói lên dược năng lực và sức mạnh của người đó - ngoại trừ &lt;strong&gt;Thánh Saitama&lt;/strong&gt;. Vấn đề đầu tiên gặp phải đó chính là việc đánh giá các cá thể trong quần thể, chúng ta cần một phương thức để có thể đánh giá sự thích nghi hay ưu thế của từng cá thể.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Evaluation Fitness&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/evaluation_fitness.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tuy nhiên khi thực hiện việc này, chúng ta sẽ cần cân nhắc 2 vấn đề:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Tính khả thi&lt;/strong&gt;: Việc tìm phương thức đánh giá không phải luôn khả thi, ví dụ trong bài toàn tìm một giai điệu mới, việc đánh giá giai điệu đó có “dễ nghe”, “hay” hay không thuộc về cảm quan của mỗi người, nên việc tìm một hàm đánh giá chính xác sẽ rất khó khăn.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Chi phí&lt;/strong&gt;: Đây cũng là một vấn đề cần cân nhắc, nếu chi phí tính toán của phương thức đánh giá quá lớn, việc sử dụng để tìm kiếm trong không gian sẽ mất nhiều thời gian, thậm chí lâu hơn vét cạn.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;chromosome&quot;&gt;Chromosome&lt;/h4&gt;
+
+&lt;p&gt;Trong bài toán &lt;strong&gt;Tìm mật khẩu&lt;/strong&gt; thì chuỗi kí tự đại diện cho các &lt;strong&gt;Nhiễm sắc thể&lt;/strong&gt; hay &lt;strong&gt;Chuỗi ADN&lt;/strong&gt;. Việc số hóa những đặc tính của bài toán thành các bits, bytes để có thể sử dụng trong khâu &lt;strong&gt;Crossover&lt;/strong&gt;, &lt;strong&gt;Mutation&lt;/strong&gt; cũng gặp nhiều khó khăn trong những bài toán khác nhau. Bởi với mỗi sự thay đổi bit sẽ phải tương ứng với việc tạo ra một cá thể với đặc tính khác nhau.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Anten của Nasa dùng thuật toán di truyền để tìm hình dáng tối ưu thu phát sóng.&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/anten_nasa.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;*Anten của Nasa dùng thuật toán di truyền để tìm hình dáng tối ưu thu phát sóng*&lt;/p&gt;
+
+&lt;h3 id=&quot;ứng-dụng-thực-tiễn&quot;&gt;Ứng dụng thực tiễn&lt;/h3&gt;
+
+&lt;p&gt;Như đã đề cập trước đó, &lt;strong&gt;Giải thuật Di truyền&lt;/strong&gt; hay &lt;strong&gt;Genetic Algorithm&lt;/strong&gt; sẽ có ưu thế trong những bài toán mà có sẵn lời giải trong một không gian tìm kiếm lớn như những bài toán cổ điển &lt;em&gt;Người du lịch&lt;/em&gt;, &lt;em&gt;Cái Túi&lt;/em&gt;, … Ngoài ra, hiện nay với việc bùng nổ của &lt;strong&gt;AI&lt;/strong&gt;, việc sử dụng mạng &lt;strong&gt;Neural&lt;/strong&gt; cùng với giải thuật này cũng giúp giải quyết một số bài tóan về tự động, hành vi, …&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Snake Fusion&quot; src=&quot;/assets/img/2020-05-28-genetic-algorithm/snake_fusion.gif&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mình xin kết thúc bài viết ở đây, mong nhận được phản hồi của bạn đọc!&lt;/p&gt;
+
+&lt;p&gt;Bài viết được tham khảo và sử dụng hình ảnh từ:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=zIkBYwdkuTk&quot;&gt;Neural Network Learns to Play Snake&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/datadriveninvestor/genetic-algorithm-made-intuitive-with-natural-selection-and-python-project-from-scratch-3462f7793a3f&quot;&gt;Genetic Algorithm made intuitive with natural selection and python
+&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://id.pinterest.com/pin/310959549252410148/&quot;&gt;Giraffe Evolution&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="[&quot;Architectures and Algorithms&quot;]" /><category term="Algorithm" /><summary type="html">Từ lâu, chúng ta thường được nghe rằng loài người được tiến hóa từ loài vượn cổ. Quan điểm này xuất phát từ thuyết tiến hóa của Charles Darwin. Song song với thuyết tiến hóa của Darwin - quan điểm chọn lọc tự nhiên thì còn 1 thuyết tiến hóa nữa của Jean-Baptiste Lamarck. Tuy nhiên trong bài viết này mình sẽ không đề cập tới lĩnh vực này mà mình muốn giới thiệu tới bạn đọc một thuật toán sử dụng chọn lọc tự nhiên để giải quyết bài toán có không gian tìm kiếm rất lớn - Genetic Algorithm - Giải thuật Di Truyền.</summary></entry><entry><title type="html">Tự học AWS [P3] - Kinh nghiệm học AWS và ôn thi</title><link href="https://tranthuc99.github.io/2020/03/09/tu-hoc-aws-p3" rel="alternate" type="text/html" title="Tự học AWS [P3] - Kinh nghiệm học AWS và ôn thi" /><published>2020-03-08T17:16:20+00:00</published><updated>2020-03-08T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2020/03/09/tu-hoc-aws-p3</id><content type="html" xml:base="https://tranthuc99.github.io/2020/03/09/tu-hoc-aws-p3">&lt;p&gt;Hôm nay vừa đi thi về, tranh thủ chia sẻ luôn cho những bạn đọc đang ôn thi và tự học để thi chứng chỉ AWS - Solution Architect Associate. Đang mùa dịch Corona nên phòng thi chỉ có một mình mình, sau bài viết này mình định làm 1 series tổng hợp kiến thức nhưng phần có trong bài thi, những phần cần học, mọi người ủng hộ mình có thể comment ở cuối bài viết nhé :D&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Thêm một lưu ý là sau tháng &lt;strong&gt;3/2020&lt;/strong&gt; thì đề thi sẽ có sự &lt;strong&gt;thay đổi&lt;/strong&gt; do một số cập nhật của Amazon với những service có trong nội dung học nên các bạn cũng lưu ý với những nội dung mình có nhắc tới trong bài viết nhé. Tránh hiện tượng thông tin sai lệch bởi bài viết của mình chỉ mang tính chất tham khảo.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#quá-trình-học&quot; id=&quot;markdown-toc-quá-trình-học&quot;&gt;Quá trình học&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#những-mục-cần-học&quot; id=&quot;markdown-toc-những-mục-cần-học&quot;&gt;Những mục cần học&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#những-điều-cần-lưu-ý-về-bài-thi&quot; id=&quot;markdown-toc-những-điều-cần-lưu-ý-về-bài-thi&quot;&gt;Những điều cần lưu ý về bài thi&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#đăng-kí-thi&quot; id=&quot;markdown-toc-đăng-kí-thi&quot;&gt;Đăng kí thi&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#khi-đi-thi&quot; id=&quot;markdown-toc-khi-đi-thi&quot;&gt;Khi đi thi&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;quá-trình-học&quot;&gt;Quá trình học&lt;/h3&gt;
+
+&lt;p&gt;Do công ty mình có hệ thống portal đào tạo nên mình học các kiến thức liên quan tại trang portal của công ty. Ngoài ra các bạn cũng có thể tham khảo từ những nguồn sau:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Series về AWS-SAA của &lt;a href=&quot;https://www.youtube.com/playlist?list=PLBfufR7vyJJ6FhBhJJSaMkI-m2wyoPy-G&quot;&gt;&lt;strong&gt;Exam Pro&lt;/strong&gt;&lt;/a&gt; (khoảng gần 300 videos ). 
+  Theo mình thấy thì học ở đây các video được chia nhỏ ra, nên rất dễ tìm lại những phần chưa nhớ. Nhưng bài giảng có thể khá nhanh ( với những bạn nghe tiếng Anh chưa quen). Bạn nên dùng series này để tổng hợp kiến thức thì hơn.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Youtube Videos&quot; src=&quot;/assets/img/2020-03-09-tu-hoc-aws-p3/youtube.png&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Khoá học AWS-SAA của &lt;a href=&quot;https://www.udemy.com/course/aws-certified-solutions-architect-associate/&quot;&gt;&lt;strong&gt;Udemy&lt;/strong&gt;&lt;/a&gt;
+  Nội dung học ở đây khá đầu đủ, thêm nữa bạn sẽ có làm test và các quiz sau mỗi phần học. Chi phí có thể nói là dễ tiếp cận, được rất nhiều người sử dụng. Mình recommend nên học khoá này nếu bạn thực sự nghiêm túc muốn đạt chứng chỉ ( mất tiền mà).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Udemy Course&quot; src=&quot;/assets/img/2020-03-09-tu-hoc-aws-p3/udemy.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Đọc FAQ trên &lt;a href=&quot;https://aws.amazon.com/products/&quot;&gt;&lt;strong&gt;AWS Products&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Có thể nói Document của AWS về các Services rất đầy đủ, kèm theo hệ thống FAQ. Mình rất recommend các bạn tham khảo phần chi phí (Pricing) của các dịch vụ trên này vì trong bài thi rất hay hỏi những câu hỏi liên quan tới chi phí ( &lt;strong&gt;MOST&lt;/strong&gt; cost-effective).&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;AWS FAQ&quot; src=&quot;/assets/img/2020-03-09-tu-hoc-aws-p3/faq.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;những-mục-cần-học&quot;&gt;Những mục cần học&lt;/h3&gt;
+
+&lt;p&gt;Dưới đây là những phần mình thấy có trong bài thi cũng như nội dung học, tầm quan trọng cũng như nội dung trong bài thi sẽ được sắp xếp từ cao đến thấp, sắp tới mình sẽ làm 1 series về từng phần kèm theo câu hỏi và Quiz. Rất mong được các bạn đón nhận.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Security, Identity &amp;amp; Compliance&lt;/strong&gt;: AWS Identity &amp;amp; Access Management, Amazon Cognito, AWS Shield, …&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Storage&lt;/strong&gt;: Amazon Simple Storage Service (S3), Amazon Elastic Block Storage, Amazon Elastic File System, Amazon S3 Glacier, AWS Storage Gateway, …&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Compute&lt;/strong&gt;: Amazon EC2, Amazon EC2 Auto Scaling, AWS Lambda, AWS Elastic Beanstalk, …&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Database&lt;/strong&gt;: Amazon DynamoDB, Amazon RDS, Amazon Redshift, Amazon Aurora, …&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Application Migration&lt;/strong&gt;: Amazon Simple Queue Service (SQS), Amazon Simple Notification Service (SNS), …&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Analytics&lt;/strong&gt;: Amazon Kinesis, …&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Management &amp;amp; Governance&lt;/strong&gt;: Amazon CloudWatch, AWS CloudTrail, …&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Networking &amp;amp; Content Delivery&lt;/strong&gt;: Amazon VPC, Amazon API Gateway, Amazon CloudFront, Amazon Route53, Elastic Load Balancing, …&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Nên lưu ý kĩ phần &lt;strong&gt;HA Architect&lt;/strong&gt; - High Availability, ELB, ASG, phân biệt DynamoDB  và Redshift. Các câu hỏi thường tập trung xoay quanh các trường hợp cụ thể, chứ không hỏi thẳng nội dung, định nghĩa của từng phần, mà sẽ tập trung vào việc só sánh, phân biệt, phân loại sự cần thiết của các services.&lt;/p&gt;
+
+&lt;h3 id=&quot;những-điều-cần-lưu-ý-về-bài-thi&quot;&gt;Những điều cần lưu ý về bài thi&lt;/h3&gt;
+&lt;p&gt;Theo kinh nghiệm của anh Sếp tại công ty mình thì hôm trước khi thi không nên cố nhồi nhét thêm kiến thức mà hãy thư giãn cho thoải mái, và nhớ đi ngủ đủ giấc để có thể trạng lúc thi tốt nhất.&lt;/p&gt;
+
+&lt;h4 id=&quot;đăng-kí-thi&quot;&gt;Đăng kí thi&lt;/h4&gt;
+&lt;p&gt;Các bạn có thể dễ dàng đăng kí thi theo các hướng dẫn trên mạng, lệ phí thi là &lt;strong&gt;150 USD&lt;/strong&gt; tại thời điểm hiện tại. Một số lưu ý về việc đăng kí thi:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Có thể cancel lịch thi trước thời điểm thi 24h. Nhận tiền refund sau đó khoảng 2 ngày nhưng sẽ bị khấu hao.&lt;/li&gt;
+  &lt;li&gt;Có thể reschedule 2 lần trước thời điểm thi 24h. Nếu reschedule quá 2 lần thì bạn chỉ còn cách cancel lịch thi và đăng kí lại.&lt;/li&gt;
+  &lt;li&gt;Nếu thi trượt sẽ bị đánh là “FAIL” và không thể đăng kí thi lại trong vòng 14 ngày. Nếu bỏ thi thì sẽ không bị đánh “FAIL” nhưng sẽ không lấy lại được lệ phí thi.&lt;/li&gt;
+  &lt;li&gt;Được đăng kí thêm giờ thi với những trường hợp tiếng Anh không phải tiếng mẹ đẻ. Tìm từ khoá &lt;strong&gt;aws esl 30 minutes&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;khi-đi-thi&quot;&gt;Khi đi thi&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Yêu cầu đem theo 2 giấy tờ tuỳ thân bất kì như (CMT, Bằng lái xe, Hộ chiếu).&lt;/li&gt;
+  &lt;li&gt;Trong quá trình làm bài thi, câu nào không có đáp án có thể &lt;strong&gt;Flag&lt;/strong&gt; để làm lại sau (random sau :D )&lt;/li&gt;
+  &lt;li&gt;Nên đọc kĩ đề, chú ý những phần như &lt;strong&gt;LEAST&lt;/strong&gt;, &lt;strong&gt;MOST&lt;/strong&gt;, có thể có những câu sẽ hỏi theo dạng nên hoặc không nên&lt;/li&gt;
+  &lt;li&gt;Đề thi dạng multiple choice có 4 đáp án sẽ có 2 đáp án không liên quan, còn lại 2 đáp án cần cân nhắc. Thường là sẽ cân nhắc giữa việc &lt;strong&gt;Cost-effective&lt;/strong&gt; và &lt;strong&gt;Change System&lt;/strong&gt;. Thường là nên chọn những câu tiết kiệm chi phí mà không phải thay đổi quá nhiều ở hệ thống.&lt;/li&gt;
+  &lt;li&gt;Không nên quá để tâm vấn đề thời gian vì thời gian rất nhiều, đủ để bạn đọc lại đề 1 lần nữa vẫn dư.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Trên đây là những kinh nghiệm mình muốn chia sẻ, mong nhận được phản hồi của các bạn, nếu nhiều người ủng hộ thì mình sẽ ưu tiên làm phần tổng hợp kiến thức các service có trong bài thi :D&lt;/p&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="[&quot;Amazon Web Service&quot;, &quot;Ultilities&quot;]" /><category term="AWS" /><category term="Cloud" /><summary type="html">Hôm nay vừa đi thi về, tranh thủ chia sẻ luôn cho những bạn đọc đang ôn thi và tự học để thi chứng chỉ AWS - Solution Architect Associate. Đang mùa dịch Corona nên phòng thi chỉ có một mình mình, sau bài viết này mình định làm 1 series tổng hợp kiến thức nhưng phần có trong bài thi, những phần cần học, mọi người ủng hộ mình có thể comment ở cuối bài viết nhé :D</summary></entry><entry><title type="html">Tự học AWS [P2] - AWS Compute - Tìm hiểu những loại instance của EC2 AWS</title><link href="https://tranthuc99.github.io/2020/01/15/tu-hoc-aws-p2" rel="alternate" type="text/html" title="Tự học AWS [P2] - AWS Compute - Tìm hiểu những loại instance của EC2 AWS" /><published>2020-01-14T17:16:20+00:00</published><updated>2020-01-14T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2020/01/15/tu-hoc-aws-p2</id><content type="html" xml:base="https://tranthuc99.github.io/2020/01/15/tu-hoc-aws-p2">&lt;p&gt;Dịch vụ EC2 của AWS là một dịch vụ cung cấp cho người dùng những server cloud phục vụ việc tính toán, triển khai sản phẩm một cách nhanh chóng. Tuy nhiên, AWS hỗ trợ rất nhiều lựa chọn cho người dùng với các phiên bản khác nhau như &lt;strong&gt;m5, c5, t2, t3, …&lt;/strong&gt; có thể khiến cho người dùng cuối cảm thấy băn khoăn khi quyết định sẽ lựa chọn phiên bảo nào. Trong nội dung bài viết này, tác giá sẽ cung cấp cho bạn đọc một cái nhìn tổng quan về những kiểu Instance mà AWS đang cung cấp hiện nay.&lt;/p&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#mục-đích-sử-dụng&quot; id=&quot;markdown-toc-mục-đích-sử-dụng&quot;&gt;Mục đích sử dụng&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#general-purpose&quot; id=&quot;markdown-toc-general-purpose&quot;&gt;General purpose&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#m5-instance&quot; id=&quot;markdown-toc-m5-instance&quot;&gt;M5 instance&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#t3-instance&quot; id=&quot;markdown-toc-t3-instance&quot;&gt;T3 Instance&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#compute-optimized&quot; id=&quot;markdown-toc-compute-optimized&quot;&gt;Compute optimized&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#c5n-instance&quot; id=&quot;markdown-toc-c5n-instance&quot;&gt;C5n Instance&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;EC2 Instances&quot; src=&quot;/assets/img/2020-01-15-tu-hoc-aws-p2/ec2-types.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;mục-đích-sử-dụng&quot;&gt;Mục đích sử dụng&lt;/h2&gt;
+
+&lt;p&gt;AWS phân chia tên những loại instance dựa trên mục đích sử dụng của chúng. Mỗi loại instance sẽ được tối ưu cho một mục đích sử dụng nhất định.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;EC2 Instances&quot; src=&quot;/assets/img/2020-01-15-tu-hoc-aws-p2/ec2-types-01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Những loại instance được AWS phân chia theo sau:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;General purpose&lt;/li&gt;
+  &lt;li&gt;Compute optimized&lt;/li&gt;
+  &lt;li&gt;GPU instances&lt;/li&gt;
+  &lt;li&gt;Memory optimized&lt;/li&gt;
+  &lt;li&gt;Storage optimized&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Trong phạm vi bài viết này, mình xin giới thiệu 2 loại instance đầu tiên đó là &lt;code class=&quot;highlighter-rouge&quot;&gt;General purpose&lt;/code&gt; và &lt;code class=&quot;highlighter-rouge&quot;&gt;Compute optimized&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;general-purpose&quot;&gt;General purpose&lt;/h3&gt;
+
+&lt;p&gt;Những phiên bản chủ yếu được cung cấp ở loại này là &lt;strong&gt;m5, t3&lt;/strong&gt;, được AWS cân bằng giữa khả năng tính toán, bộ nhớ và network. 
+Những công việc phù hợp với những phiên bản này:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Web and Application Server&lt;/li&gt;
+  &lt;li&gt;Backend Server for enterprise applications&lt;/li&gt;
+  &lt;li&gt;Gaming Server&lt;/li&gt;
+  &lt;li&gt;App development environments&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;General Purpose&quot; src=&quot;/assets/img/2020-01-15-tu-hoc-aws-p2/general-purpose.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;m5-instance&quot;&gt;M5 instance&lt;/h4&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;M5 Instance&quot; src=&quot;/assets/img/2020-01-15-tu-hoc-aws-p2/m5-instance.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;M5&lt;/code&gt; là thế hệ mới nhất của &lt;code class=&quot;highlighter-rouge&quot;&gt;General purpose&lt;/code&gt; với chip xử lí &lt;code class=&quot;highlighter-rouge&quot;&gt;Intel Xeon® Platinum 8175&lt;/code&gt;. Những tính năng chính trên thế hệ M5:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Hỗ trợ option về kích cỡ instance lớn hơn &lt;code class=&quot;highlighter-rouge&quot;&gt;m5.x24xlarge&lt;/code&gt; với &lt;code class=&quot;highlighter-rouge&quot;&gt;96 vCPUs&lt;/code&gt; và &lt;code class=&quot;highlighter-rouge&quot;&gt;384GiB RAM&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Trang bị vi xử lí &lt;code class=&quot;highlighter-rouge&quot;&gt;3.1 GHz Intel Xeon® Platinum 8175&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Hỗ trợ lến tới 25Gbps network bandwidth&lt;/li&gt;
+  &lt;li&gt;Yêu cầu HVM AMIs có driver cho ENA và NVMe&lt;/li&gt;
+  &lt;li&gt;Hệ thống lưu trữ có thể sử dụng EBS hoặc NVMe SSD vật lí trên &lt;code class=&quot;highlighter-rouge&quot;&gt;Host Server&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Phiên bản &lt;code class=&quot;highlighter-rouge&quot;&gt;M5d&lt;/code&gt; hỗ trợ ổ NVMe SSD local được kết nối vật lí tới &lt;code class=&quot;highlighter-rouge&quot;&gt;Host Server&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ngoài ra cũng có những phiên bản khác như:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;M5a&lt;/code&gt;: Sử dụng vi xử lí &lt;code class=&quot;highlighter-rouge&quot;&gt;AMD EPYC 7000&lt;/code&gt; tiết kiệm chi phí 10%&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;M5n và M5dn&lt;/code&gt;: Được tập trung vào phần network (bandwitdh) lên tới &lt;strong&gt;100Gbps&lt;/strong&gt; ở phiên bản lớn nhất.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;M6g&lt;/code&gt;: Trang bị vi xử lí &lt;code class=&quot;highlighter-rouge&quot;&gt;Arm-based AWS Graviton&lt;/code&gt; của Amazon với những ưu điểm riêng.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;t3-instance&quot;&gt;T3 Instance&lt;/h4&gt;
+
+&lt;p&gt;Đây là một phiên bản giá thấp hơn tuy nhiên có khả năng burst CPU khi có những tác vụ nặng yêu cầu về CPU. Ngoài ra cũng có phiên bản &lt;code class=&quot;highlighter-rouge&quot;&gt;T3a&lt;/code&gt; hỗ trợ vi xử lí &lt;code class=&quot;highlighter-rouge&quot;&gt;AMD EPYC 7000&lt;/code&gt; hỗ trợ turbo clock speed &lt;code class=&quot;highlighter-rouge&quot;&gt;2.5Hz&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;compute-optimized&quot;&gt;Compute optimized&lt;/h3&gt;
+
+&lt;p&gt;Đây là phiên bản được tối ưu cho việc tính toán, nên chi phí sẽ thấp hơn trên cùng 1 cấu hình CPU so với loại Instance khác. &lt;strong&gt;C5&lt;/strong&gt; là phiên bản đại diện cho loại Instance này. So với phiên bản C4 trước đó, thì C5 tiết kiện khoảng 49% chi phí.
+Những công việc phù hợp với C5:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Batch processing workloads&lt;/li&gt;
+  &lt;li&gt;Media transcoding&lt;/li&gt;
+  &lt;li&gt;High performance web servers&lt;/li&gt;
+  &lt;li&gt;Hihg performance computing&lt;/li&gt;
+  &lt;li&gt;Scientific modeling&lt;/li&gt;
+  &lt;li&gt;Machine learning inference&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Những tính năng chính của phiên bản này:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Cho phép lựa chọn vi xử lí dựa trên kích cỡ của instance&lt;/li&gt;
+  &lt;li&gt;Hỗ trợ vi xử lí thế hệ thứ 2 &lt;code class=&quot;highlighter-rouge&quot;&gt;Intel Xeon Scalable (Cascade Lake)&lt;/code&gt; có khả năng turbo đa nhân 3.6GHz và đơn nhân 3.9GHz&lt;/li&gt;
+  &lt;li&gt;Hỗ trợ vi xử lí thế hệ thứ 1 &lt;code class=&quot;highlighter-rouge&quot;&gt;Intel Xeon Plantium 8000 (Skylake)&lt;/code&gt; có khả năng turbo đa nhân 3.4GHZ và đơn nhân 3.5GHz&lt;/li&gt;
+  &lt;li&gt;Hỗ trợ phiên bản 24xlarge instance với 96 vCPUs, 192GiB bộ nhớ, 3.6TB SSD&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;c5n-instance&quot;&gt;C5n Instance&lt;/h4&gt;
+
+&lt;p&gt;Phiên bản C5n hỗ trợ lên tới 100 Gbps network bandwidth. &lt;code class=&quot;highlighter-rouge&quot;&gt;C5n.18xlarge&lt;/code&gt; hỗ trợ &lt;strong&gt;Elastic Fabric Adapter (EFA)&lt;/strong&gt;, là một giao diện mạng của cho Amazon EC2 cho phép người dùng chạy những ứng dụng yêu cầu inter-node communications ở mức cao như High Performance Computing (HPC).
+Những tính năng chính:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Vi xử lí 3.0GHz Intel Xeon Platinum (AVX-512)&lt;/li&gt;
+  &lt;li&gt;Xung nhịp có thể lên tới 3.5GHz khi sử dụng Intel Turbo Boost Technology&lt;/li&gt;
+  &lt;li&gt;Network bandwidth tăng lên tới 100 Gbps&lt;/li&gt;
+  &lt;li&gt;Được hỗ trợ bởi &lt;strong&gt;AWS Nitro System&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;M5 Instance&quot; src=&quot;/assets/img/2020-01-15-tu-hoc-aws-p2/c5n.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mọi ý kiến đóng góp vui lòng để lại comment ở phần bình luận của bài viết!
+Bài viết được tham khảo và sử dụng hình ảnh từ:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@mahipaljadeja/importance-of-mobile-cloud-technology-for-rapid-app-development-environment-91b62e471f99&quot;&gt;Importance of Mobile Cloud Technology for Rapid App Development environment&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="[&quot;Amazon Web Service&quot;, &quot;Ultilities&quot;]" /><category term="AWS" /><category term="Cloud" /><summary type="html">Dịch vụ EC2 của AWS là một dịch vụ cung cấp cho người dùng những server cloud phục vụ việc tính toán, triển khai sản phẩm một cách nhanh chóng. Tuy nhiên, AWS hỗ trợ rất nhiều lựa chọn cho người dùng với các phiên bản khác nhau như m5, c5, t2, t3, … có thể khiến cho người dùng cuối cảm thấy băn khoăn khi quyết định sẽ lựa chọn phiên bảo nào. Trong nội dung bài viết này, tác giá sẽ cung cấp cho bạn đọc một cái nhìn tổng quan về những kiểu Instance mà AWS đang cung cấp hiện nay.</summary></entry><entry><title type="html">Quản lí dự án với Github, tại sao không?</title><link href="https://tranthuc99.github.io/2019/12/31/quan-li-du-an-voi-github" rel="alternate" type="text/html" title="Quản lí dự án với Github, tại sao không?" /><published>2019-12-30T17:16:20+00:00</published><updated>2019-12-30T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2019/12/31/quan-li-du-an-voi-github</id><content type="html" xml:base="https://tranthuc99.github.io/2019/12/31/quan-li-du-an-voi-github">&lt;blockquote&gt;
+  &lt;p&gt;Nếu bạn đã và đang sử dụng những tool, platform quản lí task, source code cho những dự án lớn như Jira, Bitbucket, … thì những tool này thật sự quản lí rất chi tiết và đạt chuẩn. Tuy nhiên nếu bạn thấy việc sử dụng chúng thật rườm rà, đôi khi vì dự án nhỏ, cụ thể là những dự án cá nhân dẫn đến việc sử dụng những tool này không hợp lí gây bất tiện hoặc không thể sử dụng, thì bài viết này là dành cho bạn&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#github&quot; id=&quot;markdown-toc-github&quot;&gt;Github&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#quản-lí-dự-án-cá-nhân&quot; id=&quot;markdown-toc-quản-lí-dự-án-cá-nhân&quot;&gt;Quản lí dự án cá nhân&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#tạo-một-repository&quot; id=&quot;markdown-toc-tạo-một-repository&quot;&gt;Tạo một repository&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#tạo-một-project&quot; id=&quot;markdown-toc-tạo-một-project&quot;&gt;Tạo một project&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#tạo-sprint---milestone&quot; id=&quot;markdown-toc-tạo-sprint---milestone&quot;&gt;Tạo Sprint - Milestone&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#tạo-task---issue&quot; id=&quot;markdown-toc-tạo-task---issue&quot;&gt;Tạo Task - Issue&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#quản-lí-các-task&quot; id=&quot;markdown-toc-quản-lí-các-task&quot;&gt;Quản lí các task&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Hầu hết những công ty Công nghệ phần mềm sẽ xây dựng nhưng quy trình làm việc cho dự án riêng, hoặc sẽ follow một mô hình chuẩn nào đó và tùy biến một chút để vừa với quy mô công ty. Tuy nhiên với những dự án cá nhân, như viết blog hoặc làm việc cùng một đội, nhóm nào đó, thì việc quản lí những task hằng ngày không thể áp dụng một mô hình giống như vậy.&lt;/p&gt;
+
+&lt;h2 id=&quot;github&quot;&gt;Github&lt;/h2&gt;
+
+&lt;p&gt;Sau một thời gian sử dụng &lt;strong&gt;Trello&lt;/strong&gt; để quản lí những task của nhóm, và &lt;strong&gt;Github&lt;/strong&gt; để quản lí source code, mình phát hiện ra một vấn đề đó là không thể liên kết những issue của Github với Trello trực tiếp, việc sau khi hoàn thành một issue phải update task Trello gây khá nhiều phiền toái. Thậm chí có những task đã resolve trên Github rồi nhưng trên Trello chưa cập nhật. Sau khi biết đến những feature khác của Github, mình đã quyết định chuyển sang dùng  Github để quản lí các task của dự án. Cụ thể là custom lại mô hình &lt;strong&gt;Scrum&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;quản-lí-dự-án-cá-nhân&quot;&gt;Quản lí dự án cá nhân&lt;/h2&gt;
+
+&lt;p&gt;Mình sẽ bắt đầu bằng việc khởi tạo một &lt;strong&gt;repository&lt;/strong&gt; trên Github, sau đó sẽ là các bước để quản trị các project nhỏ trên repo đó.&lt;/p&gt;
+
+&lt;h3 id=&quot;tạo-một-repository&quot;&gt;Tạo một repository&lt;/h3&gt;
+
+&lt;p&gt;Đầu tiên, tạo một repo cá nhân với tên &lt;strong&gt;personal-blog&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Create Repository&quot; src=&quot;/assets/img/2019-12-31-quan-li-du-an-voi-github/create-repo-1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Như vậy là mình đã có một repo để có thể lưu trữ code và quản lí task&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Create Repository&quot; src=&quot;/assets/img/2019-12-31-quan-li-du-an-voi-github/create-repo-2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;tạo-một-project&quot;&gt;Tạo một project&lt;/h3&gt;
+
+&lt;p&gt;Ý tưởng ban đầu là tạo một trang blog cá nhân, nên mình sẽ đặt tên cho dự án này là &lt;strong&gt;Personal Blog&lt;/strong&gt;. Tiến hành tạo một Project bằng cách chọn tab &lt;code class=&quot;highlighter-rouge&quot;&gt;Project&lt;/code&gt; -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Create a project&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Create Project&quot; src=&quot;/assets/img/2019-12-31-quan-li-du-an-voi-github/create-project-1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Sau đó tiến hành thêm những &lt;code class=&quot;highlighter-rouge&quot;&gt;Column&lt;/code&gt; như &lt;strong&gt;To do&lt;/strong&gt; , &lt;strong&gt;In Progress&lt;/strong&gt;, &lt;strong&gt;Done&lt;/strong&gt; cơ bản:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Create Project&quot; src=&quot;/assets/img/2019-12-31-quan-li-du-an-voi-github/create-project-2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Với những ai đã quen thuộc với Trello thì layout thật sự rất giống cách quản lí với Trello.&lt;/p&gt;
+
+&lt;h3 id=&quot;tạo-sprint---milestone&quot;&gt;Tạo Sprint - Milestone&lt;/h3&gt;
+
+&lt;p&gt;Github cung cấp &lt;strong&gt;Milestone&lt;/strong&gt; để quản lí một phase với các mốc thời gian khác nhau. Vì dự định xây dựng blog của mình có rất nhiều chức năng, nên mình sẽ tiến hành chia thành nhiều &lt;strong&gt;Phase&lt;/strong&gt; nhỏ, mỗi phase sẽ cập nhật những chắc năng nhất định. &lt;strong&gt;Phase 1&lt;/strong&gt; sẽ bao gồm những công việc như sau:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;ol&gt;
+      &lt;li&gt;Tạo Landing page cho blog&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;ol&gt;
+      &lt;li&gt;Chức năng đăng nhập, tạo bài viết&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;ol&gt;
+      &lt;li&gt;Chức năng comment bài viết&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Mình sẽ chia nhỏ các task này thành những Milestone khác nhau, trong &lt;strong&gt;Milestone 1&lt;/strong&gt; sẽ gồm &lt;strong&gt;Task 1&lt;/strong&gt; và &lt;strong&gt;2&lt;/strong&gt;.
+Tạo Milestone như sau -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Issues&lt;/code&gt; -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Milestones&lt;/code&gt; -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Create Milestones&lt;/code&gt;
+Mình sẽ thực hiện 2 task này trong vòng 1 tuần nên sẽ đặt Milestone này là &lt;strong&gt;Week 1&lt;/strong&gt; và chọn ngày deadline là 1 tuần sau đó.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Create Milestone&quot; src=&quot;/assets/img/2019-12-31-quan-li-du-an-voi-github/create-milestone.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;tạo-task---issue&quot;&gt;Tạo Task - Issue&lt;/h3&gt;
+
+&lt;p&gt;Tiếp theo tiến hành tạo những task nhỏ -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Issues&lt;/code&gt; -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;New Issue&lt;/code&gt;. Trong phần tạo issue có thể chọn những thành phần như:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Assignees&lt;/strong&gt; - Vì dự án cá nhân nên sẽ giao task cho chính mình&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Labels&lt;/strong&gt; - Có thể lựa chọn những label có sẵn của Github hoặc tự tạo label cho mình, ở đây mình sẽ chọn label cho 2 task là &lt;code class=&quot;highlighter-rouge&quot;&gt;good fist issue&lt;/code&gt;, bạn cũng có thể tạo những label như &lt;code class=&quot;highlighter-rouge&quot;&gt;todo&lt;/code&gt; , &lt;code class=&quot;highlighter-rouge&quot;&gt;in progress&lt;/code&gt;, …&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Projects&lt;/strong&gt; - Mình sẽ chọn project là &lt;code class=&quot;highlighter-rouge&quot;&gt;Personal Blog&lt;/code&gt; như đã tạo ở trên&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Milestone&lt;/strong&gt; - Vì 2 task này thuộc Milestone &lt;code class=&quot;highlighter-rouge&quot;&gt;Week 1&lt;/code&gt; nên mình sẽ chọn &lt;code class=&quot;highlighter-rouge&quot;&gt;Week 1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Sau khi tạo mình được 2 task như sau:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Create Issue&quot; src=&quot;/assets/img/2019-12-31-quan-li-du-an-voi-github/create-issue.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;quản-lí-các-task&quot;&gt;Quản lí các task&lt;/h3&gt;
+
+&lt;p&gt;Lúc này khi vào phần quản lí Project, sẽ thấy 2 task vừa được tạo nằm trong Project này, việc còn lại sẽ là kéo những task này vào những vị trí tương ứng như khi làm việc với Trello&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Manage Project&quot; src=&quot;/assets/img/2019-12-31-quan-li-du-an-voi-github/manage-project.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Việc còn lại là khi hoàn thành các task thì sẽ commit code và đồng thời close issue. Trong khi làm việc nếu có task nào có vấn đề có thể chuyển label hành &lt;code class=&quot;highlighter-rouge&quot;&gt;question&lt;/code&gt; hoặc comment trực tiếp trong issue đó.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Comment on Task&quot; src=&quot;/assets/img/2019-12-31-quan-li-du-an-voi-github/comment-task.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Với những dự án cá nhân nhỏ, thì việc sử dụng Github để quản lí là hoàn toàn có thể và tiện lợi. Và hơn hết, nó miễn phí với người dùng. Mọi ý kiến đóng góp về bài viết vui lòng để lại ở phần comment. Chúc quý độc giả có một năm mới tràn đầy sức khỏe!&lt;/p&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="[&quot;Ultilities&quot;]" /><category term="Github" /><summary type="html">Nếu bạn đã và đang sử dụng những tool, platform quản lí task, source code cho những dự án lớn như Jira, Bitbucket, … thì những tool này thật sự quản lí rất chi tiết và đạt chuẩn. Tuy nhiên nếu bạn thấy việc sử dụng chúng thật rườm rà, đôi khi vì dự án nhỏ, cụ thể là những dự án cá nhân dẫn đến việc sử dụng những tool này không hợp lí gây bất tiện hoặc không thể sử dụng, thì bài viết này là dành cho bạn</summary></entry><entry><title type="html">Tự học AWS [P1] - Một số khái niệm cơ bản của AWS</title><link href="https://tranthuc99.github.io/2019/10/15/tu-hoc-aws-p1" rel="alternate" type="text/html" title="Tự học AWS [P1] - Một số khái niệm cơ bản của AWS" /><published>2019-10-14T17:16:20+00:00</published><updated>2019-10-14T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2019/10/15/tu-hoc-aws-p1</id><content type="html" xml:base="https://tranthuc99.github.io/2019/10/15/tu-hoc-aws-p1">&lt;p&gt;Cloud Service hiện tại đang là một trong những xu hướng công nghệ mới hiện nay với 2 ông lớn đó là &lt;strong&gt;Microsoft&lt;/strong&gt; với &lt;a href=&quot;https://azure.microsoft.com/en-us/&quot;&gt;&lt;strong&gt;Azure&lt;/strong&gt;&lt;/a&gt; và &lt;strong&gt;Amazon&lt;/strong&gt; với &lt;a href=&quot;https://aws.amazon.com/vi/&quot;&gt;&lt;strong&gt;AWS&lt;/strong&gt;&lt;/a&gt;. Trong series này mình xin giới thiệu với bạn đọc về AWS, nội dung bao gồm các khái niệm cơ bản của AWS, một số service cơ bản. Phục vụ chính cho việc ôn tập các nội dung cần học để đạt chứng chỉ AWS - Solution Architecture Associate cho bạn nào đang có nhu cầu muốn thi chứng chỉ. Ngoài ra, bạn cũng có thể tham khảo khoá học của &lt;a href=&quot;https://acloud.guru/learn/aws-certified-solutions-architect-associate&quot;&gt;&lt;strong&gt;A Cloud Guru&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#những-service-mà-aws-cung-cấp&quot; id=&quot;markdown-toc-những-service-mà-aws-cung-cấp&quot;&gt;Những service mà AWS cung cấp&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#region-availability-zone-edge-location&quot; id=&quot;markdown-toc-region-availability-zone-edge-location&quot;&gt;Region, Availability Zone, Edge Location&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#region&quot; id=&quot;markdown-toc-region&quot;&gt;Region&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#availability-zone&quot; id=&quot;markdown-toc-availability-zone&quot;&gt;Availability Zone&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#edge-location&quot; id=&quot;markdown-toc-edge-location&quot;&gt;Edge Location&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;những-service-mà-aws-cung-cấp&quot;&gt;Những service mà AWS cung cấp&lt;/h2&gt;
+
+&lt;p&gt;AWS là một nền tảng Cloud cung cấp cho chúng ta rất nhiều service giúp ta có thể nhanh chóng deploy sản phẩm hoặc xây dựng một hệ thống. Khi tạo một tài khoản Standard thì người dùng sẽ được miễn phí sử dụng service như EC2, S3 trong vòng 1 năm.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;AWS Services&quot; src=&quot;/assets/img/2019-10-15-tu-hoc-aws-p1/services.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;AWS cung cấp rất nhiều service khác nhau xuất phát từ những nhu cầu đơn giản như lưu trữ - Storage, tính toán - Compute, Công cụ cho nhà phát triển - Developer Tools cho tới những service phục vụ những công việc đặc thù như Học máy - Machine Learning, Vệ tinh - Satellite, Internet of Things. Nếu như bạn đang là một người tìm hiểu để thi chứng chỉ SSA thì cần tập trung tìm hiểu những service sau:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;AWS Services&quot; src=&quot;/assets/img/2019-10-15-tu-hoc-aws-p1/saa-services.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Compute&lt;/li&gt;
+  &lt;li&gt;Storage&lt;/li&gt;
+  &lt;li&gt;Databases&lt;/li&gt;
+  &lt;li&gt;Network &amp;amp; Content Delivery&lt;/li&gt;
+  &lt;li&gt;Security, Identity &amp;amp; Compliance&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;region-availability-zone-edge-location&quot;&gt;Region, Availability Zone, Edge Location&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Region&lt;/strong&gt;: Là các vị trí địa lí trên thế giới, một region có thể chứa một hoặc nhiều Availability Zone.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Availability Zone&lt;/strong&gt;: Là một hoặc nhiều trung tâm dữ liệu - Data Center nơi lưu trữ dữ liệu vật lí, với hạ tầng đặc biệt.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Edge Location&lt;/strong&gt;: Là các vị trí trung gian, lưu trữ và nhận request từ người dùng, giúp tăng tốc cho việc xử lí thông tin cho hệ thống AWS. Bao gồm CloudFront, Amazon’s Content Delivery Network sẽ được nói rõ trong những bài viết sau.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Region, Availability Zone, Edge Location&quot; src=&quot;/assets/img/2019-10-15-tu-hoc-aws-p1/edge_location.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;region&quot;&gt;Region&lt;/h3&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Region&quot; src=&quot;/assets/img/2019-10-15-tu-hoc-aws-p1/aws_regions.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Như tên gọi của nó, &lt;strong&gt;Region&lt;/strong&gt; thực chất là các vị trí địa lí trên toàn thế giới, là những vùng mà AWS tổ chức các host - Availability Zone hay những Data Center lưu trữ dữ liệu dưới dạng vật lí. Ngoài ra, với mỗi region sẽ có những config riêng cho từng service của AWS. Hiện tại, AWS đang có những Region sau:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Code&lt;/th&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;us-east-1&lt;/td&gt;
+      &lt;td&gt;US East (N. Virginia)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;us-east-2&lt;/td&gt;
+      &lt;td&gt;US East (Ohio)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;us-west-1&lt;/td&gt;
+      &lt;td&gt;US West (N. California)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;us-west-2&lt;/td&gt;
+      &lt;td&gt;US West (Oregon)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ca-central-1&lt;/td&gt;
+      &lt;td&gt;Canada (Central)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;eu-central-1&lt;/td&gt;
+      &lt;td&gt;EU (Frankfurt)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;eu-west-1&lt;/td&gt;
+      &lt;td&gt;EU (Ireland)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;eu-west-2&lt;/td&gt;
+      &lt;td&gt;EU (London)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;eu-west-3&lt;/td&gt;
+      &lt;td&gt;EU (Paris)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;eu-north-1&lt;/td&gt;
+      &lt;td&gt;EU (Stockholm)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ap-east-1&lt;/td&gt;
+      &lt;td&gt;Asia Pacific (Hong Kong)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ap-northeast-1&lt;/td&gt;
+      &lt;td&gt;Asia Pacific (Tokyo)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ap-northeast-2&lt;/td&gt;
+      &lt;td&gt;Asia Pacific (Seoul)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ap-northeast-3&lt;/td&gt;
+      &lt;td&gt;Asia Pacific (Osaka-Local)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ap-southeast-1&lt;/td&gt;
+      &lt;td&gt;Asia Pacific (Singapore)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ap-southeast-2&lt;/td&gt;
+      &lt;td&gt;Asia Pacific (Sydney)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ap-south-1&lt;/td&gt;
+      &lt;td&gt;Asia Pacific (Mumbai)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;me-south-1&lt;/td&gt;
+      &lt;td&gt;Middle East (Bahrain)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;sa-east-1&lt;/td&gt;
+      &lt;td&gt;South America (São Paulo)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;availability-zone&quot;&gt;Availability Zone&lt;/h3&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Data Center&quot; src=&quot;/assets/img/2019-10-15-tu-hoc-aws-p1/data_center.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Availability Zone&lt;/strong&gt; là những trung tâm dữ liệu, được bảo vệ nghiêm ngặt và hỗ trợ bảo vệ dữ liệu ở nhiều Zone khác nhau trong một vùng, điều này có thể đảm bảo dữ liệu của bạn vẫn còn nguyên vẹn trong trường hợp xảy ra những sự cố, thiên tai không mong muốn.
+Ví dụ trong một vùng miền Bắc Việt Nam, có thể có nhiều Zone đặt ở Hải Phòng, Hà Nội, Lạng Sơn, trong trường hợp bạn sử dụng dịch vụ lưu trữ S3 của AWS và lựa chọn data lưu trữ ở cả 3 vùng, thì nếu xảy ra sự cố ở Zone Lạng Sơn, thì dữ liệu của bạn vẫn luôn trong tình trạng sẵn sàng nếu có yêu cầu bởi nó được đáp ứng ở những Zone Hà Nội, Hải Phòng còn lại.&lt;/p&gt;
+
+&lt;h3 id=&quot;edge-location&quot;&gt;Edge Location&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Edge Location&lt;/strong&gt; dùng để giải quyết vấn đề đáp ứng thời gian truy cập với khoảng cách địa lí xa. 
+Ví dụ:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Máy chủ vật lý được đặt ở London, nhưng một User ở Úc muốn truy cập tới dữ liệu, sẽ gửi request tới London.&lt;/li&gt;
+  &lt;li&gt;Tuy nhiên cáp quang qua biển Đông gặp trục trặc nên việc truyền dữ liệu và phản hồi rất chậm, dẫn tới trải nghiệm người dùng giảm đi.&lt;/li&gt;
+  &lt;li&gt;Để giải quyết vấn đề này, ta đặt một máy chủ khác ở Việt Nam, và mỗi lần User gửi yêu cầu, máy chủ Việt Nam sẽ thực hiện gửi request tới London, sau đó sẽ lưu cache lại dữ liệu này tại máy chủ Việt Nam.&lt;/li&gt;
+  &lt;li&gt;Như vậy, sau mỗi lần truy cập, thì từ lần sau dữ liệu sẽ được cung cấp gần như là tức thì bởi máy chủ Việt Nam, thập chí là ngay lần đầu tiên bởi dữ liệu đó đã được request bởi một User khác trước đó.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Bài viết được tham khảo và sử dụng tài liệu từ:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://acloud.guru/learn/aws-certified-solutions-architect-associate&quot;&gt;A Cloud Guru - AWS Certified Solutions Architect Associate 2019&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/en_us/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-regions-availability-zones&quot;&gt;Doc AWS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://fortune.com/2015/11/15/intel-super-7/&quot;&gt;Secrets of Intel’s “Super 7” Cloud Computing Customers&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="[&quot;Amazon Web Service&quot;, &quot;Ultilities&quot;]" /><category term="AWS" /><category term="Cloud" /><summary type="html">Cloud Service hiện tại đang là một trong những xu hướng công nghệ mới hiện nay với 2 ông lớn đó là Microsoft với Azure và Amazon với AWS. Trong series này mình xin giới thiệu với bạn đọc về AWS, nội dung bao gồm các khái niệm cơ bản của AWS, một số service cơ bản. Phục vụ chính cho việc ôn tập các nội dung cần học để đạt chứng chỉ AWS - Solution Architecture Associate cho bạn nào đang có nhu cầu muốn thi chứng chỉ. Ngoài ra, bạn cũng có thể tham khảo khoá học của A Cloud Guru</summary></entry><entry><title type="html">Con đường học AI</title><link href="https://tranthuc99.github.io/2019/09/30/con-duong-hoc-ai" rel="alternate" type="text/html" title="Con đường học AI" /><published>2019-09-29T17:16:20+00:00</published><updated>2019-09-29T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2019/09/30/con-duong-hoc-tap-ai</id><content type="html" xml:base="https://tranthuc99.github.io/2019/09/30/con-duong-hoc-ai">&lt;p&gt;Bài viết này được tổng hợp từ kinh nghiệm và trải nghiệm của chính tác giả, chỉ  nên dùng để tham khảo cho những bạn đang tìm lộ trình học tập cho chính bản thân mình về mảng AI - Trí tuệ nhân tạo hay Computer Vision. Nếu bạn đọc có hứng thú về Computer Vision đặc biệt là Digital Image Processing thì có thể tham khảo bài viết về &lt;a href=&quot;https://tranthuc99.github.io/&quot;&gt;Xử Lí Ảnh&lt;/a&gt; của mình.&lt;/p&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#kiến-thức-toán-cần-thiết&quot; id=&quot;markdown-toc-kiến-thức-toán-cần-thiết&quot;&gt;Kiến thức toán cần thiết&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#machine-learning-cơ-bản&quot; id=&quot;markdown-toc-machine-learning-cơ-bản&quot;&gt;Machine Learning cơ bản&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#deep-learning-cơ-bản&quot; id=&quot;markdown-toc-deep-learning-cơ-bản&quot;&gt;Deep Learning cơ bản&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#machine-learning-framework&quot; id=&quot;markdown-toc-machine-learning-framework&quot;&gt;Machine Learning Framework&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kiến-thức-toán-cần-thiết&quot;&gt;Kiến thức toán cần thiết&lt;/h2&gt;
+
+&lt;p&gt;Nếu bạn là một người học chăm chỉ những môn như Toán rời rạc, Đại số, Giải tích thì có thể bỏ qua phần này, nhưng nếu bạn là một người thường bỏ qua hay học hời hợt những bộ môn này khi còn học đại học, thì điều đó có thể sẽ làm chậm quá trình học của bạn. Việc tiếp xúc với Paper hay đọc những công thức hàm &lt;strong&gt;Loss&lt;/strong&gt; tuy không quá phức tạp nhưng những kí hiệu toán học có thể sẽ khiến bạn bối rối khi học như:&lt;/p&gt;
+
+&lt;p&gt;$\sum$&lt;/p&gt;
+
+&lt;p&gt;$\sum_{i=0}^\infty$&lt;/p&gt;
+
+&lt;p&gt;$\prod$&lt;/p&gt;
+
+&lt;p&gt;$\int$&lt;/p&gt;
+
+&lt;p&gt;Ngoài ra, một số kiến thức như nhân ma trận, ma trận chuyển vị, phương sai, độ lệch chuẩn, phân bố xác suất là những khái niệm bạn cần nắm vững trước khi bắt đầu học. Kinh nghiệm của mình là đừng đi quá nhanh, hãy đi từ từ, chắc chắn, nắm rõ những khái niệm cơ bản trước khi bắt đầu tiến tới những bài giảng về Machine Learning. Bạn đọc có thể tham khảo thêm các kiến thức về toán dùng trong Machine Learning tại &lt;a href=&quot;https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/Math_ML.pdf&quot;&gt;đây&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;machine-learning-cơ-bản&quot;&gt;Machine Learning cơ bản&lt;/h2&gt;
+
+&lt;p&gt;Sau khi đã nắm rõ những khái niệm toán học, bạn có thể bắt đầu với những bài toán, khái niệm cơ bản của Machine Learning. Bạn đọc có thể tìm hiểu từ nguồn blog &lt;a href=&quot;https://machinelearningcoban.com/&quot;&gt;Machinelearningcoban&lt;/a&gt; của tác gỉa &lt;em&gt;Tiep Huu Vu&lt;/em&gt;. Từ series bài 1 cho tới 14 có thể giúp bạn nắm được những khái niệm, thuật toán thường dùng trong Machine Learning, có thể tiến tới học về Deep Learning. Một số những khái niệm cần nắm rõ đó là:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Linear Regression&lt;/li&gt;
+  &lt;li&gt;Gradient Descent&lt;/li&gt;
+  &lt;li&gt;Backpropagation&lt;/li&gt;
+  &lt;li&gt;Perceptron&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Machinelearningcoban.com&quot; src=&quot;/assets/img/2019-09-30-con-duong-hoc-ai/pic1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Cũng trong những bài viết này, bạn có thể nắm rõ các khái niệm về &lt;strong&gt;hàm Loss&lt;/strong&gt; - cốt lõi chính của Machine Learning là tìm cách tối thiêu hàm Loss, ngoài ra một số khái niệm khác như Activation Function, Classification cũng cần được nắm chắc.&lt;/p&gt;
+
+&lt;h2 id=&quot;deep-learning-cơ-bản&quot;&gt;Deep Learning cơ bản&lt;/h2&gt;
+
+&lt;p&gt;Sau khi đã nắm rõ được những khái niệm, kĩ thuật căn bản của MachineLearning, bạn có thể tiếp tục làm quen với những bài toán của Deep Learning về Computer Vision như Classification, Segmentation. Bạn đọc có thể tham khảo khóa học của &lt;strong&gt;Stanford&lt;/strong&gt; về mạng CNN - &lt;a href=&quot;http://cs231n.stanford.edu/&quot;&gt;CS231n: Convolutional Neural Networks for Visual Recognition&lt;/a&gt;. Song song với việc học tập thì việc thực hành cũng vô cùng quan trọng. Bạn đọc có thể làm quen với những bài toán như Phân biệt chó mèo, phân biệt kí tự số, … từ các cuộc thi tìm hiểu nhỏ trên &lt;a href=&quot;https://www.kaggle.com/competitions&quot;&gt;Kaggle&lt;/a&gt; đây là một trang thường tổ chức các cuộc thi để tìm hiểu và có giải thưởng về Deep Learning. Trang cũng cung cấp data sẵn có về các bài toán này giúp cho người dùng với mục đích học tập có thể dễ dàng có được data để sử dụng.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Kaggle&quot; src=&quot;/assets/img/2019-09-30-con-duong-hoc-ai/pic2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ngoài ra, một số khóa học khác mà bạn đọc có thể tham khảo thêm:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=PySo_6S4ZAg&amp;amp;list=PLoROMvodv4rOABXSygHTsbvUz4G_YQhOb&amp;amp;index=1&quot;&gt;Stanford CS230: Deep Learning&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=PySo_6S4ZAg&amp;amp;list=PLoROMvodv4rOABXSygHTsbvUz4G_YQhOb&amp;amp;index=1&quot;&gt;Natural Language Processing with Deep Learning&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;machine-learning-framework&quot;&gt;Machine Learning Framework&lt;/h2&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Keras&quot; src=&quot;/assets/img/2019-09-30-con-duong-hoc-ai/pic3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Khi mới tiếp cận với việc training các model đơn giản, thì bạn đọc nên tiếp cận với những High Level Framework như &lt;a href=&quot;https://www.tensorflow.org/guide/keras/overview&quot;&gt;Keras&lt;/a&gt; bởi sự cung cấp các phương tiện để xây dựng một Network nhanh nhất có thể, tuy nhiên khi muốn tùy chỉnh nhiều hơn các tham số, cấu trúc, thì nên tìm hiểu về Tensorflow. Bởi hầu hết những cấu trúc lớn, phức tạp đều được deploy bằng &lt;a href=&quot;https://www.tensorflow.org/guide&quot;&gt;Tensorflow&lt;/a&gt;. Ngoài ra, cũng có một số Framework khác mà bạn đọc có thể tham khảo:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pytorch.org/&quot;&gt;Pytorch&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://caffe.berkeleyvision.org/&quot;&gt;Caffee&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Tensorflow&quot; src=&quot;/assets/img/2019-09-30-con-duong-hoc-ai/pic4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bài viết được tham khảo và sử dụng tài liệu từ:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blogs.nvidia.com/blog/2016/07/29/whats-difference-artificial-intelligence-machine-learning-deep-learning-ai/&quot;&gt;What’s the Difference Between Artificial Intelligence, Machine Learning, and Deep Learning?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@ODSC/10-tips-to-get-started-with-kaggle-fc7cb9316d27&quot;&gt;10 Tips to Get Started with Kaggle&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;machinelearningcoban.com&quot;&gt;machinelearningcoban.com&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/tiepvupsu/tiepvupsu.github.io/blob/master/Math_ML.pdf&quot;&gt;Math MachineLearning&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="[&quot;Computer Vision&quot;, &quot;Ultilities&quot;]" /><category term="Machine Learning" /><category term="Deep Learning" /><summary type="html">Bài viết này được tổng hợp từ kinh nghiệm và trải nghiệm của chính tác giả, chỉ nên dùng để tham khảo cho những bạn đang tìm lộ trình học tập cho chính bản thân mình về mảng AI - Trí tuệ nhân tạo hay Computer Vision. Nếu bạn đọc có hứng thú về Computer Vision đặc biệt là Digital Image Processing thì có thể tham khảo bài viết về Xử Lí Ảnh của mình.</summary></entry><entry><title type="html">Tìm hiểu về Otsu threshold</title><link href="https://tranthuc99.github.io/2019/09/26/otsu-threshold" rel="alternate" type="text/html" title="Tìm hiểu về  Otsu threshold" /><published>2019-09-25T17:16:20+00:00</published><updated>2019-09-25T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2019/09/26/tim-hieu-otsu-threshold</id><content type="html" xml:base="https://tranthuc99.github.io/2019/09/26/otsu-threshold">&lt;p&gt;Thresholding - Phân ngưỡng là một trong số những kĩ thuật trong việc xử lí ảnh số. Đây là kĩ thuật tiền đề cho các kĩ thuật khác như Contours, Houghlines, … Việc sử dụng threshold giúp phân tách 2 đối tượng foreground và background. Trong bài viết này, tác giả xin giới thiệu tới bạn đọc một kĩ thuật Thresholding (Binarization) thường được sử dụng: &lt;strong&gt;Otsu thresholding&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#đôi-điều-về-otsu&quot; id=&quot;markdown-toc-đôi-điều-về-otsu&quot;&gt;Đôi điều về Otsu&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#cách-thức-hoạt-động&quot; id=&quot;markdown-toc-cách-thức-hoạt-động&quot;&gt;Cách thức hoạt động&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#công-thức-tính-toán&quot; id=&quot;markdown-toc-công-thức-tính-toán&quot;&gt;Công thức tính toán&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#background&quot; id=&quot;markdown-toc-background&quot;&gt;Background&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#foreground&quot; id=&quot;markdown-toc-foreground&quot;&gt;Foreground&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#within-class-variance&quot; id=&quot;markdown-toc-within-class-variance&quot;&gt;Within-Class Variance&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;đôi-điều-về-otsu&quot;&gt;Đôi điều về Otsu&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Otsu&lt;/em&gt; được lấy tên theo tên tác giả của phương pháp này &lt;strong&gt;Nobuyuki Otsu&lt;/strong&gt; đã giới thiệu về kĩ thuật này trong tập báo của &lt;a href=&quot;https://sci-hub.tw/10.1109/tsmc.1979.4310076&quot;&gt;&lt;strong&gt;IEEE Transactions on Systems, Man, and Cybernetics&lt;/strong&gt; - &lt;strong&gt;Hiệp hội hệ thống, con người và điều khiển mạng&lt;/strong&gt;&lt;/a&gt; trang &lt;strong&gt;62-66&lt;/strong&gt; của &lt;strong&gt;IEEE&lt;/strong&gt; (Institute of Electrical and Electronics Engineers - Viện kỹ sư Điện và Điện Tử) - một tổ chức phi lợi nhuận.&lt;/p&gt;
+
+&lt;h2 id=&quot;cách-thức-hoạt-động&quot;&gt;Cách thức hoạt động&lt;/h2&gt;
+
+&lt;p&gt;Theo như tên gọi bài báo của tác giả &lt;strong&gt;A Threshold Selection Method from Gray-Level Histograms&lt;/strong&gt;, phương pháp Otsu tập trung vào việc khai thác và tính toán từ thông tin Histogram của bức ảnh. Bằng việc tính toán trên tất cả các mức Threshold, ta có thể chọn mức thỏa mãn việc phân chia giữa Foreground và Background tốt nhất.&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Otsu Visualization&quot; src=&quot;/assets/img/2019-09-26-tim-hieu-otsu-threshold/Otsu's_Method_Visualization.gif&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;công-thức-tính-toán&quot;&gt;Công thức tính toán&lt;/h3&gt;
+
+&lt;p&gt;Otsu thực hiện tính toán 3 tham số  chính $\omega$, $\mu$, $\sigma$ đại diện cho Trọng số, giá trị trung bình, phương sai. Ví dụ đơn giản với bức ảnh 6x6 với 6 mức xám sau:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Example&quot; src=&quot;/assets/img/2019-09-26-tim-hieu-otsu-threshold/pic1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lựa chọn ngưỡng ban đầu bằng 3, ta tính toán trên 2 tập Background &amp;lt; 3 và Foreground &amp;gt;= 3 như sau:&lt;/p&gt;
+
+&lt;h4 id=&quot;background&quot;&gt;Background&lt;/h4&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Background&quot; src=&quot;/assets/img/2019-09-26-tim-hieu-otsu-threshold/pic2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Trọng số Weight  :  $\omega_b = \frac{8+7+2}{36} = 0.4722$&lt;/p&gt;
+
+&lt;p&gt;Giá trị trung bình Mean    :  $\mu_b = \frac{\left(0\times8\right) + \left(1\times7\right) + \left(2\times2\right)}{17} = 0.6471$&lt;/p&gt;
+
+&lt;p&gt;Phương sai Variance:  $\sigma_b^2 = \frac{\left(\left(0-0.6471\right)^2\times8\right) + \left(\left(1-0.6471\right)^2\times7\right)+\left(\left(2-0.6471\right)^2\times2\right)}{17} = 0.4637$&lt;/p&gt;
+
+&lt;h4 id=&quot;foreground&quot;&gt;Foreground&lt;/h4&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Background&quot; src=&quot;/assets/img/2019-09-26-tim-hieu-otsu-threshold/pic3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Trọng số Weight  :  $\omega_f = \frac{6+4+9}{36} = 0.5278$&lt;/p&gt;
+
+&lt;p&gt;Giá trị trung bình Mean    :  $\mu_f = \frac{\left(3\times6\right) + \left(4\times9\right) + \left(5\times4\right)}{19} = 3.8947$&lt;/p&gt;
+
+&lt;p&gt;Phương sai Variance:  $\sigma_f^2 = \frac{\left(\left(3-3.8947\right)^2\times6\right) + \left(\left(4-3.8947\right)^2\times9\right)+\left(\left(5-3.8947\right)^2\times4\right)}{19} = 0.5152$&lt;/p&gt;
+
+&lt;h4 id=&quot;within-class-variance&quot;&gt;Within-Class Variance&lt;/h4&gt;
+
+&lt;p&gt;Cuối cùng, ta tính toán phương sai theo lớp:&lt;/p&gt;
+
+\[\sigma_W^2 = \omega_b\sigma_b^2 + \omega_f\sigma_f^2 = 0.4722*0.4637+0.5278*0.5152=0.4909\]
+
+&lt;p&gt;Bằng việc tính toán như trên với tất cả các giá trị ngưỡng có thể trong bức ảnh, ta được một bảng như sau:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Within-Class Variance Table&quot; src=&quot;/assets/img/2019-09-26-tim-hieu-otsu-threshold/pic4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Chọn giá trị có &lt;strong&gt;Within-Class Variance&lt;/strong&gt; nhỏ nhất, ta chọn được mức ngưỡng thích hợp là &lt;strong&gt;T=3&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Threshold Result&quot; src=&quot;/assets/img/2019-09-26-tim-hieu-otsu-threshold/pic5.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ngoài ra, một hướng tiếp cận nữa giúp giảm độ tính toán của phương pháp là tính toán &lt;strong&gt;Between Class Variance&lt;/strong&gt; có giá trị lớn nhất.&lt;/p&gt;
+
+\[\sigma_B^2 = \sigma^2 - \sigma^2_W\]
+
+\[=W_b\left(\mu_b - \mu\right)^2 + W_f\left(\mu_f-\mu\right)^2\]
+
+\[=W_bW_f\left(\mu_b-\mu_f\right)^2\]
+
+&lt;p&gt;với \(\mu = W_b\mu_b + W_f\mu_f\)&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Between Class Variance&quot; src=&quot;/assets/img/2019-09-26-tim-hieu-otsu-threshold/pic6.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bài viết được tham khảo và sử dụng tài liệu từ:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.labbookpages.co.uk/software/imgProc/otsuThreshold.html&quot;&gt;Otsu Threshold&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://sci-hub.tw/10.1109/tsmc.1979.4310076&quot;&gt;IEEE Transactions on Systems, Man, and Cybernetics&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="[&quot;Computer Vision&quot;]" /><category term="Digital Image Processing" /><summary type="html">Thresholding - Phân ngưỡng là một trong số những kĩ thuật trong việc xử lí ảnh số. Đây là kĩ thuật tiền đề cho các kĩ thuật khác như Contours, Houghlines, … Việc sử dụng threshold giúp phân tách 2 đối tượng foreground và background. Trong bài viết này, tác giả xin giới thiệu tới bạn đọc một kĩ thuật Thresholding (Binarization) thường được sử dụng: Otsu thresholding.</summary></entry><entry><title type="html">Học Xử Lý Ảnh Số - Bắt đầu từ đâu?</title><link href="https://tranthuc99.github.io/2019/08/29/hoc-xu-ly-anh" rel="alternate" type="text/html" title="Học Xử Lý Ảnh Số - Bắt đầu từ đâu?" /><published>2019-08-28T17:16:20+00:00</published><updated>2019-08-28T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2019/08/29/hoc-xu-ly-anh</id><content type="html" xml:base="https://tranthuc99.github.io/2019/08/29/hoc-xu-ly-anh">&lt;p&gt;Trong bài viết này, tác giả sẽ cung cấp những kiến thức cần thiết cho những người có nhu cầu tìm hiểu về Xử lý ảnh số (viết tắt XLA) hoặc những người tò mò muốn biết Xử lí ảnh số gồm những bài toán nào, làm gì. Bài viết được tham khảo và tổng kết từ series &lt;a href=&quot;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html&quot;&gt;OpenCV-Python Tutorials&lt;/a&gt; của &lt;strong&gt;OpenCV&lt;/strong&gt;. Ngôn ngữ sử dụng chính trong bài viết là &lt;em&gt;Python&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#opencv-là-gì&quot; id=&quot;markdown-toc-opencv-là-gì&quot;&gt;OpenCV là gì?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#học-những-gì&quot; id=&quot;markdown-toc-học-những-gì&quot;&gt;Học những gì?&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#không-gian-màu&quot; id=&quot;markdown-toc-không-gian-màu&quot;&gt;Không gian màu&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#xử-lí-độ-sáng-và-tương-phản&quot; id=&quot;markdown-toc-xử-lí-độ-sáng-và-tương-phản&quot;&gt;Xử lí độ sáng và tương phản&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#histogram&quot; id=&quot;markdown-toc-histogram&quot;&gt;Histogram&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#binary-image---kỹ-thuật-xử-lý-ảnh-nhị-phân&quot; id=&quot;markdown-toc-binary-image---kỹ-thuật-xử-lý-ảnh-nhị-phân&quot;&gt;Binary Image - Kỹ thuật xử lý ảnh nhị phân&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#geometric-transform---kỹ-thuật-biến-đổi-hình-học&quot; id=&quot;markdown-toc-geometric-transform---kỹ-thuật-biến-đổi-hình-học&quot;&gt;Geometric Transform - Kỹ thuật biến đổi hình học&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#filter---lọc-ảnh&quot; id=&quot;markdown-toc-filter---lọc-ảnh&quot;&gt;Filter - Lọc ảnh&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#biến-đổi-hough-kỹ-thuật-phát-hiện-biên&quot; id=&quot;markdown-toc-biến-đổi-hough-kỹ-thuật-phát-hiện-biên&quot;&gt;Biến đổi Hough, kỹ thuật phát hiện biên&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#học-như-thế-nào&quot; id=&quot;markdown-toc-học-như-thế-nào&quot;&gt;Học như thế nào?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;opencv-là-gì&quot;&gt;OpenCV là gì?&lt;/h2&gt;
+&lt;p&gt;OpenCV là viết tắt của Open Computer Vision, như tên gọi, nó là một thư viện mã nguồn mở dành cho Computer Vision - Thị giác máy tính. OpenCV được xây dựng bằng C/C++ và tích hợp trực tiếp với package &lt;a href=&quot;https://numpy.org/&quot;&gt;Numpy&lt;/a&gt; nên việc xử lý có tốc độ rất nhanh, đáp ứng những ứng dụng yêu cầu thời gian thực. Ngoài ra, OpenCV cũng có thể chạy trên những nền tảng khác nhau như Linux, Window, Mac cũng như những ngôn ngữ khác nhau như Java, Python, C++, …&lt;/p&gt;
+
+&lt;h2 id=&quot;học-những-gì&quot;&gt;Học những gì?&lt;/h2&gt;
+&lt;p&gt;Dưới đây là một số những kiến thức mà bản thân tác giả cho là cần thiết khi tiếp cận với mảng Xử lý ảnh, chỉ mang tính chất tham khảo.&lt;/p&gt;
+
+&lt;h3 id=&quot;không-gian-màu&quot;&gt;Không gian màu&lt;/h3&gt;
+&lt;p&gt;Để bắt đầu với XLA thì điều đầu tiên cần tìm hiểu đó chính là Không gian màu, có lẽ bạn đọc đã quá thân thuộc với từ &lt;code class=&quot;highlighter-rouge&quot;&gt;RGB&lt;/code&gt; - Red, Green, Blue ở bậc trung học, đây là ba màu cơ bản được định nghĩa cho hệ màu RGB. Ngoài ra, còn một số hệ màu khác, phục vụ cho những mục đích khác nhau như HSV, HSL, Gray, … Bạn đọc cần nắm rõ các biểu diễn ở mỗi hệ màu và công thức chuyển đổi giữa các hệ màu đó.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Color Spaces&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/pic1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bạn đọc có thể tham khảo thêm &lt;a href=&quot;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_colorspaces/py_colorspaces.html#converting-colorspaces&quot;&gt;Cách thức chuyển đổi giữa các hệ màu&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;xử-lí-độ-sáng-và-tương-phản&quot;&gt;Xử lí độ sáng và tương phản&lt;/h3&gt;
+&lt;p&gt;Bức ảnh thu được có thể có độ sáng quá thấp, hoặc quá cao đặc biệt trong môi trường ngoài trời thì có thể sẽ có những vùng có độ sáng khác nhau. Vì vậy, kiến thức về độ sáng và tương phản cũng vô cùng cần thiết.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Brightness and Constrast&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/pic2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;histogram&quot;&gt;Histogram&lt;/h3&gt;
+&lt;p&gt;Histogram là khái niệm thể hiện tần suất xuất hiện của các giá trị của một pixel trong bức ảnh.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Histogram&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/pic3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Histogram&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/pic4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Việc cân bằng Histogram (Histogram equalization) là một bước tiền xử lý ảnh đầu vào, cải thiện chất lượng bước ảnh.
+Bức ảnh sau khi được cân bằng histogram:&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Histogram equalization&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/pic5.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;binary-image---kỹ-thuật-xử-lý-ảnh-nhị-phân&quot;&gt;Binary Image - Kỹ thuật xử lý ảnh nhị phân&lt;/h3&gt;
+&lt;p&gt;Việc xử lý bức ảnh trở thành ảnh nhị phân thường được dùng trong những bài toán như nhận diện vật thể (Object Detection) hay phân chia (Segmentation). Việc này giúp đánh bật những vật thể mong muốn ra khỏi nền của bức ảnh, giúp xác định vị trí của vật thể mong muốn. Tùy vào mục địch hoặc đặc tính của bức ảnh mà ta có những phương pháp nhị phân khác nhau như:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Phân tích ngưỡng cố định: Simple Threshold&lt;/li&gt;
+  &lt;li&gt;Phân tích ngưỡng động: Adaptive Threshold, Otsu Threshold.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Threshold&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/pic6.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bạn đọc có thể tham khảo thêm &lt;a href=&quot;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_thresholding/py_thresholding.html#thresholding&quot;&gt;Image Thresholding&lt;/a&gt;
+Song hành cùng Thresholding là một số kỹ thuật xử lí ảnh Binary gọi là Morphological Transform. Bao gồm những phép đóng, mở ảnh, hỗ trợ cho việc tìm đường bao về sau:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+    &lt;img alt=&quot;Sample&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/sample.png&quot; /&gt;
+    &lt;img alt=&quot;Close&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/close.png&quot; /&gt;
+    &lt;img alt=&quot;Open&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/open.png&quot; /&gt;
+    &lt;img alt=&quot;Morphological Gradient&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/mopho_gradient.png&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Tham khảo &lt;a href=&quot;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html#morphological-ops&quot;&gt;Morphological Transformations&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;geometric-transform---kỹ-thuật-biến-đổi-hình-học&quot;&gt;Geometric Transform - Kỹ thuật biến đổi hình học&lt;/h3&gt;
+
+&lt;p&gt;Ngoài vấn đề về độ sáng, tương phản, thì ta còn gặp những trường hợp bức ảnh bị biến dạng, nằm nghiêng, kích cỡ lớn. Dưới đây là một số những kỹ thuật thường sử dụng khi gặp những trường hợp này:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Scaling - Biến đổi về kích thước&lt;/li&gt;
+  &lt;li&gt;Rotating - Xoay ảnh&lt;/li&gt;
+  &lt;li&gt;Translation - Dịch chuyển bức ảnh theo các hướng khác nhau&lt;/li&gt;
+  &lt;li&gt;Perspective Transform, Affine Transform - Biến đổi bức ảnh theo các điểm mốc&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;Translation&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Translation&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/translation.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;Rotation&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Rotation&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/rotation.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;Affine&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Affine&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/affine.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;Perspective&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Perspective&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/perspective.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tham khảo thêm &lt;a href=&quot;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_geometric_transformations/py_geometric_transformations.html#geometric-transformations&quot;&gt;Geometric Transformations of Images&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;filter---lọc-ảnh&quot;&gt;Filter - Lọc ảnh&lt;/h3&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Laplace Filter&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/filter_all.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Việc sử dụng lọc ảnh có thể giúp ta loại bỏ những loại nhiễu trong bức ảnh, tăng cường chất lượng cho bức ảnh hoặc biến đổi bức ảnh theo hướng ta mong muốn. Đặc thù của lọc ảnh là sử dụng những filter/kernel lên bức ảnh dưới dạng các &lt;em&gt;2D Convolution&lt;/em&gt;. Một số filter đặc trưng có thể kể đến như Gaussian Blurring, Median Blurring, …&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;Blur&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Blur&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/blur.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;Median Blur&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Median Blur&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/median.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;Sobel Filter&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Sobel Filter&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/sobel.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;Laplace Filter&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Laplace Filter&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/laplacian.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tham khảo &lt;a href=&quot;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_filtering/py_filtering.html#filtering&quot;&gt;Smoothing Images&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;biến-đổi-hough-kỹ-thuật-phát-hiện-biên&quot;&gt;Biến đổi Hough, kỹ thuật phát hiện biên&lt;/h3&gt;
+
+&lt;p&gt;Việc sử dụng biến đổi &lt;em&gt;Hough&lt;/em&gt; có thể giúp ta phát hiện được những đường thẳng, đường tròn. Ngoài ra còn có một số kĩ thuật giúp phát hiện các đường biên, nét cạnh của vật thể như &lt;em&gt;Canny&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;Edge Detection&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Canny&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/canny1.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Canny&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/canny.png&quot; /&gt;&lt;img alt=&quot;Canny&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/canny_line.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;Hough Circle and Line&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;HoughCircle&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/hough_circle.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Tham khảo &lt;a href=&quot;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_canny/py_canny.html#canny&quot;&gt;Canny Edge Detection&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Ngoài ra, một số phương pháp phát hiện &lt;em&gt;Contour&lt;/em&gt; cũng được sử dụng để phát hiện vật thể dựa trên những biên ảnh &lt;a href=&quot;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_contours/py_table_of_contents_contours/py_table_of_contents_contours.html#table-of-content-contours&quot;&gt;Contours in OpenCV&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;học-như-thế-nào&quot;&gt;Học như thế nào?&lt;/h2&gt;
+
+&lt;p&gt;Trong quá trình học lý thuyết, chúng ta cần những bài tập thực hành để vận dụng những kiến thức đã học. Bạn đọc nên bắt đầu từ những bài toán có thể vận dụng một hoặc vài kỹ thuật đã học như Phát hiện vật thể bằng Threshold, nhận dạng biển số và phân chia chữ số của biển, phân chia kí tự trên một dòng chữ, vv…vv&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;Segment Number&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;
+    &lt;img alt=&quot;Segmentation number&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/license_gray.jpg&quot; /&gt;
+    &lt;img alt=&quot;Segmentation number&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/license_thresh.jpg&quot; /&gt;
+    &lt;img alt=&quot;Segmentation number&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/license_segment.jpg&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;Card Detect&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;
+    &lt;img alt=&quot;Segmentation number&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/id_card_gray.jpg&quot; /&gt;
+    &lt;img alt=&quot;Segmentation number&quot; src=&quot;/assets/img/2019-08-29-hoc-xu-ly-anh/id_card_segment.jpg&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Bài viết được tham khảo và sử dụng tài liệu từ:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ứng dụng xử lý ảnh trong thực tế với thư viện OpenCV - Nguyễn Văn Long (long.06clc@gmail.com)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html&quot;&gt;OpenCV Tutorials&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="[&quot;Computer Vision&quot;]" /><category term="Digital Image Processing" /><summary type="html">Trong bài viết này, tác giả sẽ cung cấp những kiến thức cần thiết cho những người có nhu cầu tìm hiểu về Xử lý ảnh số (viết tắt XLA) hoặc những người tò mò muốn biết Xử lí ảnh số gồm những bài toán nào, làm gì. Bài viết được tham khảo và tổng kết từ series OpenCV-Python Tutorials của OpenCV. Ngôn ngữ sử dụng chính trong bài viết là Python</summary></entry><entry><title type="html">Tìm hiểu về CTPN - Connectionist Text Proposal Network</title><link href="https://tranthuc99.github.io/2019/07/25/tim-hieu-ctpn" rel="alternate" type="text/html" title="Tìm hiểu về CTPN - Connectionist Text Proposal Network" /><published>2019-07-24T17:16:20+00:00</published><updated>2019-07-24T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2019/07/25/ctpn</id><content type="html" xml:base="https://tranthuc99.github.io/2019/07/25/tim-hieu-ctpn">&lt;p&gt;Bài toán Object Detection từ lâu đã được phát triển và đạt được nhiều thành tự bằng các cấu trúc đặc biệt như Faster RCNN, &lt;a href=&quot;https://tranthuc99.github.io/2019/06/15/ssd-single-shot-detector&quot;&gt;SSD - Single Shot Detector&lt;/a&gt;, YOLO, … Tuy nhiên, vấn đề &lt;strong&gt;Text Detection&lt;/strong&gt; lại có chút đặc biệt hơn so với các dạng Object khác bở i bản thân Text không phải là một Text Object mà là một chuỗi các Text nối tiếp nhau. Vậy làm sao để có thể giải quyết bài toán Text Detection? Trong bài viết này, mình xin giới thiệu tới bạn đọc cấu trúc Connectionist Text Proposal Network - CTPN dùng trong bài toán Text Detection.&lt;/p&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#hướng-tiếp-cận&quot; id=&quot;markdown-toc-hướng-tiếp-cận&quot;&gt;Hướng tiếp cận&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#kiến-trúc-của-ctpn&quot; id=&quot;markdown-toc-kiến-trúc-của-ctpn&quot;&gt;Kiến trúc của CTPN&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#connectionist-text-proposal-network&quot; id=&quot;markdown-toc-connectionist-text-proposal-network&quot;&gt;Connectionist Text Proposal Network&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#detecting-text-in-fine-scale-proposals&quot; id=&quot;markdown-toc-detecting-text-in-fine-scale-proposals&quot;&gt;Detecting Text in Fine-scale Proposals&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#recurrent-connectionist-text-proposals&quot; id=&quot;markdown-toc-recurrent-connectionist-text-proposals&quot;&gt;Recurrent Connectionist Text Proposals&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#side-refinement&quot; id=&quot;markdown-toc-side-refinement&quot;&gt;Side-refinement&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;hướng-tiếp-cận&quot;&gt;Hướng tiếp cận&lt;/h2&gt;
+
+&lt;p&gt;Có thể bạn đọc đã quá quen thuộc với những thủ tục Captcha của Google. Như ví dụ dưới đây:&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Google Captcha&quot; src=&quot;/assets/img/2019-07-25-ctpn/pic1.png&quot; /&gt;&lt;img alt=&quot;Google Captcha&quot; src=&quot;/assets/img/2019-07-25-ctpn/pic2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Công việc của chúng ta là lựa chọn những &lt;em&gt;khối vuông&lt;/em&gt; chứa thông biển báo giao thông.&lt;/p&gt;
+
+&lt;p&gt;Việc sử dụng captcha này dùng để xác nhận xem người dùng có phải là người máy hay không, đồng thời hỗ trợ cho AI của Google tự học bài toán Object Detection. Như ví dụ trên, ta lựa chọn 5 ô vuông kia bởi ta nghĩ rằng 5 ô vuông đó &lt;em&gt;có chứa thông tin&lt;/em&gt; của biển báo. Vậy giả sử  yêu cầu trên trở thành hãy chọn những vùng có chứa text thì sao?&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Google Captcha&quot; src=&quot;/assets/img/2019-07-25-ctpn/pic3.png&quot; /&gt;&lt;img alt=&quot;Google Captcha&quot; src=&quot;/assets/img/2019-07-25-ctpn/pic4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lúc này, vấn đề bắt đầu xuất hiện. Ta sẽ chọn 3 ô vuông như trên, và như ta để ý, thì ô vuông ở giữa chỉ chứa một vài vùng của Text ở 2 phía của biển báo. Để có thể lựa chọn các vùng chính xác hơn, ta có thể nghĩ tới phương pháp chia nhỏ những ô vuông trên hơn nữa.
+Vậy, chúng ta có thể chia nhỏ bài toán Text Detection thành &lt;code class=&quot;highlighter-rouge&quot;&gt;chọn những vùng có chứa text trên bức ảnh&lt;/code&gt;, đây chính là ý tưởng chính của cấu trúc Connectionist Text Proposal Network.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Connectionist Text Proposal Network Sample&quot; src=&quot;/assets/img/2019-07-25-ctpn/pic5.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;kiến-trúc-của-ctpn&quot;&gt;Kiến trúc của CTPN&lt;/h2&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Connectionist Text Proposal Network Architecture&quot; src=&quot;/assets/img/2019-07-25-ctpn/pic6.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;CTPN sử dụng cấu trúc &lt;strong&gt;VGG16&lt;/strong&gt; để extract các feature sau đó dùng tầng &lt;strong&gt;Conv5d&lt;/strong&gt; giống như việc phân ô nhỏ ở ví dụ trên. CTPN sẽ dùng một cửa số 3x3 (sliding-window) qua mỗi vị trí trên feature map. Kết quả của chuỗi cửa sổ trên một hàng của feature map sẽ được kết nối với một mạng Bi-directional LSTM. Sau đó lớp RNN sẽ được kết nối với một lớp fully-connected layer. Kêt quả cuối cùng sẽ mang thông tin về dự đoán text/non-text, tọa độ dọc và phần bù của $k$ &lt;em&gt;anchor&lt;/em&gt;. Thông tin về các anchor sẽ được mình làm rõ ở phần sau.&lt;/p&gt;
+
+&lt;h2 id=&quot;connectionist-text-proposal-network&quot;&gt;Connectionist Text Proposal Network&lt;/h2&gt;
+
+&lt;p&gt;CTPN sẽ thực hiện 3 công việc chính:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Detecting Text in Fine-scale Proposals&lt;/li&gt;
+  &lt;li&gt;Recurrent Connectionist Text Proposals&lt;/li&gt;
+  &lt;li&gt;Side-refinement&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;detecting-text-in-fine-scale-proposals&quot;&gt;Detecting Text in Fine-scale Proposals&lt;/h3&gt;
+
+&lt;p&gt;Việc phát hiện kí tự trong môi trường tự nhiên rất phức tạp bởi ta có thể nhầm lẫn giữa background và text ở những vị trí mà sự thể hiện của text &lt;em&gt;yếu ớt&lt;/em&gt; ví dụ như ở những nét nhỏ, khoảng trống giữa các chữ cái. Vì vậy nếu với cách tiếp cận Object Detection thông thường, sẽ rất dễ xảy ra trường hợp bounding box không bao quát đủ không gian của Text đặc biệt trong trường hợp Text có kích thước nhỏ. CTPN định nghĩa một dòng text là một chuỗi các &lt;code class=&quot;highlighter-rouge&quot;&gt;fine-scale text proposals&lt;/code&gt; với mỗi proposal sẽ chứa một phần nhỏ của dòng text. CTPN mong muốn rằng mỗi proposal sẽ chứa một hoặc nhiều nét, một hoặc nhiều kí tự, một phần kí tự của dòng chữ.&lt;/p&gt;
+
+&lt;p&gt;Để làm được điều này, CTPN sẽ mapping các vị trí trên feature map với một proposal trên input image. Thông thường mỗi proposal sẽ có width là 16 pixels, chiều cao sẽ được dự đoán bằng mô hình. Quay trở lại với khái niệm anchor, với mỗi proposal, CTPN sẽ khởi tạo $k$ anchors với những chiều cao khác nhau. CTPN sử dụng &lt;strong&gt;10&lt;/strong&gt; anchor với chiều cao sẽ nằm trong khoảng từ 11 đến 273 (chia cho 0.7 sau mỗi anchor). Như vậy với mỗi anchor sẽ chứa thông tin về vị trí và kích thước.&lt;/p&gt;
+
+&lt;p&gt;Công việc lúc này đó là dự đoán các thông số vị trí và kích thước tương đối so với từng anchor ứng với mỗi proposal. Vị trí tương đối của dự đoán và groundtruth được tính như sau:&lt;/p&gt;
+
+&lt;p&gt;Prediction:&lt;/p&gt;
+
+\[v_c=\left(c_y-c_y^a\right)/h^a\]
+
+\[v_h=\log\left(h/h^a\right)\]
+
+&lt;p&gt;Proposal Groundtruth:&lt;/p&gt;
+
+\[v_c^*=\left(c_y^*-c_y^a\right)/h^a\]
+
+\[v_h^*=\log\left(h^*/h^a\right)\]
+
+&lt;p&gt;Với $v=\{v_c,v_h\}$ và \(v^*=\{v_c^*,v_h^*\}\) là tọa độ của kết quả dự đoán và groundtruth&lt;/p&gt;
+
+&lt;p&gt;$c_y^a$ và $h^a$ là trung tâm và chiều cao của anchor, tham số này có thể được tính toán trước từ ảnh đầu vào. Như vậy, mỗi dự đoán sẽ ứng với một proposal với kích thước là &lt;code class=&quot;highlighter-rouge&quot;&gt;hx16&lt;/code&gt;. Những công thức này chỉ được tính toán trên những anchor mà có chỉ số text/non-text &amp;gt; 0.7&lt;/p&gt;
+
+&lt;h3 id=&quot;recurrent-connectionist-text-proposals&quot;&gt;Recurrent Connectionist Text Proposals&lt;/h3&gt;
+
+&lt;p&gt;Việc chia nhỏ cả dòng text thành những fine-scale text proposals và dự đoán nó có phải là text hay không có thể gặp nhầm lẫn ở những trường hợp khoảng cách giữa những kí tự xa hoặc nhầm lẫn những đối tượng có cấu trúc gần giống với text. Vì một dòng text có tính tuần tự liên quan với nhau giữa các kí tự trong một từ, một từ trong câu, vì vậy, CTPN đã sử dụng cấu trúc mạng &lt;a href=&quot;https://tranthuc99.github.io/2019/05/01/nlp-p1&quot;&gt;RNN&lt;/a&gt; để  nhận mỗi vùng convolutional feature window như một đầu vào của từ. Để khắc phục được sự phụ thuộc xa thì CTPN cũng dùng cấu trúc mạng &lt;a href=&quot;https://tranthuc99.github.io/2019/05/12/nlp-p2&quot;&gt;LSTM&lt;/a&gt;. Các hidden layer của mạng LSTM sẽ được cập nhật:&lt;/p&gt;
+
+\[H_t=\phi\left(H_{t-1}, X_t\right)\]
+
+&lt;p&gt;với \(X_t\in R^{3\times 3 \times C}\) là vùng convolutional feature window thứ \(t\) của cửa sổ \(\left( 3\times 3\right)\). t = 1, 2, … , \(W\) với W là chiều rộng của tầng &lt;code class=&quot;highlighter-rouge&quot;&gt;conv5&lt;/code&gt;. \(H_t\) là hidden state sẽ được tính toán từ \(X_t\) và hidden state \(H_{t-1}\) trước đó bằng hàm phi tuyến \(\phi\) được định nghĩa trong cấu trúc mạng RNN tương ứng sử dụng.&lt;/p&gt;
+
+&lt;h3 id=&quot;side-refinement&quot;&gt;Side-refinement&lt;/h3&gt;
+
+&lt;p&gt;Sau khi đã có tập hợp những text proposal với điểm số text/non-text &amp;gt; 0.7, bounding box của một text sẽ được xây dựng bằng cách kết nối các text proposal còn lại bằng trình tự sau:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;$B_j$ được cho là một cặp với $B_i$ theo những tiêu chí sau:
+    &lt;ul&gt;
+      &lt;li&gt;$B_j$ gần $B_i$ nhất xét theo chiều ngang&lt;/li&gt;
+      &lt;li&gt;Khoảng cách này phải nhỏ hơn 50 pixels&lt;/li&gt;
+      &lt;li&gt;Chỉ số ovelap theo chiều dọc &amp;gt; 0.7.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;$B_j$ sẽ được ghép với $B_i$ nếu $B_j$ là một cặp với $B_i$ và ngược lại&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Vì dòng text sẽ được chia nhỏ thành một chuỗi proposal 16-pixel nên sẽ xảy ra trường hợp những proposal ở 2 phía của dòng text sẽ bị bỏ qua vì chỉ chứa một phần nhỏ của text. Vì vậy, CTPN sẽ khắc phục bằng cách dự đoán thêm một phần bù của proposal ở 2 phía.&lt;/p&gt;
+
+\[o=\left(x_{side} - c_x^a \right)w^a\]
+
+\[o^*=\left(x^*_{side} - c_x^a\right)/w^a\]
+
+&lt;p&gt;$x_{side}$ là vị trí của tọa độ x - theo chiều ngang gần nhất tới anchor hiện tại ở cả 2 phía. $x_{side}^*$ là phần bù groundtruth được tính toán trước từ groundtruth box và vị trí của anchor. $c_x^a$ là tâm điểm của anchor theo x-axis, $w^a$ là chiều rộng của anchor (được fixed $w^a$=16). Việc sử dụng phần bù có thể khắc phục được việc bounding box không bao được hết dòng text đặc biệt trong trường hợp kích thước nhỏ.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Side-refinement&quot; src=&quot;/assets/img/2019-07-25-ctpn/pic7.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Cách tính hàm Loss và quá trình Training bạn đọc vui lòng tham khảo thêm trong bài báo.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Bài viết được tham khảo và sử dụng hình ảnh từ&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/pdf/1609.03605&quot;&gt;Detecting Text in Natural Image with Connectionist Text Proposal Network&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="jekyll" /><category term="Text Detection" /><summary type="html">Bài toán Object Detection từ lâu đã được phát triển và đạt được nhiều thành tự bằng các cấu trúc đặc biệt như Faster RCNN, SSD - Single Shot Detector, YOLO, … Tuy nhiên, vấn đề Text Detection lại có chút đặc biệt hơn so với các dạng Object khác bở i bản thân Text không phải là một Text Object mà là một chuỗi các Text nối tiếp nhau. Vậy làm sao để có thể giải quyết bài toán Text Detection? Trong bài viết này, mình xin giới thiệu tới bạn đọc cấu trúc Connectionist Text Proposal Network - CTPN dùng trong bài toán Text Detection.</summary></entry><entry><title type="html">Attention Mechanism in OCR - Tìm hiểu về kỹ thuật Attention trong Nhận dạng kí tự, chữ</title><link href="https://tranthuc99.github.io/2019/07/07/attention-ocr" rel="alternate" type="text/html" title="Attention Mechanism in OCR - Tìm hiểu về kỹ thuật Attention trong Nhận dạng kí tự, chữ" /><published>2019-07-06T17:16:20+00:00</published><updated>2019-07-06T17:16:20+00:00</updated><id>https://tranthuc99.github.io/2019/07/07/attention-ocr</id><content type="html" xml:base="https://tranthuc99.github.io/2019/07/07/attention-ocr">&lt;p&gt;Từ bài viết trước mình có đề cập tới vấn đề sử dụng kĩ thuật Attention trong Computer Vision. Khi gặp mặt một người, để quyết định xem đó có phải người quen của mình không, ta thường chú ý vào khuôn mặt của người đó. Xét trên khía cạnh hình ảnh, thì lúc đó ta chỉ tập trung vào lượng thông tin ở vùng ảnh ở khuôn mặt. Trong bài viết này, mình xin giới thiệu tới bạn đọc một cấu trúc RNN + CNN + Attention Mechanism giúp giải quyết bài toán OCR (Optical Character Recognition). Cụ thể, cấu trúc này đã đạt được 84.2% trên tập dữ liệu biển báo ở Pháp - FSNS (French Street Name Signs), mở ra một hướng đi mới cho bài toán nhận dạng chữ. Thông tin chi tiết bạn đọc có thể tham khảo trong bài báo &lt;a href=&quot;https://arxiv.org/pdf/1704.03549&quot;&gt;Attention-based Extraction of Structured Information from Street View Imagery&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#kiến-trúc-tổng-quát&quot; id=&quot;markdown-toc-kiến-trúc-tổng-quát&quot;&gt;Kiến trúc tổng quát&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#cnn-feature-extraction&quot; id=&quot;markdown-toc-cnn-feature-extraction&quot;&gt;CNN feature extraction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#rnn-word-prediction&quot; id=&quot;markdown-toc-rnn-word-prediction&quot;&gt;RNN Word prediction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#tính-toán-attention-mask&quot; id=&quot;markdown-toc-tính-toán-attention-mask&quot;&gt;Tính toán Attention mask&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#thông-tin-vị-trí&quot; id=&quot;markdown-toc-thông-tin-vị-trí&quot;&gt;Thông tin vị trí&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#xử-lý-vấn-đề-nhiều-view-của-data-fsns&quot; id=&quot;markdown-toc-xử-lý-vấn-đề-nhiều-view-của-data-fsns&quot;&gt;Xử lý vấn đề nhiều view của data FSNS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kiến-trúc-tổng-quát&quot;&gt;Kiến trúc tổng quát&lt;/h2&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Attention-OCR Architecture&quot; src=&quot;/assets/img/2019-07-07-attention-ocr/attention-ocr-architecture.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nhìn chung, Attention-OCR sẽ sử dụng những tầng CNN để trích xuất các đặc trưng của bức ảnh. Sau đó sẽ dùng một Attention-mask để biến đổi feature maps thành một vector đầu vào của mạng &lt;a href=&quot;https://tranthuc99.github.io/2019/05/01/nlp-p1&quot;&gt;RNN&lt;/a&gt; hoặc &lt;a href=&quot;https://tranthuc99.github.io/2019/05/12/nlp-p2&quot;&gt;LSTM&lt;/a&gt; sau khi đã &lt;em&gt;tập trung&lt;/em&gt; sự chú ý vào một vùng ảnh nào đó.&lt;/p&gt;
+
+&lt;h2 id=&quot;cnn-feature-extraction&quot;&gt;CNN feature extraction&lt;/h2&gt;
+
+&lt;p&gt;Cấu trúc mạng CNN được đề xuất sử dụng sau một quá trình thử nghiệm để chọn ra cấu trúc của hiệu năng tốt nhất chính là &lt;strong&gt;InceptionV3&lt;/strong&gt;. Bài báo cũng chỉ ra rằng, tầng CNN sâu không phải là tốt, tầng CNN được đề xuất trong cấu trúc InceptionV3 là tầng &lt;strong&gt;Mixed_5d&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;InceptionV3 Architecture&quot; src=&quot;/assets/img/2019-07-07-attention-ocr/inceptionv3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Để thuận lợi cho việc biểu diễn công thức tính toán, tác giả đề xuất $f=\{f_{i,j,c}\}$ để biểu thị vị trí $i, j$ trong mạng CNN với $c$ là số channels.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Feature maps&quot; src=&quot;/assets/img/2019-07-07-attention-ocr/pic1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;rnn-word-prediction&quot;&gt;RNN Word prediction&lt;/h2&gt;
+
+&lt;p&gt;Công việc của tầng RNN là chuyển đổi feature maps từ tầng CNN thành một vector đầu vào giống như trong Language Model. Với $s_t$ là trạng thái ẩn của mạng LSTM tại thời điểm t, vector attention được tính toán từ feature maps và một mặt nạ attention như sau:&lt;/p&gt;
+
+\[u_{t,c}=\sum_{i,j}\alpha_{t,i,j}f_{i,j,c}\]
+
+&lt;p&gt;Việc nhân tích vô hướng mặt nạ attention cùng kích vỡ với feature maps với độ sâu là $c$ sẽ cho ra một vector $u=\{u_0, …, u_{c-1}\}$. Tổng hợp lại vector đầu vào của mạng LSTM tại thời điểm t:&lt;/p&gt;
+
+\[\hat{x}_t = W_c c_{t-1}^{OneHot} + W_{u_1}u_{t-1}\]
+
+&lt;p&gt;$W_c$, $W_{u_1}$ là các ma trận Weights, $c_{t-1}$ ở đây là vector one-hot của từ phía trước đó (là groundtruth trong quá trình training hoặc là dự đoán của từ trước đó trong quá trình test)&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;RNN Input&quot; src=&quot;/assets/img/2019-07-07-attention-ocr/pic2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Output và Trạng thái ẩn của mạng LSTM được tính toán từ input và trạng thái ẩn trước đó.&lt;/p&gt;
+
+\[\left(o_t, s_t\right) = RNNstep\left(\hat{x},s_{t-1}\right)\]
+
+&lt;p&gt;Kết quả cuối cùng $c_t$ được tính bằng cách chọn index có giá trị lớn nhất thông qua hàm &lt;a href=&quot;https://tranthuc99.github.io/2019/07/06/ham-softmax&quot;&gt;Softmax&lt;/a&gt;:&lt;/p&gt;
+
+\[\hat{o}=\operatorname{softmax}\left(W_o o_t + W_{u_2} u_t\right)\]
+
+&lt;p&gt;Thông tin được tổng hợp từ $o_t$ và vector attention $u_t$.&lt;/p&gt;
+
+\[c_t=\underset{c}{\operatorname{argmax}}\hat{o}_t\left(c\right)\]
+
+&lt;h2 id=&quot;tính-toán-attention-mask&quot;&gt;Tính toán Attention mask&lt;/h2&gt;
+
+&lt;p&gt;Nhắc lại công thức tính chỉ số attention ở bài &lt;a href=&quot;https://tranthuc99.github.io/2019/07/05/ky-thuat-attention&quot;&gt;NLP [P5] - Tìm hiểu về Attention Mechanism&lt;/a&gt;:&lt;/p&gt;
+
+\[e_{ij}=v_a^T\tanh\left(W_a s_{i-1} + U_a h_j\right)\]
+
+&lt;p&gt;Ở đây trọng số attention sẽ được tính toán từ thông tin trạng thái ẩn và vector đầu ra của mạng RNN $h_j$. Tham số này được thay thế bởi thông tin của feature map $f_{i,j,:}$&lt;/p&gt;
+
+\[a_{t,i,j} = V_a^T\operatorname{tanh}\left(W_s s_t + W_f f_{i,j,:}\right)\]
+
+\[\alpha_t = \operatorname{softmax}_{i,j}\left(a_t\right)\]
+
+&lt;p&gt;với $V_a$ là một vector. $a_{t,i,j}$ biểu diễn cho sự &lt;em&gt;chú ý&lt;/em&gt; vào vị trí $i, j$ trên feature map tại thời điểm $t$. Trọng số này được tổng hợp từ thông tin từ bức ảnh thông qua $W_f f$ và thông tin về thời gian $W_s s_t$ để xác định cần chú ý vào đâu.&lt;/p&gt;
+
+&lt;h2 id=&quot;thông-tin-vị-trí&quot;&gt;Thông tin vị trí&lt;/h2&gt;
+
+&lt;p&gt;Tuy nhiên, việc sử dụng công thức tính trọng số attention trên có thể làm mất tính tuần tự của các pixel. Vì vậy, bài báo đề xuất bổ sung thêm thông tin về vị trí của các pixels bằng cách nối thêm một vector one-hot của toạ độ $\left(i,j\right) vào feature maps. Công thức sẽ trở thành:&lt;/p&gt;
+
+\[a_{t,i,j} = V_a^T\operatorname{tanh}\left(W_s s_t + W_f f_{i,j,:} + W_{f_2}e_i + W_{f_3}e_j\right)\]
+
+&lt;p&gt;với $e_i$ và $e_j$ lần lượt và các vector one-hot của toạ độ $i, j$.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Adding Coordinate&quot; src=&quot;/assets/img/2019-07-07-attention-ocr/pic3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;xử-lý-vấn-đề-nhiều-view-của-data-fsns&quot;&gt;Xử lý vấn đề nhiều view của data FSNS&lt;/h2&gt;
+
+&lt;p&gt;Tập dữ liệu của FSNS gồm 4 góc nhìn khác nhau, mỗi góc nhìn là một ảnh với kích cỡ 150x150.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;FSNS Data&quot; src=&quot;/assets/img/2019-07-07-attention-ocr/pic4.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;FSNS Data&quot; src=&quot;/assets/img/2019-07-07-attention-ocr/pic5.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bài báo đề xuất xử lý độc lập từng ảnh một qua các tầng CNN như nhau, sau có kết nối chúng lại theo chiều ngang để được feature map cuối cùng. Ví dụ mỗi ảnh sau tầng CNN từ kích cỡ 150x150 sẽ còn 16x16x320 tương ứng với $f_{i,j,c}$. Sau đó 4 ảnh sẽ được kết nối lại thành 64x16x320 như chúng ta thấy trong kiến trúc tổng quát.&lt;/p&gt;
+
+&lt;p&gt;Thông tin về quá trình training và visualize bạn đọc vui lòng tham khảo trong bài báo.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;Visualize&quot; src=&quot;/assets/img/2019-07-07-attention-ocr/pic6.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Bài viết được tham khảo và sử dụng hình ảnh từ&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=-_cRuSWFmCY&quot;&gt;Optical Character Recognition (OCR)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cloud.google.com/tpu/docs/inception-v3-advanced&quot;&gt;Advanced Guide to Inception v3 on Cloud TPU&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/pdf/1704.03549&quot;&gt;Attention-based Extraction of Structured Information from Street View Imagery&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Nguyễn Trần Thức</name></author><category term="jekyll" /><category term="Attention Mechanism" /><summary type="html">Từ bài viết trước mình có đề cập tới vấn đề sử dụng kĩ thuật Attention trong Computer Vision. Khi gặp mặt một người, để quyết định xem đó có phải người quen của mình không, ta thường chú ý vào khuôn mặt của người đó. Xét trên khía cạnh hình ảnh, thì lúc đó ta chỉ tập trung vào lượng thông tin ở vùng ảnh ở khuôn mặt. Trong bài viết này, mình xin giới thiệu tới bạn đọc một cấu trúc RNN + CNN + Attention Mechanism giúp giải quyết bài toán OCR (Optical Character Recognition). Cụ thể, cấu trúc này đã đạt được 84.2% trên tập dữ liệu biển báo ở Pháp - FSNS (French Street Name Signs), mở ra một hướng đi mới cho bài toán nhận dạng chữ. Thông tin chi tiết bạn đọc có thể tham khảo trong bài báo Attention-based Extraction of Structured Information from Street View Imagery</summary></entry></feed>

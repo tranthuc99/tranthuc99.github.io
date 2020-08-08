@@ -1,0 +1,532 @@
+
+
+<!DOCTYPE html>
+<html lang=" en "><head>
+    <meta charset="utf-8">
+    <title>Tự học AWS [P3] - Kinh nghiệm học AWS và ôn thi</title>
+    <meta http-equip="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="description" content="Tự học AWS [P3] - Kinh nghiệm học AWS và ôn thi" />
+      <meta name="keywords" content="Tự học AWS [P3] - Kinh nghiệm học AWS và ôn thi, Nguyễn Trần Thức, Amazon Web Service, Ultilities" />
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+      <meta content="" property="fb:app_id">
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+      
+        <meta content="Tự học AWS [P3] - Kinh nghiệm học AWS và ôn thi" property="og:title">
+        <meta content="article" property="og:type">
+      
+
+      
+        <meta content="Personal site of Thuc" property="og:description">
+      
+
+      
+        <meta content="https://tranthuc99.github.io/2020/03/09/tu-hoc-aws-p3" property="og:url">
+      
+
+      
+        <meta content="2020-03-08T17:16:20+00:00" property="article:published_time">
+        <meta content="https://tranthuc99.github.io/about/" property="article:author">
+      
+
+      
+
+      
+        
+          <meta content="Amazon Web Service" property="article:section">
+        
+      
+
+      
+        
+          <meta content="AWS" property="article:tag">
+        
+          <meta content="Cloud" property="article:tag">
+        
+      
+
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:site" content="@">
+      <meta name="twitter:creator" content="@">
+
+      
+        <meta name="twitter:title" content="Tự học AWS [P3] - Kinh nghiệm học AWS và ôn thi">
+      
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+        <meta name="twitter:url" content="https://tranthuc99.github.io/2020/03/09/tu-hoc-aws-p3">
+      
+
+      
+        <meta name="twitter:description" content="tu hoc aws, aws saa, amazon web service, aws solution architecture associate, thi aws, on thi aws">
+      
+
+      
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <!-- <link rel="stylesheet" href="/assets/css/custom-style.css" /> -->
+    <link rel="stylesheet" href="/assets/bower_components/lightgallery/dist/css/lightgallery.min.css"/>
+    <link rel="stylesheet" href="/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/bower_components/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" />
+    <link ref="shortcut icon" href="/assets/img/rp2_Qec_icon.ico" />  
+    <!-- UNUSED FOR NOW -->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">-->
+    <!--<link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.css" />-->
+    <!--<link rel="stylesheet" href="/assets/bower_components/icono/dist/icono.min.css"/>-->
+
+    <!-- Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://tranthuc99.github.io/assets/img/rp2_Qec_icon.ico" type="image/gif" sizes="16x16">
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script>
+
+   <!-- <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script> -->
+    <script src="/assets/bower_components/jquery.easing/jquery.easing.min.js"></script>
+    <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+    <script src="/assets/bower_components/lightgallery/dist/js/lightgallery-all.min.js"></script>
+    <script src="/assets/bower_components/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="/assets/bower_components/nanobar/nanobar.min.js"></script>
+    <script src="/assets/bower_components/typewrite/dist/typewrite.min.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/picturefill/3.0.2/picturefill.min.js"></script>-->
+
+   <!-- Github Button -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"></script>
+    -->
+    <!-- Admin -->
+    <meta  property="fb:app_id" content = "2609590356023533" />
+    <!-- <meta  property="fb:admins"  content="https://www.facebook.com/tranthuc140820"/> -->
+    <meta  property="og:url"  content="nguyentranthuc.tk"  />
+    <meta  property="og:title"  content="Thức <3 Hoài"  />
+    <meta  property="og:description"  content="abc"  />
+    <meta  property="og:image"  content="IMG"  />
+
+    <!-- MathJax -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!--
+  <script>
+      (function (d, h, m) {
+        var js, fjs = d.getElementsByTagName(h)[0];
+        if (d.getElementById(m)) { return; }
+        js = d.createElement(h); js.id = m;
+        js.onload = function () {
+          window.makerWidgetComInit({
+            position: "left",
+            widget: "ofeeof264otl2l5g-zspk40eq2gaomj2n-higi2qphmveubksi"
+          })
+        };
+        js.src = "https://makerwidget.com/js/embed.js";
+        fjs.parentNode.insertBefore(js, fjs)
+      }(document, "script", "dhm"))
+    </script>
+  -->
+      <!-- buy me a coffeee -->
+    <!--<script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="raquelfishes" data-description="Support me on Buy me a coffee!" data-message="" data-color="#FF813F" data-position="right" data-x_margin="10" data-y_margin="10"></script>
+
+    
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-166953347-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  -->
+
+  </head>
+<body>       <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="topNav">
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+        <span class="icono-hamburger" id="navbar-hamburger"> </span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <img class="navbar-brand-img" src="/assets/img/sign.webp"><!--Nguyễn Trần Thức-->
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/about"
+            >About me</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/contact"
+            >Contact Me</a
+            >
+          </li>
+          
+        </ul>
+      </div>
+      <ul class="nav justify-content-end">
+
+            <!--
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="search-icon"
+                href="https://tranthuc99.github.io/search#/"
+                ><i class="fa fa-search" aria-hidden="true"></i
+              ></a>
+            </li>
+            <li class="nav-item" style="margin-top:5px; padding-right:20px;" >
+                <a class="header__checkout snipcart-checkout">
+                    <svg width="31" height="27" viewBox="0 0 31 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M1.10512 0.368718C0.560256 0.368718 0.118164 0.812066 0.118164 1.35848C0.118164 1.9049 0.560256 2.34824 1.10512 2.34824H4.90887L8.30138 18.4009C8.43503 19.0053 8.83085 19.5079 9.32946 19.5041H25.7788C26.3005 19.5118 26.7799 19.0375 26.7799 18.5143C26.7799 17.9911 26.3006 17.5168 25.7788 17.5245H10.1315L9.71003 15.545H27.095C27.5371 15.5412 27.9547 15.2048 28.0511 14.7718L30.354 4.87412C30.4825 4.29933 29.9852 3.67172 29.3979 3.66786H7.21171L6.6771 1.15221C6.58329 0.71276 6.15921 0.368652 5.7107 0.368652L1.10512 0.368718ZM7.623 5.64746H12.7634L13.2569 8.61674H8.25005L7.623 5.64746ZM14.7785 5.64746H20.9881L20.4946 8.61674H15.2719L14.7785 5.64746ZM23.0031 5.64746H28.1537L27.4649 8.61674H22.5097L23.0031 5.64746ZM8.67181 10.5963H13.5862L14.0797 13.5656H9.29919L8.67181 10.5963ZM15.6009 10.5963H20.1656L19.6721 13.5656H16.0944L15.6009 10.5963ZM22.1807 10.5963H27.0023L26.3135 13.5656H21.6872L22.1807 10.5963ZM12.6197 20.164C10.8141 20.164 9.32979 21.6525 9.32979 23.4632C9.32979 25.2739 10.8141 26.7624 12.6197 26.7624C14.4252 26.7624 15.9095 25.2739 15.9095 23.4632C15.9095 21.6525 14.4252 20.164 12.6197 20.164ZM22.4892 20.164C20.6837 20.164 19.1994 21.6525 19.1994 23.4632C19.1994 25.2739 20.6837 26.7624 22.4892 26.7624C24.2948 26.7624 25.7791 25.2739 25.7791 23.4632C25.7791 21.6525 24.2948 20.164 22.4892 20.164ZM12.6197 22.1435C13.3586 22.1435 13.9356 22.7222 13.9356 23.4632C13.9356 24.2042 13.3586 24.7829 12.6197 24.7829C11.8807 24.7829 11.3037 24.2042 11.3037 23.4632C11.3037 22.7222 11.8807 22.1435 12.6197 22.1435ZM22.4892 22.1435C23.2282 22.1435 23.8052 22.7222 23.8052 23.4632C23.8052 24.2042 23.2282 24.7829 22.4892 24.7829C21.7503 24.7829 21.1733 24.2042 21.1733 23.4632C21.1733 22.7222 21.7503 22.1435 22.4892 22.1435Z"
+                        fill="#ff7901" class="header__checkout-fill"></path>
+                    </svg>
+                    <span class="snipcart-items-count"></span>
+                    <!-- <span class="snipcart-total-price"></span> 
+                  </a>
+            </li>
+          -->
+
+      <!-- Nhạc tết 
+      <audio autoplay="true" preload="auto">
+        <source src="assets/vid/Tet-Dong-Day.mp3" type="audio/mpeg">
+        </audio>-->
+
+        <li class="nav-item">
+          <input
+          class="nav-link switch"
+          id="theme-toggle"
+          onclick="modeSwitcher() "
+          type="checkbox"
+          name="checkbox"
+          />
+        </li>
+      </ul>
+    </nav>
+<div class="col-lg-12">
+            <div class="row" id="blog-post-container">
+  <div class="col-lg-8 offset-md-2"><article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">Tự học AWS [P3] - Kinh nghiệm học AWS và ôn thi</h1>
+    <h4 class="post-meta"></h4>
+    <p class="post-summary">
+      Posted by :  at
+      <time datetime="2020-03-08 17:16:20 +0000" itemprop="datePublished"
+        >Mar 8, 2020</time
+      >
+    </p>
+    <span
+      class="disqus-comment-count"
+      data-disqus-identifier="/2020/03/09/tu-hoc-aws-p3"
+    ></span>
+    <div class="post-categories">
+       Category : 
+      <a href="/blog/categories/Amazon Web Service"
+        >Amazon Web Service</a
+      >
+      &nbsp; 
+      <a href="/blog/categories/Ultilities"
+        >Ultilities</a
+      >
+       
+    </div>
+  </div>
+
+  <div class="card-body" itemprop="articleBody">
+    <img
+      class="card-img-top"
+      src="https://tranthuc99.github.io/assets/img/posts/"
+      alt=""
+    />
+    <br />
+    <br />
+    <p>Hôm nay vừa đi thi về, tranh thủ chia sẻ luôn cho những bạn đọc đang ôn thi và tự học để thi chứng chỉ AWS - Solution Architect Associate. Đang mùa dịch Corona nên phòng thi chỉ có một mình mình, sau bài viết này mình định làm 1 series tổng hợp kiến thức nhưng phần có trong bài thi, những phần cần học, mọi người ủng hộ mình có thể comment ở cuối bài viết nhé :D</p>
+
+<blockquote>
+  <p>Thêm một lưu ý là sau tháng <strong>3/2020</strong> thì đề thi sẽ có sự <strong>thay đổi</strong> do một số cập nhật của Amazon với những service có trong nội dung học nên các bạn cũng lưu ý với những nội dung mình có nhắc tới trong bài viết nhé. Tránh hiện tượng thông tin sai lệch bởi bài viết của mình chỉ mang tính chất tham khảo.</p>
+</blockquote>
+
+<ul id="markdown-toc">
+  <li><a href="#quá-trình-học" id="markdown-toc-quá-trình-học">Quá trình học</a></li>
+  <li><a href="#những-mục-cần-học" id="markdown-toc-những-mục-cần-học">Những mục cần học</a></li>
+  <li><a href="#những-điều-cần-lưu-ý-về-bài-thi" id="markdown-toc-những-điều-cần-lưu-ý-về-bài-thi">Những điều cần lưu ý về bài thi</a>    <ul>
+      <li><a href="#đăng-kí-thi" id="markdown-toc-đăng-kí-thi">Đăng kí thi</a></li>
+      <li><a href="#khi-đi-thi" id="markdown-toc-khi-đi-thi">Khi đi thi</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="quá-trình-học">Quá trình học</h3>
+
+<p>Do công ty mình có hệ thống portal đào tạo nên mình học các kiến thức liên quan tại trang portal của công ty. Ngoài ra các bạn cũng có thể tham khảo từ những nguồn sau:</p>
+<ul>
+  <li>Series về AWS-SAA của <a href="https://www.youtube.com/playlist?list=PLBfufR7vyJJ6FhBhJJSaMkI-m2wyoPy-G"><strong>Exam Pro</strong></a> (khoảng gần 300 videos ). 
+  Theo mình thấy thì học ở đây các video được chia nhỏ ra, nên rất dễ tìm lại những phần chưa nhớ. Nhưng bài giảng có thể khá nhanh ( với những bạn nghe tiếng Anh chưa quen). Bạn nên dùng series này để tổng hợp kiến thức thì hơn.</li>
+</ul>
+<p align="center"><img alt="Youtube Videos" src="/assets/img/2020-03-09-tu-hoc-aws-p3/youtube.png" /></p>
+<ul>
+  <li>Khoá học AWS-SAA của <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate/"><strong>Udemy</strong></a>
+  Nội dung học ở đây khá đầu đủ, thêm nữa bạn sẽ có làm test và các quiz sau mỗi phần học. Chi phí có thể nói là dễ tiếp cận, được rất nhiều người sử dụng. Mình recommend nên học khoá này nếu bạn thực sự nghiêm túc muốn đạt chứng chỉ ( mất tiền mà).</li>
+</ul>
+<p align="center"><img alt="Udemy Course" src="/assets/img/2020-03-09-tu-hoc-aws-p3/udemy.png" /></p>
+
+<ul>
+  <li>Đọc FAQ trên <a href="https://aws.amazon.com/products/"><strong>AWS Products</strong></a></li>
+</ul>
+
+<p>Có thể nói Document của AWS về các Services rất đầy đủ, kèm theo hệ thống FAQ. Mình rất recommend các bạn tham khảo phần chi phí (Pricing) của các dịch vụ trên này vì trong bài thi rất hay hỏi những câu hỏi liên quan tới chi phí ( <strong>MOST</strong> cost-effective).</p>
+
+<p align="center"><img alt="AWS FAQ" src="/assets/img/2020-03-09-tu-hoc-aws-p3/faq.png" /></p>
+
+<h3 id="những-mục-cần-học">Những mục cần học</h3>
+
+<p>Dưới đây là những phần mình thấy có trong bài thi cũng như nội dung học, tầm quan trọng cũng như nội dung trong bài thi sẽ được sắp xếp từ cao đến thấp, sắp tới mình sẽ làm 1 series về từng phần kèm theo câu hỏi và Quiz. Rất mong được các bạn đón nhận.</p>
+
+<ul>
+  <li><strong>Security, Identity &amp; Compliance</strong>: AWS Identity &amp; Access Management, Amazon Cognito, AWS Shield, …</li>
+  <li><strong>Storage</strong>: Amazon Simple Storage Service (S3), Amazon Elastic Block Storage, Amazon Elastic File System, Amazon S3 Glacier, AWS Storage Gateway, …</li>
+  <li><strong>Compute</strong>: Amazon EC2, Amazon EC2 Auto Scaling, AWS Lambda, AWS Elastic Beanstalk, …</li>
+  <li><strong>Database</strong>: Amazon DynamoDB, Amazon RDS, Amazon Redshift, Amazon Aurora, …</li>
+  <li><strong>Application Migration</strong>: Amazon Simple Queue Service (SQS), Amazon Simple Notification Service (SNS), …</li>
+  <li><strong>Analytics</strong>: Amazon Kinesis, …</li>
+  <li><strong>Management &amp; Governance</strong>: Amazon CloudWatch, AWS CloudTrail, …</li>
+  <li><strong>Networking &amp; Content Delivery</strong>: Amazon VPC, Amazon API Gateway, Amazon CloudFront, Amazon Route53, Elastic Load Balancing, …</li>
+</ul>
+
+<p>Nên lưu ý kĩ phần <strong>HA Architect</strong> - High Availability, ELB, ASG, phân biệt DynamoDB  và Redshift. Các câu hỏi thường tập trung xoay quanh các trường hợp cụ thể, chứ không hỏi thẳng nội dung, định nghĩa của từng phần, mà sẽ tập trung vào việc só sánh, phân biệt, phân loại sự cần thiết của các services.</p>
+
+<h3 id="những-điều-cần-lưu-ý-về-bài-thi">Những điều cần lưu ý về bài thi</h3>
+<p>Theo kinh nghiệm của anh Sếp tại công ty mình thì hôm trước khi thi không nên cố nhồi nhét thêm kiến thức mà hãy thư giãn cho thoải mái, và nhớ đi ngủ đủ giấc để có thể trạng lúc thi tốt nhất.</p>
+
+<h4 id="đăng-kí-thi">Đăng kí thi</h4>
+<p>Các bạn có thể dễ dàng đăng kí thi theo các hướng dẫn trên mạng, lệ phí thi là <strong>150 USD</strong> tại thời điểm hiện tại. Một số lưu ý về việc đăng kí thi:</p>
+<ul>
+  <li>Có thể cancel lịch thi trước thời điểm thi 24h. Nhận tiền refund sau đó khoảng 2 ngày nhưng sẽ bị khấu hao.</li>
+  <li>Có thể reschedule 2 lần trước thời điểm thi 24h. Nếu reschedule quá 2 lần thì bạn chỉ còn cách cancel lịch thi và đăng kí lại.</li>
+  <li>Nếu thi trượt sẽ bị đánh là “FAIL” và không thể đăng kí thi lại trong vòng 14 ngày. Nếu bỏ thi thì sẽ không bị đánh “FAIL” nhưng sẽ không lấy lại được lệ phí thi.</li>
+  <li>Được đăng kí thêm giờ thi với những trường hợp tiếng Anh không phải tiếng mẹ đẻ. Tìm từ khoá <strong>aws esl 30 minutes</strong>.</li>
+</ul>
+
+<h4 id="khi-đi-thi">Khi đi thi</h4>
+<ul>
+  <li>Yêu cầu đem theo 2 giấy tờ tuỳ thân bất kì như (CMT, Bằng lái xe, Hộ chiếu).</li>
+  <li>Trong quá trình làm bài thi, câu nào không có đáp án có thể <strong>Flag</strong> để làm lại sau (random sau :D )</li>
+  <li>Nên đọc kĩ đề, chú ý những phần như <strong>LEAST</strong>, <strong>MOST</strong>, có thể có những câu sẽ hỏi theo dạng nên hoặc không nên</li>
+  <li>Đề thi dạng multiple choice có 4 đáp án sẽ có 2 đáp án không liên quan, còn lại 2 đáp án cần cân nhắc. Thường là sẽ cân nhắc giữa việc <strong>Cost-effective</strong> và <strong>Change System</strong>. Thường là nên chọn những câu tiết kiệm chi phí mà không phải thay đổi quá nhiều ở hệ thống.</li>
+  <li>Không nên quá để tâm vấn đề thời gian vì thời gian rất nhiều, đủ để bạn đọc lại đề 1 lần nữa vẫn dư.</li>
+</ul>
+
+<p>Trên đây là những kinh nghiệm mình muốn chia sẻ, mong nhận được phản hồi của các bạn, nếu nhiều người ủng hộ thì mình sẽ ưu tiên làm phần tổng hợp kiến thức các service có trong bài thi :D</p>
+
+  </div><div class="comments">
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v7.0" nonce="iXnIUCbx"></script>
+</div><!-- Incomment incase you want to use Disqus
+      <div id="disqus_thread"></div>
+   -->
+</article>
+
+<div class="fb-comments" data-href="https://nguyentranthuc.tk/" data-numposts="4" data-width="100%" data-order-by="reverse_time"></div></div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">About Nguyễn Trần Thức</div>
+      <div class="card-body">
+        <p class="author_bio">Hi, my name is Thuc</p><!-- Place this tag where you want the github button to render. -->
+<!--
+<a class="github-button" href="https://github.com/raquelfishes/raquelfishes.github.io" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star raquelfishes-site on GitHub">Star this Project</a>
+-->
+</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Categories</div>
+      <div class="card-body text-dark">
+             
+            <div id="#Ultilities"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Ultilities">Ultilities</a>
+            </li>
+            <a name="Ultilities"></a>
+
+             
+            <div id="#Tensorflow"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Tensorflow">Tensorflow</a>
+            </li>
+            <a name="Tensorflow"></a>
+
+             
+            <div id="#Architectures and Algorithms"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Architectures and Algorithms">Architectures and Algorithms</a>
+            </li>
+            <a name="Architectures and Algorithms"></a>
+
+             
+            <div id="#guides"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/guides">guides</a>
+            </li>
+            <a name="guides"></a>
+
+             
+            <div id="#tutorials"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/tutorials">tutorials</a>
+            </li>
+            <a name="tutorials"></a>
+
+             
+            <div id="#jekyll"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/jekyll">jekyll</a>
+            </li>
+            <a name="jekyll"></a>
+
+             
+            <div id="#Paper Review"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Paper Review">Paper Review</a>
+            </li>
+            <a name="Paper Review"></a>
+
+             
+            <div id="#Computer Vision"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Computer Vision">Computer Vision</a>
+            </li>
+            <a name="Computer Vision"></a>
+
+             
+            <div id="#Amazon Web Service"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Amazon Web Service">Amazon Web Service</a>
+            </li>
+            <a name="Amazon Web Service"></a>
+
+            </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Useful Links</div>
+      <div class="card-body text-dark">
+        
+        <li>
+          <a href="https://tranthuc99.github.io/about">About me</a>
+        </li>
+        
+        <li>
+          <a href="https://tranthuc99.github.io/contact">Contact Me</a>
+        </li>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+        </div>
+        
+         <div class="col-lg-12" id="newsletter_footer"><!-- Mailchimp Newletters 
+<form action=""method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+<div id="mc_embed_signup_scroll_footer">
+    <label for="mce-EMAIL_footer"> Signup for Weekly Email Newsletters :D</label>
+    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL_footer" placeholder="email address" required>
+    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups
+    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+        <input type="text" name="b_50bab1c85eae24ecfb0f68361_3a2dd721d0" tabindex="-1" value="">
+    </div><br />
+    <div class="clear">
+        <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe_footer" class="btn btn-lg btn-success">
+    </div>
+</div>
+-->
+</div><footer>
+    <p> Powered by<a href="https://github.com/sujaykundu777/devlopr-jekyll"> devlopr jekyll</a>.Hosted at <a href="https://pages.github.com">Github</a>.
+        <!--Subscribe via <a href=" /feed.xml ">RSS</a>-->
+    </p>
+</footer>
+<script>
+            var options = {
+                classname: 'my-class',
+                id: 'my-id'
+            };
+            var nanobar = new Nanobar( options );
+            nanobar.go( 30 );
+            nanobar.go( 76 );
+            nanobar.go(100);
+        </script>
+
+<!--
+   <div hidden id="snipcart" data-api-key="Y2I1NTAyNWYtMTNkMy00ODg0LWE4NDItNTZhYzUxNzJkZTI5NjM3MDI4NTUzNzYyMjQ4NzU0"></div>
+   <script src="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.js" defer></script>
+-->
+   <script src="/assets/js/mode-switcher.js"></script>
+
+
+<!-- câu đối năm mới -->
+<!--<script type='text/javascript'>
+
+document.write('<div class="tet-2019"><img class="left-2019" id="left-2020" src="https://lh4.googleusercontent.com/-HXBsyeylNsk/XDQOO3VSvjI/AAAAAAAACm0/mN6mv1PCfgc8o3PrRm_kvBWN7KmMjsPqQCLcBGAs/s1600/tet1.png"/><img class="right-2019" id="right-2020" src="https://lh4.googleusercontent.com/-tlsSRiDAay8/XDQOjlNI5uI/AAAAAAAACm8/66f7Unvw1J039PCBEUX9q-gFOfUw8JoGgCLcBGAs/s1600/tet2.png"/></div><style>#left-2020{width: 130px;left:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}#right-2020{width: 130px;right:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}.left-2019{top:70px}.right-2019{top:70px}.text-2019-l{top:50px}.text-2019-r{top:50px}@media screen and (max-width:1024px){.tet-2019{display:none}}@media screen and (max-width:1440px){#shareduyblogs{display:none}}</style>')
+
+</script>
+<script>
+      var lastScroll = 0;
+      jQuery(document).ready(function($) {
+        $(window).scroll(function() {
+          var scroll = $(window).scrollTop();
+          if (scroll > lastScroll) {
+            $('#right-2020').removeClass('left-2019').addClass('text-2019-l')
+            $('#left-2020').removeClass('right-2019').addClass('text-2019-r')
+          } else if (scroll < lastScroll) {
+            $('#right-2020').addClass('left-2019').removeClass('text-2019-l')
+$('#left-2020').addClass('right-2019').removeClass('text-2019-r')
+          }
+          lastScroll = scroll;
+        })
+      })
+</script>-->
+
+
+<!-- câu đối năm mới 
+<script type='text/javascript'>
+document.write('<img style="position:fixed;z-index:0;top:60px;left:0" src="assets/figs/tet-left.png"/><img style="position:fixed;z-index:0;top:60px;right:0" src="assets/figs/tet-right.png"/>');
+</script>-->
+
+
+
+
+
+
+</body>
+</html>

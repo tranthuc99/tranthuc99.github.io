@@ -1,0 +1,667 @@
+
+
+<!DOCTYPE html>
+<html lang=" en "><head>
+    <meta charset="utf-8">
+    <title>Tự học Tensorflow [P6] - Tensors</title>
+    <meta http-equip="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="description" content="Tự học Tensorflow [P6] - Tensors" />
+      <meta name="keywords" content="Tự học Tensorflow [P6] - Tensors, Nguyễn Trần Thức, Tensorflow" />
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+      <meta content="" property="fb:app_id">
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+      
+        <meta content="Tự học Tensorflow [P6] - Tensors" property="og:title">
+        <meta content="article" property="og:type">
+      
+
+      
+        <meta content="Personal site of Thuc" property="og:description">
+      
+
+      
+        <meta content="https://tranthuc99.github.io/2019/05/28/tu-hoc-tensorflow-p6" property="og:url">
+      
+
+      
+        <meta content="2019-05-28T03:56:20+00:00" property="article:published_time">
+        <meta content="https://tranthuc99.github.io/about/" property="article:author">
+      
+
+      
+
+      
+        
+          <meta content="Tensorflow" property="article:section">
+        
+      
+
+      
+        
+          <meta content="Self Learning Tensorflow" property="article:tag">
+        
+      
+
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:site" content="@">
+      <meta name="twitter:creator" content="@">
+
+      
+        <meta name="twitter:title" content="Tự học Tensorflow [P6] - Tensors">
+      
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+        <meta name="twitter:url" content="https://tranthuc99.github.io/2019/05/28/tu-hoc-tensorflow-p6">
+      
+
+      
+        <meta name="twitter:description" content="tu hoc tensorflow, tensor la gi">
+      
+
+      
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <!-- <link rel="stylesheet" href="/assets/css/custom-style.css" /> -->
+    <link rel="stylesheet" href="/assets/bower_components/lightgallery/dist/css/lightgallery.min.css"/>
+    <link rel="stylesheet" href="/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/bower_components/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" />
+    <link ref="shortcut icon" href="/assets/img/rp2_Qec_icon.ico" />  
+    <!-- UNUSED FOR NOW -->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">-->
+    <!--<link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.css" />-->
+    <!--<link rel="stylesheet" href="/assets/bower_components/icono/dist/icono.min.css"/>-->
+
+    <!-- Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://tranthuc99.github.io/assets/img/rp2_Qec_icon.ico" type="image/gif" sizes="16x16">
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script>
+
+   <!-- <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script> -->
+    <script src="/assets/bower_components/jquery.easing/jquery.easing.min.js"></script>
+    <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+    <script src="/assets/bower_components/lightgallery/dist/js/lightgallery-all.min.js"></script>
+    <script src="/assets/bower_components/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="/assets/bower_components/nanobar/nanobar.min.js"></script>
+    <script src="/assets/bower_components/typewrite/dist/typewrite.min.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/picturefill/3.0.2/picturefill.min.js"></script>-->
+
+   <!-- Github Button -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"></script>
+    -->
+    <!-- Admin -->
+    <meta  property="fb:app_id" content = "2609590356023533" />
+    <!-- <meta  property="fb:admins"  content="https://www.facebook.com/tranthuc140820"/> -->
+    <meta  property="og:url"  content="nguyentranthuc.tk"  />
+    <meta  property="og:title"  content="Thức <3 Hoài"  />
+    <meta  property="og:description"  content="abc"  />
+    <meta  property="og:image"  content="IMG"  />
+
+    <!-- MathJax -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!--
+  <script>
+      (function (d, h, m) {
+        var js, fjs = d.getElementsByTagName(h)[0];
+        if (d.getElementById(m)) { return; }
+        js = d.createElement(h); js.id = m;
+        js.onload = function () {
+          window.makerWidgetComInit({
+            position: "left",
+            widget: "ofeeof264otl2l5g-zspk40eq2gaomj2n-higi2qphmveubksi"
+          })
+        };
+        js.src = "https://makerwidget.com/js/embed.js";
+        fjs.parentNode.insertBefore(js, fjs)
+      }(document, "script", "dhm"))
+    </script>
+  -->
+      <!-- buy me a coffeee -->
+    <!--<script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="raquelfishes" data-description="Support me on Buy me a coffee!" data-message="" data-color="#FF813F" data-position="right" data-x_margin="10" data-y_margin="10"></script>
+
+    
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-166953347-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  -->
+
+  </head>
+<body>       <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="topNav">
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+        <span class="icono-hamburger" id="navbar-hamburger"> </span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <img class="navbar-brand-img" src="/assets/img/sign.webp"><!--Nguyễn Trần Thức-->
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/about"
+            >About me</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/contact"
+            >Contact Me</a
+            >
+          </li>
+          
+        </ul>
+      </div>
+      <ul class="nav justify-content-end">
+
+            <!--
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="search-icon"
+                href="https://tranthuc99.github.io/search#/"
+                ><i class="fa fa-search" aria-hidden="true"></i
+              ></a>
+            </li>
+            <li class="nav-item" style="margin-top:5px; padding-right:20px;" >
+                <a class="header__checkout snipcart-checkout">
+                    <svg width="31" height="27" viewBox="0 0 31 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M1.10512 0.368718C0.560256 0.368718 0.118164 0.812066 0.118164 1.35848C0.118164 1.9049 0.560256 2.34824 1.10512 2.34824H4.90887L8.30138 18.4009C8.43503 19.0053 8.83085 19.5079 9.32946 19.5041H25.7788C26.3005 19.5118 26.7799 19.0375 26.7799 18.5143C26.7799 17.9911 26.3006 17.5168 25.7788 17.5245H10.1315L9.71003 15.545H27.095C27.5371 15.5412 27.9547 15.2048 28.0511 14.7718L30.354 4.87412C30.4825 4.29933 29.9852 3.67172 29.3979 3.66786H7.21171L6.6771 1.15221C6.58329 0.71276 6.15921 0.368652 5.7107 0.368652L1.10512 0.368718ZM7.623 5.64746H12.7634L13.2569 8.61674H8.25005L7.623 5.64746ZM14.7785 5.64746H20.9881L20.4946 8.61674H15.2719L14.7785 5.64746ZM23.0031 5.64746H28.1537L27.4649 8.61674H22.5097L23.0031 5.64746ZM8.67181 10.5963H13.5862L14.0797 13.5656H9.29919L8.67181 10.5963ZM15.6009 10.5963H20.1656L19.6721 13.5656H16.0944L15.6009 10.5963ZM22.1807 10.5963H27.0023L26.3135 13.5656H21.6872L22.1807 10.5963ZM12.6197 20.164C10.8141 20.164 9.32979 21.6525 9.32979 23.4632C9.32979 25.2739 10.8141 26.7624 12.6197 26.7624C14.4252 26.7624 15.9095 25.2739 15.9095 23.4632C15.9095 21.6525 14.4252 20.164 12.6197 20.164ZM22.4892 20.164C20.6837 20.164 19.1994 21.6525 19.1994 23.4632C19.1994 25.2739 20.6837 26.7624 22.4892 26.7624C24.2948 26.7624 25.7791 25.2739 25.7791 23.4632C25.7791 21.6525 24.2948 20.164 22.4892 20.164ZM12.6197 22.1435C13.3586 22.1435 13.9356 22.7222 13.9356 23.4632C13.9356 24.2042 13.3586 24.7829 12.6197 24.7829C11.8807 24.7829 11.3037 24.2042 11.3037 23.4632C11.3037 22.7222 11.8807 22.1435 12.6197 22.1435ZM22.4892 22.1435C23.2282 22.1435 23.8052 22.7222 23.8052 23.4632C23.8052 24.2042 23.2282 24.7829 22.4892 24.7829C21.7503 24.7829 21.1733 24.2042 21.1733 23.4632C21.1733 22.7222 21.7503 22.1435 22.4892 22.1435Z"
+                        fill="#ff7901" class="header__checkout-fill"></path>
+                    </svg>
+                    <span class="snipcart-items-count"></span>
+                    <!-- <span class="snipcart-total-price"></span> 
+                  </a>
+            </li>
+          -->
+
+      <!-- Nhạc tết 
+      <audio autoplay="true" preload="auto">
+        <source src="assets/vid/Tet-Dong-Day.mp3" type="audio/mpeg">
+        </audio>-->
+
+        <li class="nav-item">
+          <input
+          class="nav-link switch"
+          id="theme-toggle"
+          onclick="modeSwitcher() "
+          type="checkbox"
+          name="checkbox"
+          />
+        </li>
+      </ul>
+    </nav>
+<div class="col-lg-12">
+            <div class="row" id="blog-post-container">
+  <div class="col-lg-8 offset-md-2"><article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">Tự học Tensorflow [P6] - Tensors</h1>
+    <h4 class="post-meta"></h4>
+    <p class="post-summary">
+      Posted by :  at
+      <time datetime="2019-05-28 03:56:20 +0000" itemprop="datePublished"
+        >May 28, 2019</time
+      >
+    </p>
+    <span
+      class="disqus-comment-count"
+      data-disqus-identifier="/2019/05/28/tu-hoc-tensorflow-p6"
+    ></span>
+    <div class="post-categories">
+       Category : 
+      <a href="/blog/categories/Tensorflow"
+        >Tensorflow</a
+      >
+       
+    </div>
+  </div>
+
+  <div class="card-body" itemprop="articleBody">
+    <img
+      class="card-img-top"
+      src="https://tranthuc99.github.io/assets/img/posts/"
+      alt=""
+    />
+    <br />
+    <br />
+    <p>Tiếp tục series về Tensorflow, trong phạm vi bài viết này, mình sẽ đi sâu vào một thành phần chính của Tensorflow đó chính là <strong>tf.Tensor</strong>. Nếu đây là lần đầu tiếp xúc với Tensorlfow, bạn có thể tham khảo những bài viết trước của mình.</p>
+<ul id="markdown-toc">
+  <li><a href="#tensor-là-gì" id="markdown-toc-tensor-là-gì">Tensor là gì</a>    <ul>
+      <li><a href="#tensor-rank" id="markdown-toc-tensor-rank">Tensor Rank</a>        <ul>
+          <li><a href="#rank-0" id="markdown-toc-rank-0">Rank 0</a></li>
+          <li><a href="#rank-1" id="markdown-toc-rank-1">Rank 1</a></li>
+          <li><a href="#rank-cao-hơn" id="markdown-toc-rank-cao-hơn">Rank cao hơn</a></li>
+          <li><a href="#lấy-giá-trị-rank-của-tensor" id="markdown-toc-lấy-giá-trị-rank-của-tensor">Lấy giá trị rank của Tensor</a></li>
+          <li><a href="#truy-cập-vào-các-chiều-của-tensor" id="markdown-toc-truy-cập-vào-các-chiều-của-tensor">Truy cập vào các chiều của Tensor</a></li>
+        </ul>
+      </li>
+      <li><a href="#tensor-shape" id="markdown-toc-tensor-shape">Tensor Shape</a>        <ul>
+          <li><a href="#lấy-giá-trị-shape-của-tensor" id="markdown-toc-lấy-giá-trị-shape-của-tensor">Lấy giá trị shape của Tensor</a></li>
+          <li><a href="#thay-đổi-shape-của-tensor" id="markdown-toc-thay-đổi-shape-của-tensor">Thay đổi shape của Tensor</a></li>
+        </ul>
+      </li>
+      <li><a href="#data-types" id="markdown-toc-data-types">Data types</a></li>
+      <li><a href="#xem-giá-trị-của-một-tensor" id="markdown-toc-xem-giá-trị-của-một-tensor">Xem giá trị của một Tensor</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="tensor-là-gì">Tensor là gì</h2>
+<p>Như mình đã đề cập ở <a href="https://tranthuc99.github.io/tu-hoc-tensorflow-p1">phần 1</a>, đơn vị dữ liệu chính của Tensorflow là Tensor. Tensor là thể hiện của các vector, matrix với số chiều lớn. Tensorflow biểu diễn Tensor như một mảng của các kiểu dữ liệu cơ bản với số chiều lớn. 
+Khi viết một chương trình Tensorflow thì đối tượng mà chúng ta thao tác và xử lí nhiều nhất là <strong><code class="highlighter-rouge">tf.Tensor</code></strong>. Một đối tượng <code class="highlighter-rouge">tf.Tensor</code> sẽ định nghĩa một phần tính toán và cuối cùng trả về giá trị của nó khi được khởi chạy. Một chương trình Tensorflow là một Graph có chứa các Tensor được liên kết với nhau, định nghĩa các mà mỗi Tensor được tính toán mà mối quan hệ giữa các Tensor.
+Một Tensor bao gồm 2 thành phần chính là :</p>
+
+<ul>
+  <li><code class="highlighter-rouge">data type</code> - kiểu dữ liệu: có thể là float32, int32, string …</li>
+  <li><code class="highlighter-rouge">shape</code> - hình dáng: mang thông tin về số chiều, kích thước mỗi chiều của Tensor.</li>
+</ul>
+
+<p>Mỗi phần tử của Tensor đều có chung một kiểu dữ liệu, và kiểu dữ liệu của mỗi <code class="highlighter-rouge">Tensor</code> luôn được biết trước. <code class="highlighter-rouge">Shape</code> của một <code class="highlighter-rouge">Tensor</code> không phải luôn luôn được biết trước. Hầu hết các <code class="highlighter-rouge">Operation</code> sẽ trả về các <code class="highlighter-rouge">Tensor</code> mang thông tin shape nếu đầu vào của nó là các <code class="highlighter-rouge">Tensor</code> đã định nghĩa shape. Trong một vài trường hợp nhất định, thì chỉ có thể biết được shape của <code class="highlighter-rouge">Tensor</code> khi khởi chạy graph.
+Một số loại Tensor có thể kể đến:</p>
+<ul>
+  <li><code class="highlighter-rouge">tf.Variable</code></li>
+  <li><code class="highlighter-rouge">tf.constant</code></li>
+  <li><code class="highlighter-rouge">tf.placeholder</code></li>
+  <li><code class="highlighter-rouge">tf.SparseTensor</code></li>
+</ul>
+
+<p>Riêng với <strong>tf.Variable</strong>, thì giá trị của nó là không thể thay đổi trong một lần thực thi.</p>
+<h3 id="tensor-rank">Tensor Rank</h3>
+<p><strong>Rank</strong> của một Tensor là số lượng chiều của nó. Khái niệm rank ở đây không giống trong toán học.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Math entity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>Scalar</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Vector</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Matrix</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>3-Tensor</td>
+    </tr>
+    <tr>
+      <td>n</td>
+      <td>n-Tensor</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="rank-0">Rank 0</h4>
+<p>Tensor rank 0 là Tensor chỉ chứa một giá trị đơn lẻ của đối tượng.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mammal</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">(</span><span class="s">"Elephant"</span><span class="p">,</span> <span class="n">tf</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+<span class="n">ignition</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">(</span><span class="mi">451</span><span class="p">,</span> <span class="n">tf</span><span class="p">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="n">floating</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">3.14159265359</span><span class="p">,</span> <span class="n">tf</span><span class="p">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">its_complicated</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">12.3</span> <span class="o">-</span> <span class="mf">4.85j</span><span class="p">,</span> <span class="n">tf</span><span class="p">.</span><span class="n">complex64</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Trong Tensorflow, String được coi là một đối tượng riêng lẻ, không phải là một chuỗi các kí tự, nên có thể tồn tại các vector String.</p>
+<h4 id="rank-1">Rank 1</h4>
+<p>Tensor rank 1 là một list các giá trị.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mystr</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">([</span><span class="s">"Hello"</span><span class="p">],</span> <span class="n">tf</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+<span class="n">cool_numbers</span>  <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">([</span><span class="mf">3.14159</span><span class="p">,</span> <span class="mf">2.71828</span><span class="p">],</span> <span class="n">tf</span><span class="p">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">first_primes</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span> <span class="n">tf</span><span class="p">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">its_very_complicated</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">([</span><span class="mf">12.3</span> <span class="o">-</span> <span class="mf">4.85j</span><span class="p">,</span> <span class="mf">7.5</span> <span class="o">-</span> <span class="mf">6.23j</span><span class="p">],</span> <span class="n">tf</span><span class="p">.</span><span class="n">complex64</span><span class="p">)</span>
+</code></pre></div></div>
+<h4 id="rank-cao-hơn">Rank cao hơn</h4>
+<p>Tensor rank cao hơn có thể tạo bằng cách định nghĩa các ma trận bên trong</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mymat</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">([[</span><span class="mi">7</span><span class="p">],[</span><span class="mi">11</span><span class="p">]],</span> <span class="n">tf</span><span class="p">.</span><span class="n">int16</span><span class="p">)</span>
+<span class="n">myxor</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">([[</span><span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">],[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]],</span> <span class="n">tf</span><span class="p">.</span><span class="nb">bool</span><span class="p">)</span>
+<span class="n">linear_squares</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">([[</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="p">[</span><span class="mi">25</span><span class="p">]],</span> <span class="n">tf</span><span class="p">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">squarish_squares</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">([</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">]</span> <span class="p">],</span> <span class="n">tf</span><span class="p">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">rank_of_squares</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">rank</span><span class="p">(</span><span class="n">squarish_squares</span><span class="p">)</span>
+<span class="n">mymatC</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">([[</span><span class="mi">7</span><span class="p">],[</span><span class="mi">11</span><span class="p">]],</span> <span class="n">tf</span><span class="p">.</span><span class="n">int32</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Ngoài ra, ta có thể tạo một Tensor với shape mong muốn</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_image</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">299</span><span class="p">,</span> <span class="mi">299</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  <span class="c1"># batch x height x width x color
+</span></code></pre></div></div>
+<h4 id="lấy-giá-trị-rank-của-tensor">Lấy giá trị rank của Tensor</h4>
+<p>Để trả về giá trị rank của một Tensor, Tensorflow cung cấp phương thức <strong>tf.rank</strong>:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">r</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">rank</span><span class="p">(</span><span class="n">my_image</span><span class="p">)</span>
+<span class="c1">#Khi khởi chạy Graph, r sẽ có giá trị là 4.
+</span></code></pre></div></div>
+<h4 id="truy-cập-vào-các-chiều-của-tensor">Truy cập vào các chiều của Tensor</h4>
+<p>Để truy cập được vào các thành phần phía trong Tensor, ta cần định nghĩa chỉ mục cần truy cập</p>
+<ul>
+  <li>Với rank 0 thì không cần vì Tensor luôn trả về một giá trị duy nhất</li>
+  <li>Rank 1 - vector: dùng 1 số để truy cập</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_scalar</span> <span class="o">=</span> <span class="n">my_vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</code></pre></div></div>
+<ul>
+  <li>rank 2 - matrix: dùng 2 số để truy cập</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_scalar</span> <span class="o">=</span> <span class="n">my_matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</code></pre></div></div>
+<p>Tương tự như cách sử dụng Numpy, ta có thể lấy được các vector, matrix nhỏ từ tập matrix lớn hơn:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">my_row_vector</span> <span class="o">=</span> <span class="n">my_matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">my_column_vector</span> <span class="o">=</span> <span class="n">my_matrix</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div></div>
+<h3 id="tensor-shape">Tensor Shape</h3>
+<p>Shape của Tensor là số phần tử ở mỗi chiều của Tensor. Tensorflow tự động tính toán shape trong quá trình training.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Shape</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>[]</td>
+      <td>A Scalar</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>[D0]</td>
+      <td>A 1-D tensor with shape[5]</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>[D0, D1]</td>
+      <td>A 2-D tensor with shape[3,4]</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>[D0, D1, D2]</td>
+      <td>A 3-D tensor with shape[1,4,3]</td>
+    </tr>
+    <tr>
+      <td>n</td>
+      <td>[D0, D1, …, D<sub>n-1</sub>]</td>
+      <td>A tensor with shape [D0, D1, …, D<sub>n-1</sub>]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Shape có thể được biểu diễn bởi Python list, tuple kiểu integer hoặc với <strong>tf.TensorShape</strong></p>
+<h4 id="lấy-giá-trị-shape-của-tensor">Lấy giá trị shape của Tensor</h4>
+<p>Có 2 cách để có thể lấy được shape của Tensor.</p>
+<ul>
+  <li>Đọc thuộc tính <code class="highlighter-rouge">shape</code> của Tensor. Nó sẽ trả về một đối tượng <code class="highlighter-rouge">TensorShape</code>.</li>
+  <li>Sử dụng phương thức <code class="highlighter-rouge">tf.shape</code>.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">shape</span> <span class="o">=</span> <span class="n">my_matrix</span><span class="p">.</span><span class="n">shape</span>
+<span class="ow">or</span> 
+<span class="n">shape</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">shape</span><span class="p">(</span><span class="n">my_matrix</span><span class="p">)</span>
+</code></pre></div></div>
+<h4 id="thay-đổi-shape-của-tensor">Thay đổi shape của Tensor</h4>
+<p>Số lượng các phần tử trong một Tensor có thể được tính từ giá trị shape của nó, và dĩ nhiên nhiều Tensor có shape khác nhau nhưng số lượng phần tử có thể bằng nhau. Nếu bạn đã quen thuộc với việc dùng <code class="highlighter-rouge">numpy.reshape</code> thì Tensorfloư cũng cung cấp 1 phương thức như vậy.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rank_three_tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">rank_three_tensor</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>  <span class="c1"># Reshape về ma trận 6x10
+</span>             
+<span class="n">matrixB</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1">#  Reshape về ma trận 3x20
+</span>	                                   <span class="c1"># -1 ở đây mang hàm ý là tự tính size của shape
+</span><span class="n">matrixAlt</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">matrixB</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> 
+
+<span class="n">yet_another</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">matrixAlt</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># ERROR!
+</span></code></pre></div></div>
+<p>Bạn có thể reshape về bất cứ shape nào mong muốn miễn là bảo toàn số lượng phần tử phía trong Tensor là như nhau.</p>
+<h3 id="data-types">Data types</h3>
+<p>Không thể tồn tại một Tensor mà có nhiều hơn 1 kiểu dữ liệu, nếu muốn thì bạn chỉ có thể chuyển nó về dạng cấu trúc String. Ngoài ra, chúng ta có thể chuyển datatype của Tensor từ loại này sang loại khác bằng phương thức <strong>tf.cast</strong>:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">float_tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">cast</span><span class="p">(</span><span class="n">tf</span><span class="p">.</span><span class="n">constant</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="p">.</span><span class="n">float32</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Để xem kiểu data là gì, ta có thể sử dụng trực tiếp thuộc tính <strong><code class="highlighter-rouge">Tensor.dtype</code></strong>
+Khi khởi tạo một Tensor, nếu không định nghĩa kiểu dữ liệu cho Tensor, Tensorflow sẽ tự định nghĩa kiểu dữ liệu mà có thể thể hiện dữ liệu bên trong Tensor đó.</p>
+
+<h3 id="xem-giá-trị-của-một-tensor">Xem giá trị của một Tensor</h3>
+<p>Cách đơn giản nhất để kiểm tra giá trị của một Tensor là dùng phương thức <strong><code class="highlighter-rouge">Tensor.eval</code></strong>:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">constant</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">constant</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">constant</span> <span class="o">*</span> <span class="n">constant</span>
+<span class="k">print</span><span class="p">(</span><span class="n">tensor</span><span class="p">.</span><span class="nb">eval</span><span class="p">())</span>
+</code></pre></div></div>
+<p>Lưu ý là chỉ có thể sử dụng eval khi đã kích hoạt một <strong>tf.Session</strong> default.
+Một cách nữa có thể kể đến là dùng <strong>tf.Print</strong>. Giá trị của Tensor sẽ tự động được in khi Tensor tf.Print được eval bởi Session.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">t</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="n">some</span> <span class="n">tensorflow</span> <span class="n">operation</span><span class="o">&gt;&gt;</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Print</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="n">t</span><span class="p">])</span>  <span class="c1"># Here we are using the value returned by tf.Print
+</span><span class="n">result</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div></div>
+<p>Khi eval Tensor <code class="highlighter-rouge">result</code>, giá trị của <code class="highlighter-rouge">t</code> sẽ tự động được in.
+Như vậy, chúng ta vừa tìm hiểu sâu thêm về Tensor. Để lại comment nếu có gì cần chia sẻ nhé :D</p>
+
+<p><strong>Bài viết được tham khảo và sử dụng hình ảnh từ:</strong></p>
+<ul>
+  <li><a href="https://www.tensorflow.org/guide/tensors#getting_a_tftensor_objects_rank">1.Tensors - Tensorflow</a></li>
+</ul>
+
+  </div><div class="comments">
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v7.0" nonce="iXnIUCbx"></script>
+</div><!-- Incomment incase you want to use Disqus
+      <div id="disqus_thread"></div>
+   -->
+</article>
+
+<div class="fb-comments" data-href="https://nguyentranthuc.tk/" data-numposts="4" data-width="100%" data-order-by="reverse_time"></div></div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">About Nguyễn Trần Thức</div>
+      <div class="card-body">
+        <p class="author_bio">Hi, my name is Thuc</p><!-- Place this tag where you want the github button to render. -->
+<!--
+<a class="github-button" href="https://github.com/raquelfishes/raquelfishes.github.io" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star raquelfishes-site on GitHub">Star this Project</a>
+-->
+</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Categories</div>
+      <div class="card-body text-dark">
+             
+            <div id="#Ultilities"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Ultilities">Ultilities</a>
+            </li>
+            <a name="Ultilities"></a>
+
+             
+            <div id="#Tensorflow"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Tensorflow">Tensorflow</a>
+            </li>
+            <a name="Tensorflow"></a>
+
+             
+            <div id="#Architectures and Algorithms"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Architectures and Algorithms">Architectures and Algorithms</a>
+            </li>
+            <a name="Architectures and Algorithms"></a>
+
+             
+            <div id="#guides"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/guides">guides</a>
+            </li>
+            <a name="guides"></a>
+
+             
+            <div id="#tutorials"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/tutorials">tutorials</a>
+            </li>
+            <a name="tutorials"></a>
+
+             
+            <div id="#jekyll"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/jekyll">jekyll</a>
+            </li>
+            <a name="jekyll"></a>
+
+             
+            <div id="#Paper Review"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Paper Review">Paper Review</a>
+            </li>
+            <a name="Paper Review"></a>
+
+             
+            <div id="#Computer Vision"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Computer Vision">Computer Vision</a>
+            </li>
+            <a name="Computer Vision"></a>
+
+             
+            <div id="#Amazon Web Service"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Amazon Web Service">Amazon Web Service</a>
+            </li>
+            <a name="Amazon Web Service"></a>
+
+            </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Useful Links</div>
+      <div class="card-body text-dark">
+        
+        <li>
+          <a href="https://tranthuc99.github.io/about">About me</a>
+        </li>
+        
+        <li>
+          <a href="https://tranthuc99.github.io/contact">Contact Me</a>
+        </li>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+        </div>
+        
+         <div class="col-lg-12" id="newsletter_footer"><!-- Mailchimp Newletters 
+<form action=""method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+<div id="mc_embed_signup_scroll_footer">
+    <label for="mce-EMAIL_footer"> Signup for Weekly Email Newsletters :D</label>
+    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL_footer" placeholder="email address" required>
+    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups
+    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+        <input type="text" name="b_50bab1c85eae24ecfb0f68361_3a2dd721d0" tabindex="-1" value="">
+    </div><br />
+    <div class="clear">
+        <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe_footer" class="btn btn-lg btn-success">
+    </div>
+</div>
+-->
+</div><footer>
+    <p> Powered by<a href="https://github.com/sujaykundu777/devlopr-jekyll"> devlopr jekyll</a>.Hosted at <a href="https://pages.github.com">Github</a>.
+        <!--Subscribe via <a href=" /feed.xml ">RSS</a>-->
+    </p>
+</footer>
+<script>
+            var options = {
+                classname: 'my-class',
+                id: 'my-id'
+            };
+            var nanobar = new Nanobar( options );
+            nanobar.go( 30 );
+            nanobar.go( 76 );
+            nanobar.go(100);
+        </script>
+
+<!--
+   <div hidden id="snipcart" data-api-key="Y2I1NTAyNWYtMTNkMy00ODg0LWE4NDItNTZhYzUxNzJkZTI5NjM3MDI4NTUzNzYyMjQ4NzU0"></div>
+   <script src="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.js" defer></script>
+-->
+   <script src="/assets/js/mode-switcher.js"></script>
+
+
+<!-- câu đối năm mới -->
+<!--<script type='text/javascript'>
+
+document.write('<div class="tet-2019"><img class="left-2019" id="left-2020" src="https://lh4.googleusercontent.com/-HXBsyeylNsk/XDQOO3VSvjI/AAAAAAAACm0/mN6mv1PCfgc8o3PrRm_kvBWN7KmMjsPqQCLcBGAs/s1600/tet1.png"/><img class="right-2019" id="right-2020" src="https://lh4.googleusercontent.com/-tlsSRiDAay8/XDQOjlNI5uI/AAAAAAAACm8/66f7Unvw1J039PCBEUX9q-gFOfUw8JoGgCLcBGAs/s1600/tet2.png"/></div><style>#left-2020{width: 130px;left:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}#right-2020{width: 130px;right:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}.left-2019{top:70px}.right-2019{top:70px}.text-2019-l{top:50px}.text-2019-r{top:50px}@media screen and (max-width:1024px){.tet-2019{display:none}}@media screen and (max-width:1440px){#shareduyblogs{display:none}}</style>')
+
+</script>
+<script>
+      var lastScroll = 0;
+      jQuery(document).ready(function($) {
+        $(window).scroll(function() {
+          var scroll = $(window).scrollTop();
+          if (scroll > lastScroll) {
+            $('#right-2020').removeClass('left-2019').addClass('text-2019-l')
+            $('#left-2020').removeClass('right-2019').addClass('text-2019-r')
+          } else if (scroll < lastScroll) {
+            $('#right-2020').addClass('left-2019').removeClass('text-2019-l')
+$('#left-2020').addClass('right-2019').removeClass('text-2019-r')
+          }
+          lastScroll = scroll;
+        })
+      })
+</script>-->
+
+
+<!-- câu đối năm mới 
+<script type='text/javascript'>
+document.write('<img style="position:fixed;z-index:0;top:60px;left:0" src="assets/figs/tet-left.png"/><img style="position:fixed;z-index:0;top:60px;right:0" src="assets/figs/tet-right.png"/>');
+</script>-->
+
+
+
+
+
+
+</body>
+</html>

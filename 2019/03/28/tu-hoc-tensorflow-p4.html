@@ -1,0 +1,653 @@
+
+
+<!DOCTYPE html>
+<html lang=" en "><head>
+    <meta charset="utf-8">
+    <title>Tự học Tensorflow [P4] - Linear Regression with Tensorflow</title>
+    <meta http-equip="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="description" content="Tự học Tensorflow [P4] - Linear Regression with Tensorflow" />
+      <meta name="keywords" content="Tự học Tensorflow [P4] - Linear Regression with Tensorflow, Nguyễn Trần Thức, Tensorflow" />
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+      <meta content="" property="fb:app_id">
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+      
+        <meta content="Tự học Tensorflow [P4] - Linear Regression with Tensorflow" property="og:title">
+        <meta content="article" property="og:type">
+      
+
+      
+        <meta content="Personal site of Thuc" property="og:description">
+      
+
+      
+        <meta content="https://tranthuc99.github.io/2019/03/28/tu-hoc-tensorflow-p4" property="og:url">
+      
+
+      
+        <meta content="2019-03-28T03:56:20+00:00" property="article:published_time">
+        <meta content="https://tranthuc99.github.io/about/" property="article:author">
+      
+
+      
+
+      
+        
+          <meta content="Tensorflow" property="article:section">
+        
+      
+
+      
+        
+          <meta content="Self Learning Tensorflow" property="article:tag">
+        
+      
+
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:site" content="@">
+      <meta name="twitter:creator" content="@">
+
+      
+        <meta name="twitter:title" content="Tự học Tensorflow [P4] - Linear Regression with Tensorflow">
+      
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+        <meta name="twitter:url" content="https://tranthuc99.github.io/2019/03/28/tu-hoc-tensorflow-p4">
+      
+
+      
+        <meta name="twitter:description" content="tu hoc tensorflow, linear regression">
+      
+
+      
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <!-- <link rel="stylesheet" href="/assets/css/custom-style.css" /> -->
+    <link rel="stylesheet" href="/assets/bower_components/lightgallery/dist/css/lightgallery.min.css"/>
+    <link rel="stylesheet" href="/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/bower_components/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" />
+    <link ref="shortcut icon" href="/assets/img/rp2_Qec_icon.ico" />  
+    <!-- UNUSED FOR NOW -->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">-->
+    <!--<link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.css" />-->
+    <!--<link rel="stylesheet" href="/assets/bower_components/icono/dist/icono.min.css"/>-->
+
+    <!-- Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://tranthuc99.github.io/assets/img/rp2_Qec_icon.ico" type="image/gif" sizes="16x16">
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script>
+
+   <!-- <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script> -->
+    <script src="/assets/bower_components/jquery.easing/jquery.easing.min.js"></script>
+    <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+    <script src="/assets/bower_components/lightgallery/dist/js/lightgallery-all.min.js"></script>
+    <script src="/assets/bower_components/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="/assets/bower_components/nanobar/nanobar.min.js"></script>
+    <script src="/assets/bower_components/typewrite/dist/typewrite.min.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/picturefill/3.0.2/picturefill.min.js"></script>-->
+
+   <!-- Github Button -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"></script>
+    -->
+    <!-- Admin -->
+    <meta  property="fb:app_id" content = "2609590356023533" />
+    <!-- <meta  property="fb:admins"  content="https://www.facebook.com/tranthuc140820"/> -->
+    <meta  property="og:url"  content="nguyentranthuc.tk"  />
+    <meta  property="og:title"  content="Thức <3 Hoài"  />
+    <meta  property="og:description"  content="abc"  />
+    <meta  property="og:image"  content="IMG"  />
+
+    <!-- MathJax -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!--
+  <script>
+      (function (d, h, m) {
+        var js, fjs = d.getElementsByTagName(h)[0];
+        if (d.getElementById(m)) { return; }
+        js = d.createElement(h); js.id = m;
+        js.onload = function () {
+          window.makerWidgetComInit({
+            position: "left",
+            widget: "ofeeof264otl2l5g-zspk40eq2gaomj2n-higi2qphmveubksi"
+          })
+        };
+        js.src = "https://makerwidget.com/js/embed.js";
+        fjs.parentNode.insertBefore(js, fjs)
+      }(document, "script", "dhm"))
+    </script>
+  -->
+      <!-- buy me a coffeee -->
+    <!--<script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="raquelfishes" data-description="Support me on Buy me a coffee!" data-message="" data-color="#FF813F" data-position="right" data-x_margin="10" data-y_margin="10"></script>
+
+    
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-166953347-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  -->
+
+  </head>
+<body>       <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="topNav">
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+        <span class="icono-hamburger" id="navbar-hamburger"> </span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <img class="navbar-brand-img" src="/assets/img/sign.webp"><!--Nguyễn Trần Thức-->
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/about"
+            >About me</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/contact"
+            >Contact Me</a
+            >
+          </li>
+          
+        </ul>
+      </div>
+      <ul class="nav justify-content-end">
+
+            <!--
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="search-icon"
+                href="https://tranthuc99.github.io/search#/"
+                ><i class="fa fa-search" aria-hidden="true"></i
+              ></a>
+            </li>
+            <li class="nav-item" style="margin-top:5px; padding-right:20px;" >
+                <a class="header__checkout snipcart-checkout">
+                    <svg width="31" height="27" viewBox="0 0 31 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M1.10512 0.368718C0.560256 0.368718 0.118164 0.812066 0.118164 1.35848C0.118164 1.9049 0.560256 2.34824 1.10512 2.34824H4.90887L8.30138 18.4009C8.43503 19.0053 8.83085 19.5079 9.32946 19.5041H25.7788C26.3005 19.5118 26.7799 19.0375 26.7799 18.5143C26.7799 17.9911 26.3006 17.5168 25.7788 17.5245H10.1315L9.71003 15.545H27.095C27.5371 15.5412 27.9547 15.2048 28.0511 14.7718L30.354 4.87412C30.4825 4.29933 29.9852 3.67172 29.3979 3.66786H7.21171L6.6771 1.15221C6.58329 0.71276 6.15921 0.368652 5.7107 0.368652L1.10512 0.368718ZM7.623 5.64746H12.7634L13.2569 8.61674H8.25005L7.623 5.64746ZM14.7785 5.64746H20.9881L20.4946 8.61674H15.2719L14.7785 5.64746ZM23.0031 5.64746H28.1537L27.4649 8.61674H22.5097L23.0031 5.64746ZM8.67181 10.5963H13.5862L14.0797 13.5656H9.29919L8.67181 10.5963ZM15.6009 10.5963H20.1656L19.6721 13.5656H16.0944L15.6009 10.5963ZM22.1807 10.5963H27.0023L26.3135 13.5656H21.6872L22.1807 10.5963ZM12.6197 20.164C10.8141 20.164 9.32979 21.6525 9.32979 23.4632C9.32979 25.2739 10.8141 26.7624 12.6197 26.7624C14.4252 26.7624 15.9095 25.2739 15.9095 23.4632C15.9095 21.6525 14.4252 20.164 12.6197 20.164ZM22.4892 20.164C20.6837 20.164 19.1994 21.6525 19.1994 23.4632C19.1994 25.2739 20.6837 26.7624 22.4892 26.7624C24.2948 26.7624 25.7791 25.2739 25.7791 23.4632C25.7791 21.6525 24.2948 20.164 22.4892 20.164ZM12.6197 22.1435C13.3586 22.1435 13.9356 22.7222 13.9356 23.4632C13.9356 24.2042 13.3586 24.7829 12.6197 24.7829C11.8807 24.7829 11.3037 24.2042 11.3037 23.4632C11.3037 22.7222 11.8807 22.1435 12.6197 22.1435ZM22.4892 22.1435C23.2282 22.1435 23.8052 22.7222 23.8052 23.4632C23.8052 24.2042 23.2282 24.7829 22.4892 24.7829C21.7503 24.7829 21.1733 24.2042 21.1733 23.4632C21.1733 22.7222 21.7503 22.1435 22.4892 22.1435Z"
+                        fill="#ff7901" class="header__checkout-fill"></path>
+                    </svg>
+                    <span class="snipcart-items-count"></span>
+                    <!-- <span class="snipcart-total-price"></span> 
+                  </a>
+            </li>
+          -->
+
+      <!-- Nhạc tết 
+      <audio autoplay="true" preload="auto">
+        <source src="assets/vid/Tet-Dong-Day.mp3" type="audio/mpeg">
+        </audio>-->
+
+        <li class="nav-item">
+          <input
+          class="nav-link switch"
+          id="theme-toggle"
+          onclick="modeSwitcher() "
+          type="checkbox"
+          name="checkbox"
+          />
+        </li>
+      </ul>
+    </nav>
+<div class="col-lg-12">
+            <div class="row" id="blog-post-container">
+  <div class="col-lg-8 offset-md-2"><article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">Tự học Tensorflow [P4] - Linear Regression with Tensorflow</h1>
+    <h4 class="post-meta"></h4>
+    <p class="post-summary">
+      Posted by :  at
+      <time datetime="2019-03-28 03:56:20 +0000" itemprop="datePublished"
+        >Mar 28, 2019</time
+      >
+    </p>
+    <span
+      class="disqus-comment-count"
+      data-disqus-identifier="/2019/03/28/tu-hoc-tensorflow-p4"
+    ></span>
+    <div class="post-categories">
+       Category : 
+      <a href="/blog/categories/Tensorflow"
+        >Tensorflow</a
+      >
+       
+    </div>
+  </div>
+
+  <div class="card-body" itemprop="articleBody">
+    <img
+      class="card-img-top"
+      src="https://tranthuc99.github.io/assets/img/posts/"
+      alt=""
+    />
+    <br />
+    <br />
+    <p>Ngoài những bài học lí thuyết từ phần trước <a href="https://tranthuc99.github.io/2019/03/11/tu-hoc-tensorflow-p3">Tự học Tensorflow [P3] - Dataset, Layer</a> thì chúng ta cũng cần những giờ thực hành để ghi nhớ kiến thức, trong phạm vi bài viết này mình sẽ chia sẻ về cách giải quyết một bài toán <strong><code class="highlighter-rouge">Linear Regression</code></strong> đơn giản bằng <strong>Tensorflow</strong>. Nếu chưa theo dõi nhưng phần trước thì bạn có thể tham khảo thêm:</p>
+<ul id="markdown-toc">
+  <li><a href="#linear-regression-là-gì" id="markdown-toc-linear-regression-là-gì">Linear Regression là gì?</a></li>
+  <li><a href="#cách-giải-quyết-bài-toán" id="markdown-toc-cách-giải-quyết-bài-toán">Cách giải quyết bài toán</a></li>
+  <li><a href="#triển-khai-với-tensorflow" id="markdown-toc-triển-khai-với-tensorflow">Triển khai với Tensorflow</a></li>
+</ul>
+
+<h2 id="linear-regression-là-gì">Linear Regression là gì?</h2>
+<p><a href="https://en.wikipedia.org/wiki/Linear_regression"><strong>Linear Regression</strong></a> hay còn được gọi là <strong>Hồi Quy Tuyến Tính</strong> là một trong những thuật toán <em>Supervised learning</em> cơ bản của Machine Learning. Chắc hẳn khi học THCS hay THPT chúng ta đã khá quen thuộc với phương trình hàm số <code class="highlighter-rouge">y = ax + b</code> với <code class="highlighter-rouge">x</code> là biến số. Tuy nhiên ngược lại với bài toán này, ta coi <code class="highlighter-rouge">a</code> và <code class="highlighter-rouge">b</code> là biến số và tiến hành tìm <code class="highlighter-rouge">a</code> và <code class="highlighter-rouge">b</code> dựa trên tập <code class="highlighter-rouge">x</code> và <code class="highlighter-rouge">y</code> có sẵn. Bài toán này trong thực tế có khá nhiều, ví dự như khi ta muốn dự đoán <code class="highlighter-rouge">số năm kinh nghiệm</code> của một PHP Developer dựa trên số tuổi của lập trình viên đó trên tập dữ liệu của toàn bộ lập trình viên đã làm việc trước đó tại công ty.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">ID</th>
+      <th style="text-align: right">Age</th>
+      <th>Experience Years</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">22</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td style="text-align: right">25</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">2</td>
+      <td style="text-align: right">27</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">3</td>
+      <td style="text-align: right">25</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Vậy công việc là với mỗi đầu vào là số tuổi của <code class="highlighter-rouge">developer</code> thì sẽ trả lại số năm kinh nghiệm dự đoán <code class="highlighter-rouge">developer</code> đó đã làm. Dĩ nhiên với loại bài toán này thì dữ liệu cũng tồn tại nhiễu ví dụ như <code class="highlighter-rouge">developer - 2</code> với <code class="highlighter-rouge">27</code> tuổi nhưng số năm kinh nghiệm lại chỉ có <code class="highlighter-rouge">2</code>.</p>
+
+<h2 id="cách-giải-quyết-bài-toán">Cách giải quyết bài toán</h2>
+<p>Công việc chúng ta cần làm ở đây là tìm mối liên hệ giữa độ tuổi và số năm kinh nghiệm của một <code class="highlighter-rouge">Developer</code>, mối quan hệ này được gọi là <strong><code class="highlighter-rouge">hypothesis</code></strong>, trong trường hợp này thì nó chính là một đường thẳng trong không gian 2 chiều.</p>
+
+<h2>$$h(x) = wx+b$$</h2>
+
+<p>Ở đây <code class="highlighter-rouge">w</code> là một vector <code class="highlighter-rouge">Weights</code> còn <code class="highlighter-rouge">b</code> là một scalar <code class="highlighter-rouge">Bias</code>. Chúng được coi là các <code class="highlighter-rouge">parameters</code> của một model.
+Để có thể tìm được <code class="highlighter-rouge">w</code> và <code class="highlighter-rouge">b</code> thì chúng ta cần ước lượng giá trị của chúng dựa vào hàm chi  phí <strong>Loss</strong>.</p>
+
+<h2>$$J(w,b) = \frac{1}{2m}\sum_{i=1}^m (y_i - h(x_i))^2$$</h2>
+
+<p>Hàm chi phí được dùng ở đây là hàm <strong><code class="highlighter-rouge">Mean Squared Error</code></strong> - Trung Bình Bình Phương Độ Lệch được tính bằng trung bình cộng của bình phương độ lệch trên mỗi điểm dữ liệu. Để tối ưu hàm này chúng ta sử dụng phương pháp <strong><code class="highlighter-rouge">Gradient Descent (GD)</code></strong> - một trong những phương pháp nền móng của Deep Learning. Với GD thì công việc của chúng ta là cập nhật lại giá trị của  \(\omega\) và \(b\) dựa trên đạo hàm của hàm <code class="highlighter-rouge">Loss</code>.</p>
+<h2>
+$$\omega = \omega - \alpha * \frac{\delta J}{\delta w}$$
+$$b = b - α * \frac{\delta J}{\delta b}$$
+</h2>
+<p>\(\alpha\) ở đây cũng là một <code class="highlighter-rouge">hyperparameter</code> với tên gọi <strong><code class="highlighter-rouge">Learning rate</code></strong>.</p>
+
+<h2 id="triển-khai-với-tensorflow">Triển khai với Tensorflow</h2>
+<p>Với những bạn chưa biết <strong>Tensorflow</strong> là gì thì nên tham khảo bài viết <a href="https://tranthuc99.github.io/tu-hoc-tensorflow-p1">Tự học Tensorflow [P1]</a>.
+Chúng ta bắt đầu bằng việc khai báo những thư viện cần thiết</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span></code></pre></figure>
+
+<p>Để giữ nguyên giá trị random của <code class="highlighter-rouge">Numpy</code> và <code class="highlighter-rouge">Tensorflow</code>, chúng ta cố định <code class="highlighter-rouge">seed</code>.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span> 
+<span class="n">tf</span><span class="p">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span> </code></pre></figure>
+
+<p>Tiếp theo chúng ta khởi tạo dữ liệu và thêm nhiễu:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">ages</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="c1"># Độ tuổi từ khoảng 20-50
+</span><span class="n">exp_year</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span><span class="c1"># Số năm kinh nghiệm 1-20
+</span>
+<span class="n">ages</span> <span class="o">+=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">exp_year</span> <span class="o">+=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span></code></pre></figure>
+
+<p>Data thu được:</p>
+<p align="center"><image src="/assets/img/2019-03-28-tu-hoc-tensorflow-p4/data.png" /></p>
+
+<p>Giờ chúng ta bắt đầu tạo model bằng cách sử dụng <code class="highlighter-rouge">tf.placeholder</code> cho <code class="highlighter-rouge">ages</code> và <code class="highlighter-rouge">exp_year</code> để có thể <code class="highlighter-rouge">feed</code> tập dữ liệu training vào <strong>optimizer</strong> trong suốt quá trình training.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">X</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">placeholder</span><span class="p">(</span><span class="s">"float"</span><span class="p">)</span> 
+<span class="n">Y</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">placeholder</span><span class="p">(</span><span class="s">"float"</span><span class="p">)</span> </code></pre></figure>
+
+<p>Tiếp theo chúng ta khởi tạo 2 <code class="highlighter-rouge">tf.Variable</code> để lưu giá trị của <strong>Weights</strong> và <strong>Bias</strong>. Thông thường, chúng ta có thể khởi tạo Weights bằng cách sử dụng lớp <code class="highlighter-rouge">tf.layers.Dense</code>.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">W</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(),</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"W"</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(),</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"b"</span><span class="p">)</span></code></pre></figure>
+
+<p>Khởi tạo giá trị <code class="highlighter-rouge">learning rate</code> cho optimizer và số lượng epochs:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="n">training_epochs</span> <span class="o">=</span> <span class="mi">1000</span></code></pre></figure>
+
+<p>Khởi tạo optimizer, operation tính giá trị loss:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># Dự đoán số năm kinh nghiệm dựa trên Weight và Bias
+</span><span class="n">exp_year_pred</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="p">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">AGE</span><span class="p">,</span> <span class="n">W</span><span class="p">),</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="c1"># Tính loss Mean Squared Error
+</span><span class="n">cost</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="p">.</span><span class="nb">pow</span><span class="p">(</span><span class="n">exp_year_pred</span> <span class="o">-</span> <span class="n">EXP</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Gradient Descent Optimizer
+</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">train</span><span class="p">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">).</span><span class="n">minimize</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+
+<span class="c1"># Khởi tạo giá trị cho Graph
+</span><span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">global_variables_initializer</span><span class="p">()</span></code></pre></figure>
+
+<p>Tensorflow có cung cấp hàm loss được xây dựng sẵn đó là <code class="highlighter-rouge">tf.losses.mean_squared_error</code>. Sau khi đã khởi tạo xong mọi thứ, tiến hành training và log lại thay đổi của <code class="highlighter-rouge">Weights</code> và <code class="highlighter-rouge">Bias</code>:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># Chạy Session
+</span><span class="k">with</span> <span class="n">tf</span><span class="p">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+
+    <span class="c1"># Khởi chạy hàm khởi tạo
+</span>    <span class="n">sess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">training_epochs</span><span class="p">):</span>
+
+        <span class="c1"># Sử dụng feed_dict để truyền data vào Optimizer
+</span>        <span class="k">for</span> <span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">exp_year</span><span class="p">):</span>
+            <span class="n">sess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">AGE</span><span class="p">:</span> <span class="n">age</span><span class="p">,</span> <span class="n">EXP</span><span class="p">:</span> <span class="n">exp</span><span class="p">})</span>
+
+            <span class="c1"># Log Loss, Weights và Bias sau mỗi 100 epochs
+</span>        <span class="k">if</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Tính giá trị loss
+</span>            <span class="n">c</span> <span class="o">=</span> <span class="n">sess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">AGE</span><span class="p">:</span> <span class="n">ages</span><span class="p">,</span> <span class="n">EXP</span><span class="p">:</span> <span class="n">exp_year</span><span class="p">})</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Epoch"</span><span class="p">,</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s">": cost ="</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="s">"W ="</span><span class="p">,</span> <span class="n">sess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="s">"b ="</span><span class="p">,</span> <span class="n">sess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+    <span class="c1"># Tính giá trị loss sau khi đã training xong
+</span>    <span class="n">training_cost</span> <span class="o">=</span> <span class="n">sess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">AGE</span><span class="p">:</span> <span class="n">ages</span><span class="p">,</span> <span class="n">EXP</span><span class="p">:</span> <span class="n">exp_year</span><span class="p">})</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">sess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+    <span class="n">bias</span> <span class="o">=</span> <span class="n">sess</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="c1"># Dự đoán số năm kinh nghiệm dưa trên weights và bias vừa train
+</span>    <span class="n">age_predictions</span> <span class="o">=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">ages</span> <span class="o">+</span> <span class="n">bias</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Training cost ="</span><span class="p">,</span> <span class="n">training_cost</span><span class="p">,</span> <span class="s">"Weight ="</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="s">"bias ="</span><span class="p">,</span> <span class="n">bias</span><span class="p">,</span> <span class="s">'</span><span class="si">\</span><span class="se">n</span><span class="s">'</span><span class="p">)</span></code></pre></figure>
+
+<p>Kết quả sau 1000 epochs:</p>
+<p align="center"><image src="/assets/img/2019-03-28-tu-hoc-tensorflow-p4/0.02_1000.png" /></p>
+
+<p>Model có vẻ chưa fit, training với 5000 epochs:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">Epoch</span> <span class="mi">100</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">10.946286</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.38977066</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.8715187</span>
+<span class="n">Epoch</span> <span class="mi">200</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">10.205628</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.39913383</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.40359172</span>
+<span class="n">Epoch</span> <span class="mi">300</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">9.51677</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.40815943</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.047464404</span>
+<span class="n">Epoch</span> <span class="mi">400</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">8.876068</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.41685966</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.48225853</span>
+<span class="n">Epoch</span> <span class="mi">500</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">8.280136</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.42524618</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.9013753</span>
+<span class="n">Epoch</span> <span class="mi">600</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">7.7258153</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.4333303</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.305382</span>
+<span class="n">Epoch</span> <span class="mi">700</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">7.2101865</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.44112304</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.6948253</span>
+<span class="n">Epoch</span> <span class="mi">800</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">6.7305303</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.44863477</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0702267</span>
+<span class="n">Epoch</span> <span class="mi">900</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">6.284323</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.4558757</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.4320927</span>
+<span class="n">Epoch</span> <span class="mi">1000</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">5.869206</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.4628556</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.780915</span>
+<span class="n">Epoch</span> <span class="mi">1100</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">5.4830136</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.46958375</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.1171532</span>
+<span class="n">Epoch</span> <span class="mi">1200</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">5.123692</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.47606948</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.4412775</span>
+<span class="n">Epoch</span> <span class="mi">1300</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">4.7893686</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.4823213</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.7537127</span>
+<span class="n">Epoch</span> <span class="mi">1400</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">4.4782953</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.48834747</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.0548725</span>
+<span class="n">Epoch</span> <span class="mi">1500</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">4.188843</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.49415618</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.3451643</span>
+<span class="n">Epoch</span> <span class="mi">1600</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">3.9194515</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.49975616</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.625025</span>
+<span class="n">Epoch</span> <span class="mi">1700</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">3.668752</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5051542</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.894793</span>
+<span class="n">Epoch</span> <span class="mi">1800</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">3.4354403</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.51035756</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.1548295</span>
+<span class="n">Epoch</span> <span class="mi">1900</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">3.2182944</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.51537305</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.4054804</span>
+<span class="n">Epoch</span> <span class="mi">2000</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">3.0161898</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5202075</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.6470833</span>
+<span class="n">Epoch</span> <span class="mi">2100</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">2.8280525</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.52486783</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.879984</span>
+<span class="n">Epoch</span> <span class="mi">2200</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">2.6529238</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.52936</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">6.10448</span>
+<span class="n">Epoch</span> <span class="mi">2300</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">2.4898534</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5336909</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">6.3209205</span>
+<span class="n">Epoch</span> <span class="mi">2400</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">2.3380504</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.53786534</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">6.5295362</span>
+<span class="n">Epoch</span> <span class="mi">2500</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">2.1967044</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5418894</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">6.7306385</span>
+<span class="n">Epoch</span> <span class="mi">2600</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">2.06509</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5457683</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">6.9244866</span>
+<span class="n">Epoch</span> <span class="mi">2700</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.9425381</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5495069</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">7.1113243</span>
+<span class="n">Epoch</span> <span class="mi">2800</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.8283958</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5531111</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">7.2914443</span>
+<span class="n">Epoch</span> <span class="mi">2900</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.7221025</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.55658495</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">7.46505</span>
+<span class="n">Epoch</span> <span class="mi">3000</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.6230927</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5599336</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">7.6323986</span>
+<span class="n">Epoch</span> <span class="mi">3100</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.5308691</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.563161</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">7.793693</span>
+<span class="n">Epoch</span> <span class="mi">3200</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.444925</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5662735</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">7.949237</span>
+<span class="n">Epoch</span> <span class="mi">3300</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.3649043</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5692716</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.099068</span>
+<span class="n">Epoch</span> <span class="mi">3400</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.2902647</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.57216465</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.243648</span>
+<span class="n">Epoch</span> <span class="mi">3500</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.220729</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.57495254</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.382976</span>
+<span class="n">Epoch</span> <span class="mi">3600</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.1559719</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5776382</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.51719</span>
+<span class="n">Epoch</span> <span class="mi">3700</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.0955786</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5802284</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.646636</span>
+<span class="n">Epoch</span> <span class="mi">3800</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">1.0392704</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.58272594</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.77145</span>
+<span class="n">Epoch</span> <span class="mi">3900</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.9868592</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.58512956</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.891571</span>
+<span class="n">Epoch</span> <span class="mi">4000</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.9379176</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.58745015</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.007542</span>
+<span class="n">Epoch</span> <span class="mi">4100</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.8922657</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5896877</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.119366</span>
+<span class="n">Epoch</span> <span class="mi">4200</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.8497285</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.59184283</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.227069</span>
+<span class="n">Epoch</span> <span class="mi">4300</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.81009895</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.59391785</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.33077</span>
+<span class="n">Epoch</span> <span class="mi">4400</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.77307904</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.595921</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.430876</span>
+<span class="n">Epoch</span> <span class="mi">4500</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.738523</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.597853</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.527429</span>
+<span class="n">Epoch</span> <span class="mi">4600</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.7063254</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.5997128</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.620371</span>
+<span class="n">Epoch</span> <span class="mi">4700</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.6762528</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.6015071</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.710042</span>
+<span class="n">Epoch</span> <span class="mi">4800</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.6482169</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.60323465</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.796377</span>
+<span class="n">Epoch</span> <span class="mi">4900</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.62203795</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.60490054</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.87963</span>
+<span class="n">Epoch</span> <span class="mi">5000</span> <span class="p">:</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.5976187</span> <span class="n">W</span> <span class="o">=</span> <span class="mf">0.6065048</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.9598055</span>
+<span class="n">Training</span> <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.5976187</span> <span class="n">Weight</span> <span class="o">=</span> <span class="mf">0.6065048</span> <span class="n">bias</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.9598055</span> </code></pre></figure>
+
+<p align="center"><image src="/assets/img/2019-03-28-tu-hoc-tensorflow-p4/0.02_5000.png" /></p>
+<p>Training với 10000 epochs:</p>
+<p align="center"><image src="/assets/img/2019-03-28-tu-hoc-tensorflow-p4/0.02_10000.png" /></p>
+
+<p>Như vậy mình vừa hướng dẫn các bạn giải một bài toán Linear Regression đơn giản bằng <code class="highlighter-rouge">Tensorflow</code>. Nếu bài viết có gì chưa đúng vui lòng comment dưới phần bình luận :D. Trong bài viết sau mình sẽ giới thiệu chi tiết về các thành phần khác như Loss, Optimizers.</p>
+
+  </div><div class="comments">
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v7.0" nonce="iXnIUCbx"></script>
+</div><!-- Incomment incase you want to use Disqus
+      <div id="disqus_thread"></div>
+   -->
+</article>
+
+<div class="fb-comments" data-href="https://nguyentranthuc.tk/" data-numposts="4" data-width="100%" data-order-by="reverse_time"></div></div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">About Nguyễn Trần Thức</div>
+      <div class="card-body">
+        <p class="author_bio">Hi, my name is Thuc</p><!-- Place this tag where you want the github button to render. -->
+<!--
+<a class="github-button" href="https://github.com/raquelfishes/raquelfishes.github.io" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star raquelfishes-site on GitHub">Star this Project</a>
+-->
+</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Categories</div>
+      <div class="card-body text-dark">
+             
+            <div id="#Ultilities"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Ultilities">Ultilities</a>
+            </li>
+            <a name="Ultilities"></a>
+
+             
+            <div id="#Tensorflow"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Tensorflow">Tensorflow</a>
+            </li>
+            <a name="Tensorflow"></a>
+
+             
+            <div id="#Architectures and Algorithms"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Architectures and Algorithms">Architectures and Algorithms</a>
+            </li>
+            <a name="Architectures and Algorithms"></a>
+
+             
+            <div id="#guides"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/guides">guides</a>
+            </li>
+            <a name="guides"></a>
+
+             
+            <div id="#tutorials"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/tutorials">tutorials</a>
+            </li>
+            <a name="tutorials"></a>
+
+             
+            <div id="#jekyll"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/jekyll">jekyll</a>
+            </li>
+            <a name="jekyll"></a>
+
+             
+            <div id="#Paper Review"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Paper Review">Paper Review</a>
+            </li>
+            <a name="Paper Review"></a>
+
+             
+            <div id="#Computer Vision"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Computer Vision">Computer Vision</a>
+            </li>
+            <a name="Computer Vision"></a>
+
+             
+            <div id="#Amazon Web Service"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Amazon Web Service">Amazon Web Service</a>
+            </li>
+            <a name="Amazon Web Service"></a>
+
+            </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Useful Links</div>
+      <div class="card-body text-dark">
+        
+        <li>
+          <a href="https://tranthuc99.github.io/about">About me</a>
+        </li>
+        
+        <li>
+          <a href="https://tranthuc99.github.io/contact">Contact Me</a>
+        </li>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+        </div>
+        
+         <div class="col-lg-12" id="newsletter_footer"><!-- Mailchimp Newletters 
+<form action=""method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+<div id="mc_embed_signup_scroll_footer">
+    <label for="mce-EMAIL_footer"> Signup for Weekly Email Newsletters :D</label>
+    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL_footer" placeholder="email address" required>
+    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups
+    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+        <input type="text" name="b_50bab1c85eae24ecfb0f68361_3a2dd721d0" tabindex="-1" value="">
+    </div><br />
+    <div class="clear">
+        <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe_footer" class="btn btn-lg btn-success">
+    </div>
+</div>
+-->
+</div><footer>
+    <p> Powered by<a href="https://github.com/sujaykundu777/devlopr-jekyll"> devlopr jekyll</a>.Hosted at <a href="https://pages.github.com">Github</a>.
+        <!--Subscribe via <a href=" /feed.xml ">RSS</a>-->
+    </p>
+</footer>
+<script>
+            var options = {
+                classname: 'my-class',
+                id: 'my-id'
+            };
+            var nanobar = new Nanobar( options );
+            nanobar.go( 30 );
+            nanobar.go( 76 );
+            nanobar.go(100);
+        </script>
+
+<!--
+   <div hidden id="snipcart" data-api-key="Y2I1NTAyNWYtMTNkMy00ODg0LWE4NDItNTZhYzUxNzJkZTI5NjM3MDI4NTUzNzYyMjQ4NzU0"></div>
+   <script src="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.js" defer></script>
+-->
+   <script src="/assets/js/mode-switcher.js"></script>
+
+
+<!-- câu đối năm mới -->
+<!--<script type='text/javascript'>
+
+document.write('<div class="tet-2019"><img class="left-2019" id="left-2020" src="https://lh4.googleusercontent.com/-HXBsyeylNsk/XDQOO3VSvjI/AAAAAAAACm0/mN6mv1PCfgc8o3PrRm_kvBWN7KmMjsPqQCLcBGAs/s1600/tet1.png"/><img class="right-2019" id="right-2020" src="https://lh4.googleusercontent.com/-tlsSRiDAay8/XDQOjlNI5uI/AAAAAAAACm8/66f7Unvw1J039PCBEUX9q-gFOfUw8JoGgCLcBGAs/s1600/tet2.png"/></div><style>#left-2020{width: 130px;left:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}#right-2020{width: 130px;right:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}.left-2019{top:70px}.right-2019{top:70px}.text-2019-l{top:50px}.text-2019-r{top:50px}@media screen and (max-width:1024px){.tet-2019{display:none}}@media screen and (max-width:1440px){#shareduyblogs{display:none}}</style>')
+
+</script>
+<script>
+      var lastScroll = 0;
+      jQuery(document).ready(function($) {
+        $(window).scroll(function() {
+          var scroll = $(window).scrollTop();
+          if (scroll > lastScroll) {
+            $('#right-2020').removeClass('left-2019').addClass('text-2019-l')
+            $('#left-2020').removeClass('right-2019').addClass('text-2019-r')
+          } else if (scroll < lastScroll) {
+            $('#right-2020').addClass('left-2019').removeClass('text-2019-l')
+$('#left-2020').addClass('right-2019').removeClass('text-2019-r')
+          }
+          lastScroll = scroll;
+        })
+      })
+</script>-->
+
+
+<!-- câu đối năm mới 
+<script type='text/javascript'>
+document.write('<img style="position:fixed;z-index:0;top:60px;left:0" src="assets/figs/tet-left.png"/><img style="position:fixed;z-index:0;top:60px;right:0" src="assets/figs/tet-right.png"/>');
+</script>-->
+
+
+
+
+
+
+</body>
+</html>

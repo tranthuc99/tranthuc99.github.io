@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<html lang=" en "><head>
+    <meta charset="utf-8">
+    <title>Genetic Algorithm - Giải thuật di truyền</title>
+    <meta http-equip="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="description" content="Genetic Algorithm - Giải thuật di truyền" />
+      <meta name="keywords" content="Genetic Algorithm - Giải thuật di truyền, Nguyễn Trần Thức, Architectures and Algorithms" />
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+      <meta content="" property="fb:app_id">
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+      
+        <meta content="Genetic Algorithm - Giải thuật di truyền" property="og:title">
+        <meta content="article" property="og:type">
+      
+
+      
+        <meta content="Personal site of Thuc" property="og:description">
+      
+
+      
+        <meta content="https://tranthuc99.github.io/2020/05/28/genetic-algorithm" property="og:url">
+      
+
+      
+        <meta content="2020-05-27T17:16:20+00:00" property="article:published_time">
+        <meta content="https://tranthuc99.github.io/about/" property="article:author">
+      
+
+      
+
+      
+        
+          <meta content="Architectures and Algorithms" property="article:section">
+        
+      
+
+      
+        
+          <meta content="Algorithm" property="article:tag">
+        
+      
+
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:site" content="@">
+      <meta name="twitter:creator" content="@">
+
+      
+        <meta name="twitter:title" content="Genetic Algorithm - Giải thuật di truyền">
+      
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+        <meta name="twitter:url" content="https://tranthuc99.github.io/2020/05/28/genetic-algorithm">
+      
+
+      
+        <meta name="twitter:description" content="genetic algorithm la gi, giai thuat di truyen la gi, giải thuật di truyền là gì, giải thuật di truyền">
+      
+
+      
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <!-- <link rel="stylesheet" href="/assets/css/custom-style.css" /> -->
+    <link rel="stylesheet" href="/assets/bower_components/lightgallery/dist/css/lightgallery.min.css"/>
+    <link rel="stylesheet" href="/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/bower_components/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" />
+    <link ref="shortcut icon" href="/assets/img/rp2_Qec_icon.ico" />  
+    <!-- UNUSED FOR NOW -->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">-->
+    <!--<link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.css" />-->
+    <!--<link rel="stylesheet" href="/assets/bower_components/icono/dist/icono.min.css"/>-->
+
+    <!-- Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://tranthuc99.github.io/assets/img/rp2_Qec_icon.ico" type="image/gif" sizes="16x16">
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script>
+
+   <!-- <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script> -->
+    <script src="/assets/bower_components/jquery.easing/jquery.easing.min.js"></script>
+    <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+    <script src="/assets/bower_components/lightgallery/dist/js/lightgallery-all.min.js"></script>
+    <script src="/assets/bower_components/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="/assets/bower_components/nanobar/nanobar.min.js"></script>
+    <script src="/assets/bower_components/typewrite/dist/typewrite.min.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/picturefill/3.0.2/picturefill.min.js"></script>-->
+
+   <!-- Github Button -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"></script>
+    -->
+    <!-- Admin -->
+    <meta  property="fb:app_id" content = "2609590356023533" />
+    <!-- <meta  property="fb:admins"  content="https://www.facebook.com/tranthuc140820"/> -->
+    <meta  property="og:url"  content="nguyentranthuc.tk"  />
+    <meta  property="og:title"  content="Thức <3 Hoài"  />
+    <meta  property="og:description"  content="abc"  />
+    <meta  property="og:image"  content="IMG"  />
+
+    <!-- MathJax -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!--
+  <script>
+      (function (d, h, m) {
+        var js, fjs = d.getElementsByTagName(h)[0];
+        if (d.getElementById(m)) { return; }
+        js = d.createElement(h); js.id = m;
+        js.onload = function () {
+          window.makerWidgetComInit({
+            position: "left",
+            widget: "ofeeof264otl2l5g-zspk40eq2gaomj2n-higi2qphmveubksi"
+          })
+        };
+        js.src = "https://makerwidget.com/js/embed.js";
+        fjs.parentNode.insertBefore(js, fjs)
+      }(document, "script", "dhm"))
+    </script>
+  -->
+      <!-- buy me a coffeee -->
+    <!--<script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="raquelfishes" data-description="Support me on Buy me a coffee!" data-message="" data-color="#FF813F" data-position="right" data-x_margin="10" data-y_margin="10"></script>
+
+    
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-166953347-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  -->
+
+  </head>
+<body>       <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="topNav">
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+        <span class="icono-hamburger" id="navbar-hamburger"> </span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <img class="navbar-brand-img" src="/assets/img/sign.webp"><!--Nguyễn Trần Thức-->
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/about"
+            >About me</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/contact"
+            >Contact Me</a
+            >
+          </li>
+          
+        </ul>
+      </div>
+      <ul class="nav justify-content-end">
+
+            <!--
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="search-icon"
+                href="https://tranthuc99.github.io/search#/"
+                ><i class="fa fa-search" aria-hidden="true"></i
+              ></a>
+            </li>
+            <li class="nav-item" style="margin-top:5px; padding-right:20px;" >
+                <a class="header__checkout snipcart-checkout">
+                    <svg width="31" height="27" viewBox="0 0 31 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M1.10512 0.368718C0.560256 0.368718 0.118164 0.812066 0.118164 1.35848C0.118164 1.9049 0.560256 2.34824 1.10512 2.34824H4.90887L8.30138 18.4009C8.43503 19.0053 8.83085 19.5079 9.32946 19.5041H25.7788C26.3005 19.5118 26.7799 19.0375 26.7799 18.5143C26.7799 17.9911 26.3006 17.5168 25.7788 17.5245H10.1315L9.71003 15.545H27.095C27.5371 15.5412 27.9547 15.2048 28.0511 14.7718L30.354 4.87412C30.4825 4.29933 29.9852 3.67172 29.3979 3.66786H7.21171L6.6771 1.15221C6.58329 0.71276 6.15921 0.368652 5.7107 0.368652L1.10512 0.368718ZM7.623 5.64746H12.7634L13.2569 8.61674H8.25005L7.623 5.64746ZM14.7785 5.64746H20.9881L20.4946 8.61674H15.2719L14.7785 5.64746ZM23.0031 5.64746H28.1537L27.4649 8.61674H22.5097L23.0031 5.64746ZM8.67181 10.5963H13.5862L14.0797 13.5656H9.29919L8.67181 10.5963ZM15.6009 10.5963H20.1656L19.6721 13.5656H16.0944L15.6009 10.5963ZM22.1807 10.5963H27.0023L26.3135 13.5656H21.6872L22.1807 10.5963ZM12.6197 20.164C10.8141 20.164 9.32979 21.6525 9.32979 23.4632C9.32979 25.2739 10.8141 26.7624 12.6197 26.7624C14.4252 26.7624 15.9095 25.2739 15.9095 23.4632C15.9095 21.6525 14.4252 20.164 12.6197 20.164ZM22.4892 20.164C20.6837 20.164 19.1994 21.6525 19.1994 23.4632C19.1994 25.2739 20.6837 26.7624 22.4892 26.7624C24.2948 26.7624 25.7791 25.2739 25.7791 23.4632C25.7791 21.6525 24.2948 20.164 22.4892 20.164ZM12.6197 22.1435C13.3586 22.1435 13.9356 22.7222 13.9356 23.4632C13.9356 24.2042 13.3586 24.7829 12.6197 24.7829C11.8807 24.7829 11.3037 24.2042 11.3037 23.4632C11.3037 22.7222 11.8807 22.1435 12.6197 22.1435ZM22.4892 22.1435C23.2282 22.1435 23.8052 22.7222 23.8052 23.4632C23.8052 24.2042 23.2282 24.7829 22.4892 24.7829C21.7503 24.7829 21.1733 24.2042 21.1733 23.4632C21.1733 22.7222 21.7503 22.1435 22.4892 22.1435Z"
+                        fill="#ff7901" class="header__checkout-fill"></path>
+                    </svg>
+                    <span class="snipcart-items-count"></span>
+                    <!-- <span class="snipcart-total-price"></span> 
+                  </a>
+            </li>
+          -->
+
+      <!-- Nhạc tết 
+      <audio autoplay="true" preload="auto">
+        <source src="assets/vid/Tet-Dong-Day.mp3" type="audio/mpeg">
+        </audio>-->
+
+        <li class="nav-item">
+          <input
+          class="nav-link switch"
+          id="theme-toggle"
+          onclick="modeSwitcher() "
+          type="checkbox"
+          name="checkbox"
+          />
+        </li>
+      </ul>
+    </nav>
+<div class="col-lg-12">
+            <div class="row" id="blog-post-container">
+  <div class="col-lg-8 offset-md-2"><article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">Genetic Algorithm - Giải thuật di truyền</h1>
+    <h4 class="post-meta"></h4>
+    <p class="post-summary">
+      Posted by :  at
+      <time datetime="2020-05-27 17:16:20 +0000" itemprop="datePublished"
+        >May 27, 2020</time
+      >
+    </p>
+    <span
+      class="disqus-comment-count"
+      data-disqus-identifier="/2020/05/28/genetic-algorithm"
+    ></span>
+    <div class="post-categories">
+       Category : 
+      <a href="/blog/categories/Architectures and Algorithms"
+        >Architectures and Algorithms</a
+      >
+       
+    </div>
+  </div>
+
+  <div class="card-body" itemprop="articleBody">
+    <img
+      class="card-img-top"
+      src="https://tranthuc99.github.io/assets/img/posts/"
+      alt=""
+    />
+    <br />
+    <br />
+    <p>Từ lâu, chúng ta thường được nghe rằng loài người được tiến hóa từ loài vượn cổ. Quan điểm này xuất phát từ thuyết tiến hóa của Charles Darwin. Song song với thuyết tiến hóa của Darwin - quan điểm chọn lọc tự nhiên thì còn 1 thuyết tiến hóa nữa của Jean-Baptiste Lamarck. Tuy nhiên trong bài viết này mình sẽ không đề cập tới lĩnh vực này mà mình muốn giới thiệu tới bạn đọc một thuật toán sử dụng chọn lọc tự nhiên để giải quyết bài toán có không gian tìm kiếm rất lớn - <strong>Genetic Algorithm</strong> - <em>Giải thuật Di Truyền</em>.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#ý-tưởng-chính" id="markdown-toc-ý-tưởng-chính">Ý tưởng chính</a>    <ul>
+      <li><a href="#mối-liên-hệ-giữa-các-thành-phần" id="markdown-toc-mối-liên-hệ-giữa-các-thành-phần">Mối liên hệ giữa các thành phần</a></li>
+    </ul>
+  </li>
+  <li><a href="#thuật-toán-di-truyền" id="markdown-toc-thuật-toán-di-truyền">Thuật toán di truyền</a>    <ul>
+      <li><a href="#initial-population--khởi-tạo-quần-thể" id="markdown-toc-initial-population--khởi-tạo-quần-thể">Initial Population- Khởi tạo quần thể</a></li>
+      <li><a href="#evaluation-fitness---đánh-giá-năng-lực" id="markdown-toc-evaluation-fitness---đánh-giá-năng-lực">Evaluation Fitness - Đánh giá năng lực</a></li>
+      <li><a href="#selection---chọn-lọc" id="markdown-toc-selection---chọn-lọc">Selection - Chọn lọc</a></li>
+      <li><a href="#crossover---sinh-sản" id="markdown-toc-crossover---sinh-sản">Crossover - Sinh sản</a></li>
+      <li><a href="#mutation---đột-biến" id="markdown-toc-mutation---đột-biến">Mutation - Đột biến</a></li>
+    </ul>
+  </li>
+  <li><a href="#những-vấn-đề-thường-gặp-khi-sử-dụng-thuật-toán" id="markdown-toc-những-vấn-đề-thường-gặp-khi-sử-dụng-thuật-toán">Những vấn đề thường gặp khi sử dụng thuật toán</a>    <ul>
+      <li><a href="#evaluation-fitness" id="markdown-toc-evaluation-fitness">Evaluation Fitness</a></li>
+      <li><a href="#chromosome" id="markdown-toc-chromosome">Chromosome</a></li>
+    </ul>
+  </li>
+  <li><a href="#ứng-dụng-thực-tiễn" id="markdown-toc-ứng-dụng-thực-tiễn">Ứng dụng thực tiễn</a></li>
+</ul>
+
+<h3 id="ý-tưởng-chính">Ý tưởng chính</h3>
+
+<p>Nhằm giải thích sự xuất hiện của Hươu cao cổ, Darwin đưa ra giả thiết rằng: “Trong quần thể Hươu vốn đã tồn tại những con Hươu có cổ cao hơn bình thường nhờ gen di truyền và sự đột biến. Trải qua quá trình sinh sống và phát triển, môi trường thay đổi khiến cho thức ăn càng ngày càng khó kiếm hơn, khiến những con Hươu có chiếc cổ cao sẽ chiếm ưu thế sinh tồn hơn. Lâu dần thì thế hệ Hươu mới sẽ được thay bằng những con Hươu cao cổ có khả năng sinh sản và thích nghi với môi trường lớn hơn”.</p>
+
+<p align="center"><img alt="Dawwin Evolution Theory" src="/assets/img/2020-05-28-genetic-algorithm/darwin_evolution_theory.jpg" /></p>
+
+<p>Nhìn vào thuyết tiến hóa của Hươu cao cổ này, chúng ta thấy được sự xuất hiện của những thành phần sau:</p>
+
+<ul>
+  <li><strong>Quần thể</strong></li>
+  <li><strong>Đột biến</strong></li>
+  <li><strong>Sinh sản</strong></li>
+  <li><strong>Chọn lọc tự nhiên</strong></li>
+</ul>
+
+<p>đây cũng chính là những thành phần trong giải thuật này.</p>
+
+<h4 id="mối-liên-hệ-giữa-các-thành-phần">Mối liên hệ giữa các thành phần</h4>
+
+<p>Để nắm rõ ý tưởng chính của thuật toán, biểu đồ dưới đây sẽ mổ tả cụ thể những thành phần và mối liên hệ của chúng.</p>
+
+<p align="center"><img alt="Element Relationship" src="/assets/img/2020-05-28-genetic-algorithm/relationship.png" /></p>
+
+<ul>
+  <li><strong>1. Population - Quần thể</strong> : Một quần thể ban đầu sẽ có những cá thể nhất định với những đặc tính khác nhau, những đặc tính này sẽ quy định khả năng sinh sản, sinh tồn, khả năng đáp ứng điều kiện môi trường của từng cá thể.</li>
+  <li><strong>2. Natural Selection - Chọn lọc tự nhiên</strong> : Theo thời gian những cá thể yếu hơn, không có khả năng sinh tồn sẽ bị loại bỏ bởi những tác nhân như tranh chấp chuỗi thức ăn, môi trường tác độc, bị loài khác tiêu diệt, … Cuối cùng sẽ còn lại những cá thể có đặc tính ưu việt hơn sẽ được giữ lại - <strong>Adaptive individual</strong>.</li>
+  <li><strong>3. Mutation - Đột biến</strong> : Như chúng ta đã biết thì mỗi cá thể con được sinh ra sẽ được kế thừa lại những đặc tính của cả cha và mẹ. Sau một thời gian sinh sống, một quần thể sẽ đặt tới giới hạn của các cặp gen của con được tạo nên từ gen của bố mẹ. Để đạt được tới sự tiến hóa, <strong>Đột Biến</strong> chính là một trong những nguyên nhân chính, có vai trò đóng góp nguyên liệu cho quá trình <strong>Chọn lọc tự nhiên</strong>.</li>
+  <li><strong>4. Evolution - Tiến hóa</strong> : Những cá thể đột biến không phải luôn là những cá thể mạnh mẽ và có đủ khả năng sinh tồn, <strong>Chọn lọc tự nhiên</strong> sẽ chọn ra những cá thể đột biến nhưng có thể thích nghi với môi trường sống tốt hơn những cá thể khác trong quần thể. Sau một thời gian sinh sản, những gen đột biến sẽ chiếm ưu thế và chiếm đa số trong quần thể.</li>
+</ul>
+
+<p align="center"><img alt="Butter Fly Population" src="/assets/img/2020-05-28-genetic-algorithm/butter_fly_population.jpg" /></p>
+
+<h3 id="thuật-toán-di-truyền">Thuật toán di truyền</h3>
+
+<p>Có rất nhiều cách giải thích và biểu đồ khác nhau để diễn giải thuật toán, nhưng nhìn chung các thành phần chính của thuật toán sẽ không thay đổi.</p>
+
+<p align="center"><img alt="Algorithm Graph" src="/assets/img/2020-05-28-genetic-algorithm/graph.png" /></p>
+
+<p>Xét bài toán <strong>Tìm mật khẩu</strong>, yêu cầu của bài toán như sau:</p>
+<ul>
+  <li>Mật khẩu gồm 8 kí tự ( bao gồm chữ cái, chữ số và khoảng trắng) - Ví dụ: <strong>hoilamgi</strong>.</li>
+  <li>Mỗi lần thử, hệ thống sẽ báo về số lượng kí tự đúng với mật khẩu.</li>
+  <li>Yêu cầu tìm ra chuỗi mật khẩu cho trước.</li>
+</ul>
+
+<p>Thuật toán sẽ dừng lại khi tìm được cá thể đáp ứng được nhu cầu đề ra sau mỗi thế hệ mới. Quá trình sản sinh thế hệ tiếp theo sẽ là một vòng lặp (<strong>Evaluation Fitness</strong> -&gt; <strong>Selection</strong> -&gt; <strong>Crossover</strong> -&gt; <strong>Mutation</strong>). Chúng ta sẽ cùng xây dựng những thành phần chính trong thuật toán để giải quyết bài toán này.</p>
+
+<h4 id="initial-population--khởi-tạo-quần-thể">Initial Population- Khởi tạo quần thể</h4>
+
+<p>Nhìn chung thuật toán sẽ mô phỏng lại hầu hết những hiện tượng xảy ra trong quá trình tiến hóa của động vật. Vì vậy để thuật toán có thể vận hành được, thì điều đầu tiên cần có chính là <strong>Quần thể</strong>. Xét bài toán tìm mật khẩu, quần thể sẽ bao gồm những chuỗi 8 kí tự, được sinh ra ngẫu nhiên.</p>
+
+<p align="center"><img alt="Initial Population" src="/assets/img/2020-05-28-genetic-algorithm/step1.png" /></p>
+
+<h4 id="evaluation-fitness---đánh-giá-năng-lực">Evaluation Fitness - Đánh giá năng lực</h4>
+
+<p>Tiếp theo, mỗi chuỗi mật khẩu sẽ được đánh giá sự chính xác so với mật khẩu cho trước, với mỗi kí tự giống với mật khẩu cho trước tại đúng vị trí sẽ được <strong>1 point</strong>.</p>
+
+<p align="center"><img alt="Evaluation Fitness" src="/assets/img/2020-05-28-genetic-algorithm/step2.png" /></p>
+
+<p>Thành phần <strong>Point</strong> ở đây sẽ đại diện cho khả năng sinh tồn của cá thể trong quần thể, càng lớn tức cá thể đó càng thích nghi với môi trường tốt.</p>
+
+<h4 id="selection---chọn-lọc">Selection - Chọn lọc</h4>
+
+<p>Sau khi đã đánh giá được quần thể, các cá thể có khả năng sinh tồn tốt hơn sẽ có cơ hội được sinh sản nhiều hơn các cá thể còn lại. Các chuỗi kí tự mật khẩu sẽ được lựa chọn theo số <strong>Point</strong> đang có.</p>
+
+<p align="center"><img alt="Selection" src="/assets/img/2020-05-28-genetic-algorithm/step3.png" /></p>
+
+<h4 id="crossover---sinh-sản">Crossover - Sinh sản</h4>
+
+<p>Vào giai đoạn sinh sản, các cá thể con sẽ được kế thừa các đặc tính từ cả bố và mẹ. Thông thường, cá thể con sẽ nhận một nửa gen từ mỗi bố, mẹ.</p>
+
+<p align="center"><img alt="Crossover 1 Point" src="/assets/img/2020-05-28-genetic-algorithm/step4.png" /></p>
+
+<p>Cá thể con có thể sẽ thích nghi tốt hơn, hoặc kém hơn. Ngoài ra, có những kiểu lai tạo khác nhau như <strong>2 Point</strong>, <strong>Uniform Selection</strong>.</p>
+
+<p align="center"><img alt="Crossover 2 Point" src="/assets/img/2020-05-28-genetic-algorithm/step5.png" /></p>
+<p align="center">*2 Point*</p>
+
+<p align="center"><img alt="Crossover Uniform" src="/assets/img/2020-05-28-genetic-algorithm/step6.png" /></p>
+<p align="center">*Uniform*</p>
+
+<h4 id="mutation---đột-biến">Mutation - Đột biến</h4>
+
+<p>Dễ nhận thấy rằng, nếu chỉ bằng việc sinh ngẫu nhiên và lai tạo, sẽ rất khó để tìm được nghiệm. Trừ khi cá thể khởi tạo phù hợp luôn với yêu cầu đề bài, tức là có đáp án luôn từ đầu - Ăn May. Như đã nói từ đầu, <strong>Đột biến</strong> chính là nguyên liệu của <strong>Chọn lọc tự nhiên</strong>, bằng việc lựa chọn ngẫu nhiên các vị trí và thay thế bằng một kí tự ngẫu nhiên nào đó, chúng ta có thể mô phỏng lại hiện tượng đột biến - <a href="https://vi.wikipedia.org/wiki/%C4%90%E1%BB%99t_bi%E1%BA%BFn_%C4%91i%E1%BB%83m">Đột biến điểm</a></p>
+
+<p align="center"><img alt="Mutation" src="/assets/img/2020-05-28-genetic-algorithm/step7.png" /></p>
+
+<p>Các cá thể đột biến có thể sẽ có khả năng thích nghi tốt hơn (1 -&gt; 2), hoặc cũng có thể ngược lại (4 -&gt; 3). Quá trình này sẽ lặp lại cho đến khi tìm được đáp án phù hợp.</p>
+
+<h3 id="những-vấn-đề-thường-gặp-khi-sử-dụng-thuật-toán">Những vấn đề thường gặp khi sử dụng thuật toán</h3>
+
+<p>Thông thường, <strong>Thuật toán Di Truyền</strong> sẽ đạt được lợi thế trong những bài toán có không gian tìm kiếm quá lớn mà những giải thuật vét cạn không thể xử lí được. Tuy nhiên khi sử dụng, chúng ta sẽ cần cân nhắc những vấn đề ảnh hưởng tới việc lựa chọn thuật toán.</p>
+
+<h4 id="evaluation-fitness">Evaluation Fitness</h4>
+
+<p>Như trong bộ truyện One Punch Man, các anh hùng sẽ được đánh giá và xếp hạnh theo <strong>Rank</strong>. <strong>Rank</strong> sẽ nói lên dược năng lực và sức mạnh của người đó - ngoại trừ <strong>Thánh Saitama</strong>. Vấn đề đầu tiên gặp phải đó chính là việc đánh giá các cá thể trong quần thể, chúng ta cần một phương thức để có thể đánh giá sự thích nghi hay ưu thế của từng cá thể.</p>
+
+<p align="center"><img alt="Evaluation Fitness" src="/assets/img/2020-05-28-genetic-algorithm/evaluation_fitness.png" /></p>
+
+<p>Tuy nhiên khi thực hiện việc này, chúng ta sẽ cần cân nhắc 2 vấn đề:</p>
+<ul>
+  <li><strong>Tính khả thi</strong>: Việc tìm phương thức đánh giá không phải luôn khả thi, ví dụ trong bài toàn tìm một giai điệu mới, việc đánh giá giai điệu đó có “dễ nghe”, “hay” hay không thuộc về cảm quan của mỗi người, nên việc tìm một hàm đánh giá chính xác sẽ rất khó khăn.</li>
+  <li><strong>Chi phí</strong>: Đây cũng là một vấn đề cần cân nhắc, nếu chi phí tính toán của phương thức đánh giá quá lớn, việc sử dụng để tìm kiếm trong không gian sẽ mất nhiều thời gian, thậm chí lâu hơn vét cạn.</li>
+</ul>
+
+<h4 id="chromosome">Chromosome</h4>
+
+<p>Trong bài toán <strong>Tìm mật khẩu</strong> thì chuỗi kí tự đại diện cho các <strong>Nhiễm sắc thể</strong> hay <strong>Chuỗi ADN</strong>. Việc số hóa những đặc tính của bài toán thành các bits, bytes để có thể sử dụng trong khâu <strong>Crossover</strong>, <strong>Mutation</strong> cũng gặp nhiều khó khăn trong những bài toán khác nhau. Bởi với mỗi sự thay đổi bit sẽ phải tương ứng với việc tạo ra một cá thể với đặc tính khác nhau.</p>
+
+<p align="center"><img alt="Anten của Nasa dùng thuật toán di truyền để tìm hình dáng tối ưu thu phát sóng." src="/assets/img/2020-05-28-genetic-algorithm/anten_nasa.png" /></p>
+
+<p align="center">*Anten của Nasa dùng thuật toán di truyền để tìm hình dáng tối ưu thu phát sóng*</p>
+
+<h3 id="ứng-dụng-thực-tiễn">Ứng dụng thực tiễn</h3>
+
+<p>Như đã đề cập trước đó, <strong>Giải thuật Di truyền</strong> hay <strong>Genetic Algorithm</strong> sẽ có ưu thế trong những bài toán mà có sẵn lời giải trong một không gian tìm kiếm lớn như những bài toán cổ điển <em>Người du lịch</em>, <em>Cái Túi</em>, … Ngoài ra, hiện nay với việc bùng nổ của <strong>AI</strong>, việc sử dụng mạng <strong>Neural</strong> cùng với giải thuật này cũng giúp giải quyết một số bài tóan về tự động, hành vi, …</p>
+
+<p align="center"><img alt="Snake Fusion" src="/assets/img/2020-05-28-genetic-algorithm/snake_fusion.gif" /></p>
+
+<p>Mình xin kết thúc bài viết ở đây, mong nhận được phản hồi của bạn đọc!</p>
+
+<p>Bài viết được tham khảo và sử dụng hình ảnh từ:</p>
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=zIkBYwdkuTk">Neural Network Learns to Play Snake</a></li>
+  <li><a href="https://medium.com/datadriveninvestor/genetic-algorithm-made-intuitive-with-natural-selection-and-python-project-from-scratch-3462f7793a3f">Genetic Algorithm made intuitive with natural selection and python
+</a></li>
+  <li><a href="https://id.pinterest.com/pin/310959549252410148/">Giraffe Evolution</a></li>
+</ul>
+
+  </div><div class="comments">
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v7.0" nonce="iXnIUCbx"></script>
+</div><!-- Incomment incase you want to use Disqus
+      <div id="disqus_thread"></div>
+   -->
+</article>
+
+<div class="fb-comments" data-href="https://nguyentranthuc.tk/" data-numposts="4" data-width="100%" data-order-by="reverse_time"></div></div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">About Nguyễn Trần Thức</div>
+      <div class="card-body">
+        <p class="author_bio">Hi, my name is Thuc</p><!-- Place this tag where you want the github button to render. -->
+<!--
+<a class="github-button" href="https://github.com/raquelfishes/raquelfishes.github.io" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star raquelfishes-site on GitHub">Star this Project</a>
+-->
+</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Categories</div>
+      <div class="card-body text-dark">
+             
+            <div id="#Ultilities"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Ultilities">Ultilities</a>
+            </li>
+            <a name="Ultilities"></a>
+
+             
+            <div id="#Tensorflow"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Tensorflow">Tensorflow</a>
+            </li>
+            <a name="Tensorflow"></a>
+
+             
+            <div id="#Architectures and Algorithms"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Architectures and Algorithms">Architectures and Algorithms</a>
+            </li>
+            <a name="Architectures and Algorithms"></a>
+
+             
+            <div id="#guides"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/guides">guides</a>
+            </li>
+            <a name="guides"></a>
+
+             
+            <div id="#tutorials"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/tutorials">tutorials</a>
+            </li>
+            <a name="tutorials"></a>
+
+             
+            <div id="#jekyll"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/jekyll">jekyll</a>
+            </li>
+            <a name="jekyll"></a>
+
+             
+            <div id="#Paper Review"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Paper Review">Paper Review</a>
+            </li>
+            <a name="Paper Review"></a>
+
+             
+            <div id="#Computer Vision"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Computer Vision">Computer Vision</a>
+            </li>
+            <a name="Computer Vision"></a>
+
+             
+            <div id="#Amazon Web Service"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Amazon Web Service">Amazon Web Service</a>
+            </li>
+            <a name="Amazon Web Service"></a>
+
+            </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Useful Links</div>
+      <div class="card-body text-dark">
+        
+        <li>
+          <a href="https://tranthuc99.github.io/about">About me</a>
+        </li>
+        
+        <li>
+          <a href="https://tranthuc99.github.io/contact">Contact Me</a>
+        </li>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+        </div>
+        
+         <div class="col-lg-12" id="newsletter_footer"><!-- Mailchimp Newletters 
+<form action=""method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+<div id="mc_embed_signup_scroll_footer">
+    <label for="mce-EMAIL_footer"> Signup for Weekly Email Newsletters :D</label>
+    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL_footer" placeholder="email address" required>
+    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups
+    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+        <input type="text" name="b_50bab1c85eae24ecfb0f68361_3a2dd721d0" tabindex="-1" value="">
+    </div><br />
+    <div class="clear">
+        <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe_footer" class="btn btn-lg btn-success">
+    </div>
+</div>
+-->
+</div><footer>
+    <p> Powered by<a href="https://github.com/sujaykundu777/devlopr-jekyll"> devlopr jekyll</a>.Hosted at <a href="https://pages.github.com">Github</a>.
+        <!--Subscribe via <a href=" /feed.xml ">RSS</a>-->
+    </p>
+</footer>
+<script>
+            var options = {
+                classname: 'my-class',
+                id: 'my-id'
+            };
+            var nanobar = new Nanobar( options );
+            nanobar.go( 30 );
+            nanobar.go( 76 );
+            nanobar.go(100);
+        </script>
+
+<!--
+   <div hidden id="snipcart" data-api-key="Y2I1NTAyNWYtMTNkMy00ODg0LWE4NDItNTZhYzUxNzJkZTI5NjM3MDI4NTUzNzYyMjQ4NzU0"></div>
+   <script src="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.js" defer></script>
+-->
+   <script src="/assets/js/mode-switcher.js"></script>
+
+
+<!-- câu đối năm mới -->
+<!--<script type='text/javascript'>
+
+document.write('<div class="tet-2019"><img class="left-2019" id="left-2020" src="https://lh4.googleusercontent.com/-HXBsyeylNsk/XDQOO3VSvjI/AAAAAAAACm0/mN6mv1PCfgc8o3PrRm_kvBWN7KmMjsPqQCLcBGAs/s1600/tet1.png"/><img class="right-2019" id="right-2020" src="https://lh4.googleusercontent.com/-tlsSRiDAay8/XDQOjlNI5uI/AAAAAAAACm8/66f7Unvw1J039PCBEUX9q-gFOfUw8JoGgCLcBGAs/s1600/tet2.png"/></div><style>#left-2020{width: 130px;left:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}#right-2020{width: 130px;right:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}.left-2019{top:70px}.right-2019{top:70px}.text-2019-l{top:50px}.text-2019-r{top:50px}@media screen and (max-width:1024px){.tet-2019{display:none}}@media screen and (max-width:1440px){#shareduyblogs{display:none}}</style>')
+
+</script>
+<script>
+      var lastScroll = 0;
+      jQuery(document).ready(function($) {
+        $(window).scroll(function() {
+          var scroll = $(window).scrollTop();
+          if (scroll > lastScroll) {
+            $('#right-2020').removeClass('left-2019').addClass('text-2019-l')
+            $('#left-2020').removeClass('right-2019').addClass('text-2019-r')
+          } else if (scroll < lastScroll) {
+            $('#right-2020').addClass('left-2019').removeClass('text-2019-l')
+$('#left-2020').addClass('right-2019').removeClass('text-2019-r')
+          }
+          lastScroll = scroll;
+        })
+      })
+</script>-->
+
+
+<!-- câu đối năm mới 
+<script type='text/javascript'>
+document.write('<img style="position:fixed;z-index:0;top:60px;left:0" src="assets/figs/tet-left.png"/><img style="position:fixed;z-index:0;top:60px;right:0" src="assets/figs/tet-right.png"/>');
+</script>-->
+
+
+
+
+
+
+</body>
+</html>

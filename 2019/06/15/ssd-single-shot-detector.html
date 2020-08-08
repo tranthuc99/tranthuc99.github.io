@@ -1,0 +1,592 @@
+
+
+<!DOCTYPE html>
+<html lang=" en "><head>
+    <meta charset="utf-8">
+    <title>Tìm hiểu về SSD - Single Shot Detector trong bài toán Object Detection</title>
+    <meta http-equip="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="description" content="Tìm hiểu về SSD - Single Shot Detector trong bài toán Object Detection" />
+      <meta name="keywords" content="Tìm hiểu về SSD - Single Shot Detector trong bài toán Object Detection, Nguyễn Trần Thức, Paper Review" />
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+      <meta content="" property="fb:app_id">
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+      
+        <meta content="Tìm hiểu về SSD - Single Shot Detector trong bài toán Object Detection" property="og:title">
+        <meta content="article" property="og:type">
+      
+
+      
+        <meta content="Personal site of Thuc" property="og:description">
+      
+
+      
+        <meta content="https://tranthuc99.github.io/2019/06/15/ssd-single-shot-detector" property="og:url">
+      
+
+      
+        <meta content="2019-06-15T01:16:20+00:00" property="article:published_time">
+        <meta content="https://tranthuc99.github.io/about/" property="article:author">
+      
+
+      
+
+      
+        
+          <meta content="Paper Review" property="article:section">
+        
+      
+
+      
+        
+          <meta content="Object Detection" property="article:tag">
+        
+      
+
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:site" content="@">
+      <meta name="twitter:creator" content="@">
+
+      
+        <meta name="twitter:title" content="Tìm hiểu về SSD - Single Shot Detector trong bài toán Object Detection">
+      
+      <meta content="Nguyễn Trần Thức" property="og:site_name">
+      
+        <meta name="twitter:url" content="https://tranthuc99.github.io/2019/06/15/ssd-single-shot-detector">
+      
+
+      
+        <meta name="twitter:description" content="Review Single Shot Detector for Object Detection, ssd la gi, single shot detector la gi, ssd, single shot detector">
+      
+
+      
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <!-- <link rel="stylesheet" href="/assets/css/custom-style.css" /> -->
+    <link rel="stylesheet" href="/assets/bower_components/lightgallery/dist/css/lightgallery.min.css"/>
+    <link rel="stylesheet" href="/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/bower_components/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" />
+    <link ref="shortcut icon" href="/assets/img/rp2_Qec_icon.ico" />  
+    <!-- UNUSED FOR NOW -->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css">-->
+    <!--<link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.css" />-->
+    <!--<link rel="stylesheet" href="/assets/bower_components/icono/dist/icono.min.css"/>-->
+
+    <!-- Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://tranthuc99.github.io/assets/img/rp2_Qec_icon.ico" type="image/gif" sizes="16x16">
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script>
+
+   <!-- <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script> -->
+    <script src="/assets/bower_components/jquery.easing/jquery.easing.min.js"></script>
+    <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+    <script src="/assets/bower_components/lightgallery/dist/js/lightgallery-all.min.js"></script>
+    <script src="/assets/bower_components/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="/assets/bower_components/nanobar/nanobar.min.js"></script>
+    <script src="/assets/bower_components/typewrite/dist/typewrite.min.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/picturefill/3.0.2/picturefill.min.js"></script>-->
+
+   <!-- Github Button -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- UNUSED FOR NOW -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"></script>
+    -->
+    <!-- Admin -->
+    <meta  property="fb:app_id" content = "2609590356023533" />
+    <!-- <meta  property="fb:admins"  content="https://www.facebook.com/tranthuc140820"/> -->
+    <meta  property="og:url"  content="nguyentranthuc.tk"  />
+    <meta  property="og:title"  content="Thức <3 Hoài"  />
+    <meta  property="og:description"  content="abc"  />
+    <meta  property="og:image"  content="IMG"  />
+
+    <!-- MathJax -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<!--
+  <script>
+      (function (d, h, m) {
+        var js, fjs = d.getElementsByTagName(h)[0];
+        if (d.getElementById(m)) { return; }
+        js = d.createElement(h); js.id = m;
+        js.onload = function () {
+          window.makerWidgetComInit({
+            position: "left",
+            widget: "ofeeof264otl2l5g-zspk40eq2gaomj2n-higi2qphmveubksi"
+          })
+        };
+        js.src = "https://makerwidget.com/js/embed.js";
+        fjs.parentNode.insertBefore(js, fjs)
+      }(document, "script", "dhm"))
+    </script>
+  -->
+      <!-- buy me a coffeee -->
+    <!--<script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="raquelfishes" data-description="Support me on Buy me a coffee!" data-message="" data-color="#FF813F" data-position="right" data-x_margin="10" data-y_margin="10"></script>
+
+    
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+      ga('create', 'UA-166953347-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  -->
+
+  </head>
+<body>       <nav class="navbar navbar-expand-lg fixed-top navbar-dark" id="topNav">
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+        <span class="icono-hamburger" id="navbar-hamburger"> </span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <img class="navbar-brand-img" src="/assets/img/sign.webp"><!--Nguyễn Trần Thức-->
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/about"
+            >About me</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a
+            class="nav-link"
+            href="https://tranthuc99.github.io/contact"
+            >Contact Me</a
+            >
+          </li>
+          
+        </ul>
+      </div>
+      <ul class="nav justify-content-end">
+
+            <!--
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="search-icon"
+                href="https://tranthuc99.github.io/search#/"
+                ><i class="fa fa-search" aria-hidden="true"></i
+              ></a>
+            </li>
+            <li class="nav-item" style="margin-top:5px; padding-right:20px;" >
+                <a class="header__checkout snipcart-checkout">
+                    <svg width="31" height="27" viewBox="0 0 31 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M1.10512 0.368718C0.560256 0.368718 0.118164 0.812066 0.118164 1.35848C0.118164 1.9049 0.560256 2.34824 1.10512 2.34824H4.90887L8.30138 18.4009C8.43503 19.0053 8.83085 19.5079 9.32946 19.5041H25.7788C26.3005 19.5118 26.7799 19.0375 26.7799 18.5143C26.7799 17.9911 26.3006 17.5168 25.7788 17.5245H10.1315L9.71003 15.545H27.095C27.5371 15.5412 27.9547 15.2048 28.0511 14.7718L30.354 4.87412C30.4825 4.29933 29.9852 3.67172 29.3979 3.66786H7.21171L6.6771 1.15221C6.58329 0.71276 6.15921 0.368652 5.7107 0.368652L1.10512 0.368718ZM7.623 5.64746H12.7634L13.2569 8.61674H8.25005L7.623 5.64746ZM14.7785 5.64746H20.9881L20.4946 8.61674H15.2719L14.7785 5.64746ZM23.0031 5.64746H28.1537L27.4649 8.61674H22.5097L23.0031 5.64746ZM8.67181 10.5963H13.5862L14.0797 13.5656H9.29919L8.67181 10.5963ZM15.6009 10.5963H20.1656L19.6721 13.5656H16.0944L15.6009 10.5963ZM22.1807 10.5963H27.0023L26.3135 13.5656H21.6872L22.1807 10.5963ZM12.6197 20.164C10.8141 20.164 9.32979 21.6525 9.32979 23.4632C9.32979 25.2739 10.8141 26.7624 12.6197 26.7624C14.4252 26.7624 15.9095 25.2739 15.9095 23.4632C15.9095 21.6525 14.4252 20.164 12.6197 20.164ZM22.4892 20.164C20.6837 20.164 19.1994 21.6525 19.1994 23.4632C19.1994 25.2739 20.6837 26.7624 22.4892 26.7624C24.2948 26.7624 25.7791 25.2739 25.7791 23.4632C25.7791 21.6525 24.2948 20.164 22.4892 20.164ZM12.6197 22.1435C13.3586 22.1435 13.9356 22.7222 13.9356 23.4632C13.9356 24.2042 13.3586 24.7829 12.6197 24.7829C11.8807 24.7829 11.3037 24.2042 11.3037 23.4632C11.3037 22.7222 11.8807 22.1435 12.6197 22.1435ZM22.4892 22.1435C23.2282 22.1435 23.8052 22.7222 23.8052 23.4632C23.8052 24.2042 23.2282 24.7829 22.4892 24.7829C21.7503 24.7829 21.1733 24.2042 21.1733 23.4632C21.1733 22.7222 21.7503 22.1435 22.4892 22.1435Z"
+                        fill="#ff7901" class="header__checkout-fill"></path>
+                    </svg>
+                    <span class="snipcart-items-count"></span>
+                    <!-- <span class="snipcart-total-price"></span> 
+                  </a>
+            </li>
+          -->
+
+      <!-- Nhạc tết 
+      <audio autoplay="true" preload="auto">
+        <source src="assets/vid/Tet-Dong-Day.mp3" type="audio/mpeg">
+        </audio>-->
+
+        <li class="nav-item">
+          <input
+          class="nav-link switch"
+          id="theme-toggle"
+          onclick="modeSwitcher() "
+          type="checkbox"
+          name="checkbox"
+          />
+        </li>
+      </ul>
+    </nav>
+<div class="col-lg-12">
+            <div class="row" id="blog-post-container">
+  <div class="col-lg-8 offset-md-2"><article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">Tìm hiểu về SSD - Single Shot Detector trong bài toán Object Detection</h1>
+    <h4 class="post-meta"></h4>
+    <p class="post-summary">
+      Posted by :  at
+      <time datetime="2019-06-15 01:16:20 +0000" itemprop="datePublished"
+        >Jun 15, 2019</time
+      >
+    </p>
+    <span
+      class="disqus-comment-count"
+      data-disqus-identifier="/2019/06/15/ssd-single-shot-detector"
+    ></span>
+    <div class="post-categories">
+       Category : 
+      <a href="/blog/categories/Paper Review"
+        >Paper Review</a
+      >
+       
+    </div>
+  </div>
+
+  <div class="card-body" itemprop="articleBody">
+    <img
+      class="card-img-top"
+      src="https://tranthuc99.github.io/assets/img/posts/"
+      alt=""
+    />
+    <br />
+    <br />
+    <p>Trong bài viết này, mình sẽ giải thích về cấu trúc mạng SSD - Single Shot Detector dùng trong bài toàn Object Detection. Bạn đọc có thể tham khảo kĩ hơn tại <a href="https://arxiv.org/pdf/1512.02325.pdf">Single Shot MultiBox Detector</a></p>
+
+<ul id="markdown-toc">
+  <li><a href="#giới-thiệu-về-ssd---single-shot-detector" id="markdown-toc-giới-thiệu-về-ssd---single-shot-detector">Giới thiệu về SSD - Single Shot Detector</a></li>
+  <li><a href="#hướng-tiếp-cận" id="markdown-toc-hướng-tiếp-cận">Hướng tiếp cận</a></li>
+  <li><a href="#kiến-trúc-của-ssd" id="markdown-toc-kiến-trúc-của-ssd">Kiến trúc của SSD</a>    <ul>
+      <li><a href="#convolutional-predictors-for-detection" id="markdown-toc-convolutional-predictors-for-detection">Convolutional predictors for detection</a></li>
+      <li><a href="#multi-scale-feature-maps-for-detection" id="markdown-toc-multi-scale-feature-maps-for-detection">Multi-scale feature maps for detection</a></li>
+      <li><a href="#default-boxes" id="markdown-toc-default-boxes">Default boxes</a></li>
+    </ul>
+  </li>
+  <li><a href="#training" id="markdown-toc-training">Training</a>    <ul>
+      <li><a href="#tìm-các-box-phù-hợp" id="markdown-toc-tìm-các-box-phù-hợp">Tìm các box phù hợp</a></li>
+      <li><a href="#hàm-loss" id="markdown-toc-hàm-loss">Hàm Loss</a>        <ul>
+          <li><a href="#localization-loss" id="markdown-toc-localization-loss">Localization Loss</a></li>
+          <li><a href="#confidence-loss" id="markdown-toc-confidence-loss">Confidence Loss</a></li>
+        </ul>
+      </li>
+      <li><a href="#chọn-kích-thước-và-tỉ-lệ-cho-default-box" id="markdown-toc-chọn-kích-thước-và-tỉ-lệ-cho-default-box">Chọn kích thước và tỉ lệ cho default box</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="giới-thiệu-về-ssd---single-shot-detector">Giới thiệu về SSD - Single Shot Detector</h2>
+
+<p>Trước khi bắt đầu vào việc tìm hiểu về cách mà SSD làm việc, chúng ta cùng điểm qua những đặc điểm chính của SSD. Tại mỗi vị trí trên <code class="highlighter-rouge">feature map</code>, SSD đặt các <code class="highlighter-rouge">default bounding boxes</code> với kích thước, tí lệ khác nhau. Trong quá trình xử lí, SSD sẽ đánh giá và tìm đối tượng trên các <code class="highlighter-rouge">bounding box</code> này nhằm tìm ra box phù hợp nhất với đối tượng cần tìm kiếm. Thêm vào đó, bằng việc tìm kiếm trên các feature map khác nhau, SSD có thể tìm kiếm các đối tượng với kích thước khác nhau mà không cần thay đổi kích thước của các <code class="highlighter-rouge">bounding box</code>. Thực nghiệm cho thấy, SSD đạt 74.3% mAP trên tập test của VOC2007, đạt 59 FPS khi sử dụng Nvidia Titan X với kích thước ảnh đầu vào 512 x 512, nhanh hơn <a href="https://arxiv.org/pdf/1506.01497.pdf">Faster R-CNN</a>.</p>
+
+<blockquote>
+  <p>Kể từ bài viết này, mình sẽ chia bài viết làm 2 phần. Trong phần đầu mình sẽ giới thiệu qua về cấu trúc để các bạn có thể nắm bắt một cách nhanh nhất, nửa sau của bài viết mình sẽ giới thiệu về phần toán, công thức xây dựng để bạn đọc tìm hiểu kĩ hơn. Với những bạn đọc chỉ tò mò muốn biết Single Shot Detector là gì, cách thức hoạt động thế nào thì có thể xem phần đầu là được rồi :D</p>
+</blockquote>
+
+<h2 id="hướng-tiếp-cận">Hướng tiếp cận</h2>
+
+<p align="center"><img alt="Default Bounding Box" src="/assets/img/2019-06-15-ssd-single-shot-detector/pic1.png" /></p>
+
+<p>Ý tưởng chính của SSD đến từ việc sử dụng các <code class="highlighter-rouge">bounding box</code>, bằng việc khởi tạo sẵn các box tại mỗi vị trí trên ảnh, SSD sẽ tính toán và đánh giá thông tin tại mỗi vị trí xem vị trí đó có vật thể hay không, nếu có thì là vật thể nào, và dựa trên kết quả của các vị trí gần nhau, SSD sẽ tính toán được một box phú hợp nhất bao trọn vật thể.</p>
+
+<p align="center"><img alt="Default Bounding Box" src="/assets/img/2019-06-15-ssd-single-shot-detector/pic2.png" /></p>
+
+<p>Ngoài ra, bằng việc tính toán bounding box trên các feature map khác nhau, tại mỗi tầng feature map, một box sẽ ôm trọn một phần hình ảnh với các kích thước khác nhau. Như trên ví dụ trên, con mèo và con chó có thể được phát hiện ở 2 tầng feature map khác nhau, 2 kích thước và tỉ lệ khác nhau. Thay vì sử dụng 1 box và thay đổi kích thước box cho phù hợp với vật thể, thì SSD dử dụng nhiều box trên nhiều tầng, từ đó tổng hợp ra vị trí và kích thước box kết quả. Bằng việc loại trừ các <code class="highlighter-rouge">region proposal</code>, SDD có thể đạt được tốc tộ xử lí cao hơn Faster R-CNN.</p>
+
+<h2 id="kiến-trúc-của-ssd">Kiến trúc của SSD</h2>
+
+<p align="center"><img alt="SSD Architecture" src="/assets/img/2019-06-15-ssd-single-shot-detector/pic3.png" /></p>
+
+<h3 id="convolutional-predictors-for-detection">Convolutional predictors for detection</h3>
+
+<p>SSD sử dụng VGG16 để extract các feature, tại các tầng feature map được sử dụng để phát hiện vật thể, SSD sử dụng các filter có kích thước 3 x 3 x $ p $ trên các layer dùng để dự đoán thay vì dùng fully connected layer như trên YOLO.</p>
+
+<p align="center"><img alt="YOLO Architecture" src="/assets/img/2019-06-15-ssd-single-shot-detector/pic4.png" /></p>
+
+<h3 id="multi-scale-feature-maps-for-detection">Multi-scale feature maps for detection</h3>
+
+<p>Bằng việc sử dụng các filter, kích thước của các feature map sẽ giảm dần theo độ sâu của mạng, hỗ trợ cho việc phát hiện vật thể ở các kích thước và tỉ lệ khác nhau.</p>
+
+<h3 id="default-boxes">Default boxes</h3>
+
+<p>Trên một feature map kích cỡ $m$ x $n$, tại mỗi vị trí <code class="highlighter-rouge">cell</code> hay tại mỗi <code class="highlighter-rouge">pixel</code>, khởi tạo các default bounding box, các box này có vai trò giống như các <code class="highlighter-rouge">anchor</code> của Faster R-CNN. Tuy nhiên, vì vị trí mỗi cell cố định nên các box này cũng sẽ được cố định. Tại mỗi cell, giả sử khởi tạo $ k $ box, SSD tính toán phân loại $ c $ class và đồng thời tính toán xem hình dáng của box như thế nào như toạ độ $\left( cx,cy\right)$, dài và rộng $\left(w,h\right)$. Vậy tổng số tính toán là $\left( c + 4 \right)k$ x $m$ x $n$</p>
+
+<h2 id="training">Training</h2>
+
+<p>Việc training SSD yêu cầu cung cấp thông tin về các groundtruth của vật thể bao gồm các thông tin về class, shape.</p>
+
+<h3 id="tìm-các-box-phù-hợp">Tìm các box phù hợp</h3>
+
+<p>Trong quá trình training, ta tiến hành tìm các default box trên các feature map phù hợp với groundtruth bằng cách tìm các box có <code class="highlighter-rouge">jaccard overlap</code> cao. Công thức tính jaccard overlap dựa trên tỉ lệ giữa diện tích vùng trùng nhau giữa 2 tập và diện tích của cả 2 tập hợp lại.</p>
+
+\[J\left(A,B\right) = \frac{\vert A\cap B\vert}{\vert A\cup B\vert}\]
+
+<p align="center"><img alt="YOLO Architecture" src="/assets/img/2019-06-15-ssd-single-shot-detector/pic5.png" /></p>
+
+<p>Các box được lọc có chỉ số <code class="highlighter-rouge">jaccard overlap</code> lớn hơn mức threshol 0.5.</p>
+
+<h3 id="hàm-loss">Hàm Loss</h3>
+
+<p>Hàm loss của SSD được xây dựng bằng <code class="highlighter-rouge">localization loss</code> để đánh giá việc phát hiện và <code class="highlighter-rouge">confidence loss</code> để đánh giá việc phân lớp đối tượng.</p>
+
+<p>Đặt $ x_{ij}^p $ = { 1, 0 } ứng với <code class="highlighter-rouge">default box</code> thứ $i$ khớp với <code class="highlighter-rouge">groundtruth</code> thứ $j$ thuộc lớp $p$, ta có hàm Loss sau:</p>
+
+\[L\left( x,c,l,g \right) = \frac{1}{N} \left( L_{conf} \left( x,c \right) + \alpha L_{loc}\left(x,l,g\right)\right)\]
+
+<p>N ở đây là số lượng những default box phù hợp được tìm ở bước trên. Nếu N = 0 thì Loss = 0.
+Hàm Loss $L_{loc}$ được tính bằng Smooth L1 loss giữa <code class="highlighter-rouge">box dự đoán</code> ($l$) và <code class="highlighter-rouge">groundtruth box</code> ($g$). Với các tham số như điểm chính giữa $\left(cx,cy\right)$ của default box ($d$) và chiều dài ($w$), chiều rộng ($h$). $\alpha$ được đặt là 1.</p>
+
+<h4 id="localization-loss">Localization Loss</h4>
+
+\[L_{loc}\left( x,l,g \right) = \sum^N_{i\in Pos} \sum_{m\in\{cx,cy,w,h\}} x_{ij}^k smooth_{L1}\left( l_i^m - \hat{g}^m_j\right)\]
+
+<p>Dành cho những bạn nào không biết Hàm <code class="highlighter-rouge">Smooth L1</code>:</p>
+
+\[smooth_{L1_{plot}} \colon= piewise\left( abs\left( x \right) \lt 1, 0.5x^2, abs\left( x \right) - 0.5\right)\]
+
+<p>Hoặc</p>
+
+\[\begin{cases}0.5x^2 &amp; \text{if $|x|\lt 1$} \\ \vert x \vert - 0.5 &amp; \text{otherwise}\end{cases}\]
+
+<p>Quay trở lại, $\hat{g}^m_j$ được tính toán như sau:</p>
+
+\[\hat{g}_j^{cx} = \left( g_j^{cx} - d_j^{cx} \right)/ d_j^w\]
+
+\[\hat{g}_j^{cy} = \left( g_j^{cy} - d_j^{cy} \right) / d_j^h\]
+
+\[\hat{g}_j^w = \log\left( \frac{g_j^w}{d_j^w} \right)\]
+
+\[\hat{g}_j^h = \log\left( \frac{g_j^h}{d^h_i} \right)\]
+
+<h4 id="confidence-loss">Confidence Loss</h4>
+
+\[L_{conf} \left( x,c \right) = - \sum_{i \in Pos}^N x_{ij}^p \log \left( \hat{c}_i^p \right) - \sum_{i \in N eg} \log\left( \hat{c}_i^p \right)\]
+
+<p>với</p>
+
+\[\hat{c}_i^p = \frac{\exp\left( c_i^p \right)}{\sum_p \exp\left( c_i^p \right)}\]
+
+<h3 id="chọn-kích-thước-và-tỉ-lệ-cho-default-box">Chọn kích thước và tỉ lệ cho default box</h3>
+
+<p>Các feature map ở độ sâu khác nhau sẽ có kích thước khác nhau, vì vậy, kích thước của các default box cũng được thay đôi theo độ sâu của feature map. Ví dụ với độ sâu là m (bao gồm m feature map tại bước detect):</p>
+
+\[s_k = s_{min} + \frac{s_{max} - s_{min}}{m - 1} \left( k - 1 \right), \text{k} \in \left[1,m \right] \text{,} s_{min}=0.2 \text{,} s_{max}=0.9\]
+
+<p>Vậy với m = 3, ta lần lượt sẽ có $s_1$ = 0.2, $s_2$ = 0.55, $s_3$ = 0.9</p>
+
+<p>Với tỉ lệ giữa chiều dài và rộng của box, sẽ được tính với $a_r \in \{ 1, 2, 3, \frac{1}{2}, \frac{1}{3} \} $</p>
+
+<p>Chiều dài và rộng có thể được tính từ $a_r$:</p>
+
+\[w_k^a = s_k \sqrt{a_r}\]
+
+\[h_k^a = s_k / \sqrt{a_r}\]
+
+<p>Với trường hợp tỉ lệ bằng 1, ta thêm 1 box nữa với kích thước là ${s\prime}_k = \sqrt{s_ks_k+1}$
+Như vậy, trên một vị trí của feature map sẽ có tổng cộgn <strong>6</strong> bounding box.
+Tâm điểm của mỗi box sẽ được tính bằng:</p>
+
+\[\left( \frac{i+0.5}{\vert f_k \vert}, \frac{j+0.5}{\vert f_k \vert} \right)\]
+
+<p>Với $\vert f_k \vert$ là kích cỡ cửa feature map hình vuông. $i , j$ là vị trí của cell.</p>
+
+<p>Dưới đây là một số hình ảnh chạy thức nghiệm của SSD, các kết quả so sánh với các phương pháp khác bạn đọc vui lòng tham khảo thêm trong bài báo.</p>
+
+<p align="center"><img alt="YOLO Architecture" src="/assets/img/2019-06-15-ssd-single-shot-detector/pic6.png" /></p>
+
+<p>Bài viết xin dừng lại tại đây, nếu có gì cần thảo luận bạn đọc vui lòng để lại bình luận.</p>
+
+  </div><div class="comments">
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v7.0" nonce="iXnIUCbx"></script>
+</div><!-- Incomment incase you want to use Disqus
+      <div id="disqus_thread"></div>
+   -->
+</article>
+
+<div class="fb-comments" data-href="https://nguyentranthuc.tk/" data-numposts="4" data-width="100%" data-order-by="reverse_time"></div></div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">About Nguyễn Trần Thức</div>
+      <div class="card-body">
+        <p class="author_bio">Hi, my name is Thuc</p><!-- Place this tag where you want the github button to render. -->
+<!--
+<a class="github-button" href="https://github.com/raquelfishes/raquelfishes.github.io" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star raquelfishes-site on GitHub">Star this Project</a>
+-->
+</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Categories</div>
+      <div class="card-body text-dark">
+             
+            <div id="#Ultilities"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Ultilities">Ultilities</a>
+            </li>
+            <a name="Ultilities"></a>
+
+             
+            <div id="#Tensorflow"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Tensorflow">Tensorflow</a>
+            </li>
+            <a name="Tensorflow"></a>
+
+             
+            <div id="#Architectures and Algorithms"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Architectures and Algorithms">Architectures and Algorithms</a>
+            </li>
+            <a name="Architectures and Algorithms"></a>
+
+             
+            <div id="#guides"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/guides">guides</a>
+            </li>
+            <a name="guides"></a>
+
+             
+            <div id="#tutorials"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/tutorials">tutorials</a>
+            </li>
+            <a name="tutorials"></a>
+
+             
+            <div id="#jekyll"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/jekyll">jekyll</a>
+            </li>
+            <a name="jekyll"></a>
+
+             
+            <div id="#Paper Review"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Paper Review">Paper Review</a>
+            </li>
+            <a name="Paper Review"></a>
+
+             
+            <div id="#Computer Vision"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Computer Vision">Computer Vision</a>
+            </li>
+            <a name="Computer Vision"></a>
+
+             
+            <div id="#Amazon Web Service"></div>
+            <li class="tag-head">
+                <a href="/blog/categories/Amazon Web Service">Amazon Web Service</a>
+            </li>
+            <a name="Amazon Web Service"></a>
+
+            </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">Useful Links</div>
+      <div class="card-body text-dark">
+        
+        <li>
+          <a href="https://tranthuc99.github.io/about">About me</a>
+        </li>
+        
+        <li>
+          <a href="https://tranthuc99.github.io/contact">Contact Me</a>
+        </li>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+        </div>
+        
+         <div class="col-lg-12" id="newsletter_footer"><!-- Mailchimp Newletters 
+<form action=""method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+<div id="mc_embed_signup_scroll_footer">
+    <label for="mce-EMAIL_footer"> Signup for Weekly Email Newsletters :D</label>
+    <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL_footer" placeholder="email address" required>
+    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups
+    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+        <input type="text" name="b_50bab1c85eae24ecfb0f68361_3a2dd721d0" tabindex="-1" value="">
+    </div><br />
+    <div class="clear">
+        <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe_footer" class="btn btn-lg btn-success">
+    </div>
+</div>
+-->
+</div><footer>
+    <p> Powered by<a href="https://github.com/sujaykundu777/devlopr-jekyll"> devlopr jekyll</a>.Hosted at <a href="https://pages.github.com">Github</a>.
+        <!--Subscribe via <a href=" /feed.xml ">RSS</a>-->
+    </p>
+</footer>
+<script>
+            var options = {
+                classname: 'my-class',
+                id: 'my-id'
+            };
+            var nanobar = new Nanobar( options );
+            nanobar.go( 30 );
+            nanobar.go( 76 );
+            nanobar.go(100);
+        </script>
+
+<!--
+   <div hidden id="snipcart" data-api-key="Y2I1NTAyNWYtMTNkMy00ODg0LWE4NDItNTZhYzUxNzJkZTI5NjM3MDI4NTUzNzYyMjQ4NzU0"></div>
+   <script src="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.js" defer></script>
+-->
+   <script src="/assets/js/mode-switcher.js"></script>
+
+
+<!-- câu đối năm mới -->
+<!--<script type='text/javascript'>
+
+document.write('<div class="tet-2019"><img class="left-2019" id="left-2020" src="https://lh4.googleusercontent.com/-HXBsyeylNsk/XDQOO3VSvjI/AAAAAAAACm0/mN6mv1PCfgc8o3PrRm_kvBWN7KmMjsPqQCLcBGAs/s1600/tet1.png"/><img class="right-2019" id="right-2020" src="https://lh4.googleusercontent.com/-tlsSRiDAay8/XDQOjlNI5uI/AAAAAAAACm8/66f7Unvw1J039PCBEUX9q-gFOfUw8JoGgCLcBGAs/s1600/tet2.png"/></div><style>#left-2020{width: 130px;left:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}#right-2020{width: 130px;right:0;z-index:7;position:fixed;;transition:all 0.3s linear;-moz-transition:all 0.3s linear;-webkit-transition:all 0.3s linear}.left-2019{top:70px}.right-2019{top:70px}.text-2019-l{top:50px}.text-2019-r{top:50px}@media screen and (max-width:1024px){.tet-2019{display:none}}@media screen and (max-width:1440px){#shareduyblogs{display:none}}</style>')
+
+</script>
+<script>
+      var lastScroll = 0;
+      jQuery(document).ready(function($) {
+        $(window).scroll(function() {
+          var scroll = $(window).scrollTop();
+          if (scroll > lastScroll) {
+            $('#right-2020').removeClass('left-2019').addClass('text-2019-l')
+            $('#left-2020').removeClass('right-2019').addClass('text-2019-r')
+          } else if (scroll < lastScroll) {
+            $('#right-2020').addClass('left-2019').removeClass('text-2019-l')
+$('#left-2020').addClass('right-2019').removeClass('text-2019-r')
+          }
+          lastScroll = scroll;
+        })
+      })
+</script>-->
+
+
+<!-- câu đối năm mới 
+<script type='text/javascript'>
+document.write('<img style="position:fixed;z-index:0;top:60px;left:0" src="assets/figs/tet-left.png"/><img style="position:fixed;z-index:0;top:60px;right:0" src="assets/figs/tet-right.png"/>');
+</script>-->
+
+
+
+
+
+
+</body>
+</html>
